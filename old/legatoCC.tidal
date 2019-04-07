@@ -1,0 +1,38 @@
+hush
+
+import Control.Concurrent ( threadDelay )
+
+ascSweepCC cc chan low high
+  | low >= high
+    = do
+      d9 $ setCC cc chan low
+  | otherwise
+    = do
+      d9 $ setCC cc chan low
+      threadDelay 10000
+      ascSweepCC cc chan (low+1) high
+
+"test2"
+
+let asc =
+
+
+let desc =
+
+ascSweepCC 1 9 0 127
+
+setCC cc chan val = do
+  let io cc chan = (s "midi" #midicmd "control" #midichan (chan-1) #ctlNum (cc))
+  control val #io cc chan
+
+d9 $ setCC 1 9 0
+
+:t setCC
+
+: testMinMax
+
+setCC n c v = do
+  let io c n = (s "midi" #midicmd "control" #midichan (c-1) #ctlNum (n))
+  control v #io c n
+
+setCC 1 9 0

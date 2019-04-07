@@ -1,0 +1,33 @@
+quanta bars pat = do
+  let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
+  let ps = [("x", midinote 60)
+          ]
+  let fs = [("minim", fast 2),
+            ("2", fast 2),
+            ("crotchet", fast 4),
+            ("4", fast 4),
+            ("quaver", fast 8),
+            ("8", fast 8),
+            ("semiquaver", fast 16),
+            ("16", fast 16),
+            ("demisemiquaver", fast 32),
+            ("32", fast 32),
+            ("echo" , stut 2 0.7 (semiquaver/mult)),
+            ("echos" , stut 2 0.7 (quaver/mult)),
+            ("leads" , ((rev) . (stut 2 0.75) (crotchet/mult))),
+            ("lead" , ((rev) . (stut 2 0.75) (quaver/mult)))
+          ]   in ur bars pat ps fs
+
+p06 p0 = d07 $ do
+  id $
+    stack [silence
+      ,note "[0]*4"
+      ,cc 1 (rev $ lfo saw 0.64 0.93)
+      ,cc 74 1
+      ] |= ch 06
+        -- |- note 12
+        -- |+ progression 4 (inKey "0 2 -2 -1")
+
+
+touch val = control (ccScale val) #midicmd "touch"
+bend val = control (ccScale val) #midicmd "bend"

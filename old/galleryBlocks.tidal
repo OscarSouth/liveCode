@@ -1,0 +1,88 @@
+-- DEFINITIONS
+
+-- triads
+let maj p = (toScale Chords.major p)
+let min p = (toScale Chords.minor)
+let dim p = (toScale Chords.dim)
+
+-- 7th chords
+let maj7 p = (toScale Chords.major7 p)
+let min7 p = (toScale Chords.minor7 p)
+let dom7 p = (toScale Chords.dom7 p)
+let m7b5 p = (toScale Chords.m7flat5 p)
+let dim7 p = (toScale Chords.dim7 p)
+let sus2 p = (toScale Chords.sus2 p)
+let sus4 p = (toScale Chords.sus4 p)
+
+-- pentatonic scales
+let majPent p = (toScale Scales.majPent p)
+let minPent p = (toScale Scales.minPent p)
+
+-- diatonic scales
+let ionian p = (toScale Scales.ionian p)
+let dorian p = (toScale Scales.dorian p)
+let phrygian p = (toScale Scales.phrygian p)
+let lydian p = (toScale Scales.lydian p)
+let mixolydian p = (toScale Scales.mixolydian p)
+let aeolian p = (toScale Scales.aeolian p)
+let mixolydian p = (toScale Scales.mixolydian p)
+
+-- d1 -- 9 : ReSlice == 8
+d1 $silence
+do
+  let io = (s "midi" #midichan 8)
+
+-- d2 -- 10 : RuisMaker == 9
+d2 $silence
+do
+  let io = (s "midi" #midichan 9)
+
+-- d3 -- 11 : ModelD_1 == 10
+d3 $silence
+do
+  let io = (s "midi" #midichan 10)
+  let mode p = (toScale Scales.aeolian p)
+
+-- d4 -- 12 : ModelD_2 == 11
+d4 $silence
+do
+  let io = (s "midi" #midichan 11)
+  let mode p = (toScale Scales.aeolian p)
+
+-- d5 -- 13 : Mersenne == 12
+d5 $ silence
+do
+  let io = (s "midi" #midichan 12)
+  let mode p = (toScale Scales.aeolian p)
+
+-- d6 -- 14 : Wurlitzer == 13
+d6 $silence
+do
+  let io = (s "midi" #midichan 13)
+  let mode p = (toScale Scales.aeolian p)
+
+-- d7 -- 15 : Harp == 14
+d7 $silence
+do
+  let io = (s "midi" #midichan 14)
+  let mode p = (toScale Sca
+
+
+
+
+
+
+
+fin.
+les.aeolian p)
+
+-- d8 -- 16 : Organ == 15
+d8 $silence
+do
+  let io = (s "midi" #midichan 15)
+  let mode p = (toScale Scales.aeolian p)
+
+-- d9 -- io : CC == io
+d9 $silence
+do
+  let io c n = (s "midi" #midicmd "control" #midichan c #ctlNum n)

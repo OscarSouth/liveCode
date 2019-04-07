@@ -1,0 +1,46 @@
+  -- MIXER
+d1 $ do
+  let master = 0.0
+  let vol = (*master)
+  stack [s "~"
+    ,harmonics $ vol 9
+    ,slicer $ vol 9
+    ,ruismk $ vol 9
+    ,drumkit $ vol 9
+    ,analog $ vol 9
+    ,modelD $ vol 6
+    ,mersenne $ vol 9
+    ,piano $ vol 9
+    ,wurlitz $ vol 9
+    ,fxsendA $ vol 9
+    ,fxsendB $ vol 9
+    ]
+
+-- BootTidal Staging
+
+let runWithTempo bpm = cps (-1) >> cps (bpm/60/4)
+let perc p = n p #midinote 63 #ch 9
+
+let sub p = n p #midinote 49 #ch 9
+let bd p = n p #midinote 51 #ch 9
+let cp p = n p #midinote 56 #ch 9
+let sn p = n p #midinote 54 #ch 9
+let hh p = n p #midinote 58 #ch 9
+let oh p = n p #midinote 61 #ch 9
+let pc p = n p #midinote 63 #ch 9
+
+let metronome =
+      stack[silence
+        ,n "0*4" #midinote "66*4" #vel 9
+        ,cc 1 "2.8 0 . 0 0 . 0 2.8"
+        ] #ch 9
+
+let pulse = n "0*4" #midinote 49 #ch 9
+let kick = n "0*4" #midinote 51 #ch 9
+
+let midi = s "midi"
+let sync = s "sync"
+let thru = s "thru"
+let midithru = s "[midi, thru]"
+let clicktrack = s "[midi, click]"
+let click = s "click"

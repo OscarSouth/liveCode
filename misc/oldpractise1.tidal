@@ -1,0 +1,154 @@
+p "transport" $ do
+  let out = 4
+  let
+-- SEQ
+  seqP [sync, startTransport, stopTransport out
+    ,bar 0 0 $ click -- CLICKTRACK
+-- DRUM SYNTH
+    ,bar 1 out $ midinote "49" #ch 10
+-- MOOG MODEL D
+    ,bar 3 4 $ n ("0*16" - 12) #ch 9 #legato 0.1
+    ]
+
+p "transport" $ do
+  let out = 8*1000
+  let
+  seqP [sync, startTransport, stopTransport out
+    ,bar 0 out metronome
+    ]
+
+runWith bpmSlow
+
+runWith bpmMed
+
+runWith bpmFast
+
+click 0
+
+click 0.8
+
+hush'
+
+hush
+
+hushAll
+
+stopTransportNow
+
+let hush = mapM_ ($ silence) [d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16]
+
+let runWith f = asap stopTransport' >> resetCycles >> f
+
+let hushAll = asap stopTransport' >> hush
+
+let stopTransportNow = asap stopTransport' >> hush
+
+let restartTransport f = stopTransportNow >> runWith f
+
+restartTransport bpmSlow
+
+
+
+
+d1 $ rev . (|-|maximum dor) $
+
+let testFunc xs rhythm notes = n rhythm |+|n (toScale xs notes)
+
+testFunc dor "0 0 0 0" "0 1 2 3"
+
+d1 $ n (toScale (asc dor) "0 1 2 3") #ch 12
+
+d1 $ n (toScale dor "0 1 2 3") #ch 12
+
+let pToList n pat = map value $ queryArc pat (Arc 0 n)
+
+
+
+pMax = maximum . (pToList 64)
+
+pMax ("0 1 2 3" :: Pattern Int)
+
+n (toScale dor "0 1 2 3") #ch 12
+
+
+d1 $ fast 8 $ n "36" #ch 9 #legato 0.8 |+ (slow 4 $ n "0 2 3 5") -- |- n "36 0"
+
+d2 $ fast 2 $ midinote "[[51 [51, 54]], [58 58 61 58]*2]" #ch 10
+
+d2 $ fast 2 $ midinote "<49 ~>  58" #ch 10
+
+d2 $ fast 4 $ midinote "49" #ch 10
+
+d2 silence
+
+hush
+
+p "modelD" $ do
+  let p = fast 8 $ n "0"
+  stack [silence
+    ,within (0.25, 1) (|+ n (toScale [0, 2, 3, 5] $ irand 12+3)) p
+    ] #ch 9
+      -- #legato 0.2
+
+(((1 - 0) * 5) / 1) - 2.5
+
+(((val - (-2.5)) * 1) / 5)
+
+(1*9/9) * 127
+
+
+asap $ do
+  stack[silence
+-- MASTER
+    ,volume 1
+    ,finetune 0
+    ,glide 0
+    ,glideio 0
+    ,decayio 0
+    ,adecay 0
+    ,aattack 0.05
+    ,asustain 1
+    ] #ch 9
+
+
+modwheel
+modsource
+
+
+decayio
+oscmod
+osc3ctrl
+osc1range
+osc1wave
+osc2range
+osc2tune
+osc2wave
+osc3range
+osc3tune
+osc3wave
+osc1vol
+osc1io
+osc2vol
+osc2io
+osc3vol
+osc2io
+feedbackvol
+feedbackio
+noisevol
+noiseio
+noisetype
+filtermod
+keyboard1
+keyboard2
+fresonance
+fdecay
+fattack
+fcutoff
+fcontour
+fsustain
+adecay
+aattack
+asustain
+
+
+click

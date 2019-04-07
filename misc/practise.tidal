@@ -1,0 +1,71 @@
+p "transport" $ do
+  let out = 8*1000
+  let
+  seqP [sync, startTransport, stopTransport out
+    ,bar 0 out metronome
+    ]
+
+runWith andante
+
+let stopTransportNow = once stopTransport' >> hush >> click 0
+
+click 1
+
+stopTransportNow
+
+d2 $ fast 2 $ do
+  stack[silence
+    -- ,stut 4 0.6 0.125 $ midinote "49"
+    ,degrade $ 0.5 <~ (stut 8 0.6 0.125 $ midinote "58")
+    -- ,fast 2 $ midinote "58 58 61 58" |+ (slow 2 $ vel "5 0 9 0")
+    -- ,midinote "~ 56"
+    -- ,fast 2 $ midinote "~ ?61" #vel 6
+    -- ,fast 2 $ midinote "51"
+    ] #ch 9
+
+click 0
+
+asap $ decayio 0 #ch 11
+
+once $ fcutoff (lfo saw 1 0) #ch 5
+
+d2 $ fcutoff (fast 3 $ lfo' tri 0.2 0.5) #ch 5
+
+asap $ fcutoff
+
+d3 $ fast 8 $ midinote "36" #ch 12 #legato 0.1
+  |+ note (fast 8 $ toScale [0, 2, 3, 5] $ (irand 5))
+
+hush'
+
+p "cutoff" $ fcutoff (fast 3 $ lfo' tri 0.2 0.5) #ch 5
+
+p "cutoff" silence
+
+d1 $ within (0.10, 1) degrade $ do
+  let p = fast 8 $ n "0"
+  stack [silence
+    ,within (0.0, 1) (|+ n (toScale [0, 2, 5, 7] $ irand 12+3)) p
+    ,ped "9 9 9 [~ ~ 0 9]"
+    ] #ch 15
+      #vel 0
+      |- n "[24 12] 12 12 12"
+      |- n "12"
+      -- |- (slow 2 $ n "0 5")
+      |+ humanise 1
+
+d3 $ stack[silence
+  ,note "1*4" #vel 4
+  ,note "[[3(3, 8)?]*2, [~ 3?]*2]" |+ vel ((<~) 0.5 $ lfo sine 0 5)
+  ,trunc 0.75 $ degrade $ note "4*16" #vel 1 |+ humanise ((<~) 0.5 $ lfo sine 0 5)
+  ] #ch 10
+    |+humanise 1
+
+hush'
+
+d2 silence
+
+
+once $ fcutoff (lfo saw 1 0) #ch 5
+
+hush

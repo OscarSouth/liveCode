@@ -1,0 +1,18 @@
+keySig = Bb \\\ aeolian
+
+bpm 76
+
+d1 $ do
+  stack[silence
+    ,bd "0*4"
+    ,cp "[~ 0]*2"
+    ,hh "0*8"
+    ]
+
+d2 $ do
+  let mode = keySig
+  stack [silence
+    ,slow 4 $ note (mode "0 . -2 3")
+    ] #ch 11
+
+hush

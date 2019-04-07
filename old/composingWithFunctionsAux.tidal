@@ -1,0 +1,39 @@
+-- data  = () { x :: ()
+           , y :: ()
+           } deriving ()
+
+instance Monoid () where
+  mempty =
+  mapply =
+
+instance Functor () where
+  fmap =
+
+instance Applicative () where
+  pure x =
+  fs <*> xs =
+
+instance Monad () where
+  return x =
+  (>>=) x f =
+  fail _ =
+
+class (Integral a, Eq a, Ord a) => Harmonic a where
+  transpose ::
+  invert ::
+
+-- Harmonic laws
+-- 1. duplication of elements should not influence functionality
+-- 2. should retain functionality when applied to (\x -> x `mod` 12)
+-- 3. set must be commutative (ordering not effecting functionality)
+
+class (Harmonic a) => Modal a where
+  mode ::
+
+  -- Modal  laws:
+  -- 1. all diatonic member elements are unique
+  -- 2. there are no consecutive semitones
+  -- 3. there are no more than two semitones
+
+instance Modal () where
+  mode =

@@ -1,0 +1,49 @@
+hush
+
+let keySig = D \\\ aeolian
+
+prog = "0 -2 -3 0"
+
+  -- MIXER
+d1 $ do
+  let master = 0.0
+  let vol = (*master)
+  stack [s "~"
+    ,harmonics $ vol 9
+    ,slicer $ vol 9
+    ,ruismk $ vol 9
+    ,drumkit $ vol 9
+    ,analog $ vol 9
+    ,modelD $ vol 7
+    ,mersenne $ vol 9
+    ,piano $ vol 9
+    ,wurlitz $ vol 9
+    ,fxsendA $ vol 9
+    ,fxsendB $ vol 9
+    ]
+
+d2 $ do
+  let one = "0"
+  let one' = "~ 0"
+  stack [silence
+    ,fast 4 $ subkick one #vel 9
+    -- ,fast 2 $ snare one' #vel 9
+    -- ,fast 16 $ c'hat one #vel 7
+    -- ,fast 4 $ o'hat one' #vel 9
+    ]
+
+d3 $ do
+  let key = keySig
+  let one = note "0" |+| oct 1
+  stack [silence
+    ,fast 16 one #vel 6 |+|note (key $ "12 3 5 3")
+    ] #ch 12
+      #legato 0.9
+      |+|note (slow 8 $ key prog)
+d4 $ do
+  let key = keySig
+  let one = note "0" |+|oct 1
+  stack [silence
+    ,slow 2 $ one |+|note (slow 2 $ key "[0,2,4]")
+    ] #ch 14
+      |+|note (slow 8 $ key prog)

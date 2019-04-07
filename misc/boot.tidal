@@ -1,0 +1,58 @@
+
+let oct n = note (n*12)
+
+let oct' n = note (n*7)
+
+
+
+
+let bar b1 b2 p = (b1+2, b2+3, p)
+let begin = (0, 1, silence)
+let out = 4
+let clockStart = (1, 2, midicmd "start" #midi)
+let clockRun = (1, out+2, midicmd "midiClock*24" #midi)
+let clockStop = (out+1, out+2, midicmd "stop" #midi)
+
+
+
+
+volume = cc 7
+modwheel = cc 1
+modsource = cc 14
+finetune = cc 3
+glide = cc 5
+glideio = cc 65
+decayio = cc 80
+oscmod = cc 30
+osc3ctrl = cc 29
+osc1range = cc 21
+osc1wave = cc 22
+osc2range = cc 23
+osc2tune = cc 24
+osc2wave = cc 25
+osc3range = cc 26
+osc3tune = cc 27
+osc3wave = cc 28
+osc1vol = cc 46
+osc1io = cc 47
+osc2vol = cc 48
+osc2io = cc 49
+osc3vol = cc 50
+osc2io = cc 51
+feedbackvol = cc 9
+feedbackio = cc 52
+noisevol = cc 54
+noiseio = cc 53
+noisetype = cc 55
+filtermod = cc 81
+keyboard1 = cc 82
+keyboard2 = cc 82
+fresonance = cc 71
+fdecay = cc 72
+fattack = cc 73
+fcutoff = cc 74
+fcontour = cc 75
+fsustain = cc 76
+adecay = cc 77
+aattack = cc 78
+asustain = cc 79

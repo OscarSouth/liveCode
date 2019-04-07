@@ -1,0 +1,87 @@
+  -- PADS 01-04 | OVERTONE SAMPLES A
+
+
+  -- PAD 05 | CONTROL DATA
+
+
+  -- PAD 06 | GRANULAR SYNTH
+
+
+  -- PAD 07 | WAVETABLE SYNTH
+
+
+  -- PAD 08 | 303 SYNTH
+
+
+  -- PAD 09 | DRUM SYNTH
+ruismk bars pat = do
+  let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
+  let ps = [("sub", sub "0"),
+            ("bd", bd "0"),
+            ("sn", sn "0"),
+            ("cp", cp "0"),
+            ("hh", hh "0"),
+            ("oh", oh "0"),
+            ("pc", pc "0")
+          ]
+  let fs = [("breve", slow 2),
+            ("semibreve", fast 1),
+            ("minim", fast 2),
+            ("crotchet", fast 4),
+            ("quaver", fast 8),
+            ("semiquaver", fast 16),
+            ("demisemiquaver", fast 32),
+            ("echo" , stut 2 0.7 (semiquaver/mult)),
+            ("echos" , stut 2 0.7 (quaver/mult)),
+            ("lead" , ((~>) (15*semiquaver/mult))),
+            ("leads" , ((~>) (7*quaver/mult)))
+          ]
+   in ur bars pat ps fs
+
+  -- PAD 10 | ACOUSTIC KIT
+
+
+  -- PAD 11 | VOYAGER SYNTH
+
+
+  -- PAD 12 | MODEL D SYNTH
+let mini bars pat = do
+    let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
+    let leg = (legato ( (1/4) *
+              (fromList [(fromIntegral . round) bars] :: Pattern Double))
+              )
+    let ps = [("x", midinote 60)
+            ]
+    let fs = [("breve", slow 2),
+              ("semibreve", fast 1),
+              ("minim", fast 2),
+              ("crotchet", fast 4),
+              ("quaver", fast 8),
+              ("semiquaver", fast 16),
+              ("demisemiquaver", fast 32),
+              ("echo", stut 2 0.7 (semiquaver/mult)),
+              ("echos", stut 2 0.7 (quaver/mult)),
+              ("lead", ((~>) (15*semiquaver/mult))),
+              ("leads", ((~>) (7*quaver/mult))),
+              ("a", (|= vel 1.0))
+            ]
+     in mono $ ur bars pat ps fs
+
+
+p12 p0 = d12 $ do
+  mono $
+    stack [silence
+      ,mini 1 "x"
+      ] |= ch 12
+        -- >> silence
+
+  -- PAD 13 | RESONATOR SYNTH
+
+
+  -- PAD 14 | FM BELL SYNTH
+
+
+  -- PAD 15 | ELECTRIC PIANO SAMPLER
+
+
+  -- PAD 16 | ACOUSTIC PIANO SAMPLER

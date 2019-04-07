@@ -1,0 +1,42 @@
+kit bars pat = do
+  let mult = (fromList [(fromIntegral . ceiling) bars] :: Pattern Time)
+  let ps = [("bd", kick "0"),
+            ("sn", snare "0"),
+            ("ss", click "0"),
+            ("rm", rim "0"),
+            ("ride", ride "0"),
+            ("ridebell", ridebell "0"),
+            ("crash", crash "0"),
+            ("crashbell", crashbell "0"),
+            ("hchoke", hchoke "0"),
+            ("ridechoke", ridechoke "0"),
+            ("crashchoke", crashchoke "0"),
+            ("floortom", floortom "0")
+          ]
+  let fs = timeFuncs mult
+   in ur bars pat ps fs
+
+hats bars pat = do
+  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
+  let ps = [("p", hpedal "0"),
+            ("c", hclosed "0"),
+            ("h", hhalf "0"),
+            ("o", hopen "0"),
+            ("x", hchoke "0"),
+            ("8", hclosed "0*8"),
+            ("16", hclosed "0*16")
+          ]
+  let fs = timeFuncs mult
+   in ur bars pat ps fs
+
+cymbals bars pat = do
+  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
+  let ps = [("rd", ride "0"),
+            ("rb", ridebell "0"),
+            ("cr", crash "0"),
+            ("cb", crashbell "0"),
+            ("rc", ridechoke "0"),
+            ("cc", crashchoke "0")
+          ]
+  let fs = timeFuncs mult
+   in ur bars pat ps fs

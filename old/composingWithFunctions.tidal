@@ -1,0 +1,77 @@
+hush
+
+d1 $ do
+  let sub = fast 4 $ midinote "49"
+  let kick = fast 4 $ midinote "51"
+  let snare = fast 2 $ midinote "~ 54"
+  let clap = fast 2 $ midinote "~ 56"
+  let closedhat = fast 16 $ midinote "58"
+  let openhat = fast 4 $ midinote "~ 61"
+  let perc = fast 4 $ midinote "~ 63"
+  stack[s "~"
+    ,sub #vel 6
+    -- ,kick #vel 9
+    ,snare #vel 3
+    -- ,clap #vel 6
+    -- ,closedhat #vel 4
+    -- ,openhat #vel 5
+    ,perc #vel 3
+    ] #ch 9 |+|humanise 1
+
+d4 $ do
+  let long = note "[0 0 [[0 ~ ~ 0] 0] [[0 ~ ~ 0] 0]]" #sustain 3
+  -- let scale s = (toScale (i' $ (Eb+|) <$> [0,3,7]) s)
+  stack[s "~"
+    ,slow 4 $ long |+| note "[-0 3 [[-4 -4 -4 -7] -7] [[-2 -2 -2 -5] -5]]"
+    ] #ch 11 |-| note 1 -- |+|oct 4
+
+(|+|oct 4)
+
+riff = do
+  let bc = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 4 #vel 6
+  let g = note "[~ ~ ~ [2 ~] ~ ~ ~ ~]" #ch 3 #vel 6
+  let e = note "1 ~ ~ 1" #ch 2 #vel 5
+  let a = note "" #ch 1 #vel 5
+  let v = (5)
+  stack[s "~"
+    ,bc
+    ,g
+    ,e
+    -- ,a
+    ] |-|vel' v
+
+riff' = do
+  let bc = note "[~ ~ ~ [1 ~] ~ ~ ~ ~]" #ch 4 #vel 6
+  let g = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 3 #vel 6
+  let e = note "2 ~ ~ 1" #ch 2 #vel 5
+  let a = note "" #ch 1 #vel 5
+  let v = (5)
+  stack[s "~"
+    ,bc
+    ,g
+    ,e
+    -- ,a
+    ] |-|vel' v
+
+d2 = do
+  let pattern = note "0"
+
+d8 $do
+  let cc n c = (midichan (n - 1), midicmd "control" #ctlNum (c - 1))
+  -- let lfo = 0--(_discretise 128 $ slow 8 (scale 30 60 $ (sine1)))
+  control 0 #cc 1 2
+
+d8 $do
+  let io c n = (s "midi" #midicmd "control" #midichan c #ctlNum n)
+  control 63 #io 0 64
+  -- control
+  d9 $ cat [riff, riff, riff, riff']
+
+
+d8 $ cc' 1 64 "9 9 9 0"
+
+riff
+
+riff'
+
+hush

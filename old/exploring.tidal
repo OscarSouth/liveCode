@@ -1,0 +1,182 @@
+hush
+
+keySig = E \\\ Scale.aeolian
+
+keySig
+
+d1 $ do
+  let sub = fast 4 $ midinote "49"
+  let kick = fast 4 $ midinote "51"
+  let snare = fast 2 $ midinote "~ 54"
+  let clap = fast 2 $ midinote "~ 56"
+  let closedhat = fast 16 $ midinote "58"
+  let openhat = fast 4 $ midinote "~ 61"
+  let perc = fast 4 $ midinote "~ 63"
+  stack[s "~"
+    ,sub #vel 6
+    -- ,kick #vel 9
+    -- ,snare #vel 3
+    -- ,clap #vel 6
+    -- ,closedhat #vel 4
+    -- ,openhat #vel 5
+    -- ,perc #vel 3
+    ] #ch 9 |+|humanise 1
+
+eight n = do
+  let key = keySig
+  let eight n = note "0*8" #vel 0 |+|note n
+  stack[s"~"
+    ,eight n
+    ] #ch 12
+    |-|oct 2
+    |-|vel' 8
+    |+|humanise 1
+
+d5 $ slow 4 $ do
+  cat [eight "-7 -4"
+        , eight "0"
+        , eight "-7 -4"
+        , eight "0"
+        , eight "-7 -4"
+        , eight "0"
+        , eight "-5"
+        , eight "0"
+        ] |-|note 1
+
+d5 $ cat [eight "-3"]
+
+
+d2 $ do
+  let kick = fast 2 $ note "1 1"
+  let snare = fast 2 $ note "[~ 2]"
+  let click = degradeBy 0.75 $ rev $ note "3(3,8)"
+  let rim = degradeBy 0.9 $note "[~ 4]*2"
+  let hatpedal = fast 2 $ note "~ 5" #vel 3
+  let hatclosed = fast 4 $ note "~ [6]" #vel 1
+  let hathalf = fast 4 $ note "7" #vel 1
+  let hatopen = fast 2 $ note "~ 8" #vel 2
+  let ride = fast 4 $ note "~ 9" #vel 4
+  let ridebell = fast 4 $ note "~ 10" #vel 5
+  let crash = slow 4 $ note "11" #vel 5
+  let crashbell = fast 2 $ note "~ 12" #vel 8
+  let hatchoke = slow 4 $ note "13" #vel 3
+  let ridechoke = fast 4 $ note "14" #vel 3
+  let crashchoke = slow 4 $ note "15" #vel 3
+  let floortom  = fast 1 $ note "[~ [~ 16?] [~ 16?] 16]" #vel 9
+  stack[s "~"
+    -- ,kick #vel 6
+    -- ,snare #vel 9
+    -- ,click #vel 3
+    -- ,rim #vel 5
+    -- ,hatpedal #vel 1 |+|humanise 1
+    ,hatclosed |+|vel' 3 |+|humanise 1
+    -- ,hathalf |+|vel' 3 |+| humanise 1
+    -- ,hatopen |+|vel' 4 |+| humanise 1
+    -- ,ride |+|vel' 2 |+|humanise 1
+    -- ,ridebell |+|vel' 6 |+|humanise 1
+    -- ,crash |+|vel' 2 |+|humanise 1
+    -- ,crashbell |+|vel' 6 |+|humanise 1
+    -- ,hatchoke |+|vel' 4 |+|humanise 1
+    -- ,ridechoke |+|vel' 6 |+|humanise 1
+    -- ,crashchoke |+|vel' 6 |+|humanise 1
+    -- ,floortom |+|vel' 8 |+|humanise 2
+    ] #ch 10
+
+
+d5 $ cat [eight "-5"]
+
+wurl n = do
+  let one = note "[0 [0 0]]"
+  stack[s"~"
+    ,one |+|note n
+    ] #ch 8
+
+d6 $ slow 2 $ do
+  cat [wurl "[[-7,-4][-9,-4]]"
+      ,wurl "[-12,-5]"
+      ,wurl "[[-7,-4][-9,-4]]"
+      ,wurl "[-12,-5]"
+      ,wurl "[[-7,-4][-9,-4]]"
+      ,wurl "[-12,-5]"
+      ,wurl "[-10,-5,-2]"
+      ,wurl "[-9,-5,0]"
+      ] |+|oct 1
+        |-|note 1
+        #vel 9
+
+d5 $ cat [eight "7", eight "3",eight "0", eight "0"]
+
+
+d6 $ slow 2 $ degradeBy 0.3 $ note "0(5,8)"
+  |+|note "[< <3 <0 8>> <2 <5 2>> >]*2"
+  |+|oct 1
+  #ch 7
+  #sustain 2
+
+d7 $ slow 4 $ note "[0,7][0,8][2,7][3,7]" |+|note "[0]" #ch 6 |-|oct 1
+
+d9 $ do
+  let master = 0.5
+  let vol = (*master)
+  stack [s "~"
+    ,harmonics $ vol 9
+    ,slicer $ vol 9
+    ,organ $ vol 9
+    ,winds $ vol 9
+    ,strings $ vol 9
+    ,ruismk $ vol 9
+    ,kit $ vol 9
+    ,viking $ vol 9
+    ,animoog $ vol 9
+    ,tbmk $ vol 9
+    ,mersenne $ vol 9
+    ,piano $ vol 9
+    ,wurlitz $ vol 9
+    ]
+
+let master = 1
+
+
+hush
+
+let ccScale n = n*11
+
+let cc c n val = control (ccScale val) #io n c where io n c = (s "midi" #midicmd "control" #midichan (c-1) #ctlNum (n))
+
+let harmonics = cc 16 85
+
+let ruismk = cc 16 86
+
+let kit = cc 16 87
+
+let analog = cc 16 88
+
+let wurlitz =  cc 16 89
+
+let piano =  cc 16 90
+
+
+
+
+
+cc c n v = do
+  let io c n = (s "midi" #midicmd "control" #midichan (c-1) #ctlNum (n))
+  control v #io c n
+
+h1
+
+h2
+
+h3
+
+h4
+
+h5
+
+h6
+
+h7
+
+h8
+
+h9

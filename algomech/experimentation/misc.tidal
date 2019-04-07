@@ -1,0 +1,104 @@
+runWith adagio
+
+d10 $ do
+  stack [silence
+    ,fast 2 $ stut 2 0.8 0.125 $ kick "0" #vel 0.8
+    ,degrade $ within (0.7, 1) (stut 4 0.6 (1/16)) $ snare "[~ . ~ ?0] ~ 0 ?0" #vel 0.7
+    ,fast 16 $ ride "0" #vel 0.3 |+ humanise (slow 4 $ lfo sine 0 1)
+    ,fast 4 $ hpedal "~ 0" #vel 0.3 |+ humanise 0.2
+    -- ,fast 4 $ sub "0" #vel 0.2
+    ]
+
+:t stut
+
+d12 $ do
+  let keySig = G \\\ aeolian
+  stack [silence
+      ,fast 2 $ note "0(3,8)" |+ note (slow 4 $ keySig $ "0 1 2 4" + slow 2 "0 -2")
+      ] #ch 12
+        #legato 1
+        |+ n 12*2
+
+hush
+
+aeolian :: Num a => [a]
+aeolian = [0,2,3,5,7,8,10]
+
+ionian :: Num a => [a]
+ionian = [0,2,4,5,7,9,11]
+
+d12 $ fast 8 $ do
+  let keySig = D \\\ aeolian
+  stack [silence
+      ,n $ "0" |+ (slow 4 $ keySig $ "0")
+      ] #ch 12
+        -- |+ n (keySig "0")
+        |+ transpose
+
+
+r /// m = (r \\\ m, transpose)
+  where transpose = toScale m
+
+(inKey, transpose) = D /// aeolian
+
+
+
+d16 $ do
+  let (inKey, transpose) = C /// aeolian
+  let pat = "[0, 2, 4]" + "0 1"
+  stack[silence
+    ,fast 4 $ n "0" |+ (slow 4 $ inKey pat) #vel 0.2
+   -- ,n ("0 0"-12) |+ (slow 2 $ inKey "0 <[-3 -5] [1 [3, 5]]>") #vel 0.4
+    ] #ch 16
+      |- n 12
+      |+ humanise 0.3
+
+d15 $ do
+  let p = fast 8 $ n "0"
+  stack [silence
+    ,within (0.25, 1) (|+ n (toScale [0, 2, 3, 5] $ irand 12+3)) p
+    ] #ch 15
+      #vel "0 0.1 0.2 0.3"
+      |+ humanise 0.2
+
+n "0 0 0 0" |+ inKey "0 1 2 3"
+
+hush
+
+  |+ transpose 1
+
+
+a1
+
+(D, aeolian)
+
+()
+
+
+(key, mode, keySig) = (D, aeolian, D \\\ aeolian)
+key  = D
+
+transpose k p = (k p) - (fromList [head $ patToList 16 (k p :: Pattern Int)])
+
+keySig p + t
+
+(D \\\ aeolian) "0 1 2 4" - (fromList $ patToList 1 $ D \\\ aeolian $ "0 1 2 4" :: Pattern Int)
+
+(D \\\ aeolian) ("0 1 2 4" :: Pattern Int)
+
+transpose k p t = ((k p :: Pattern Int) - (fromList $ patToList 1 $ k p :: Pattern Int)) + t
+
+transpose s =
+
+
+"2" :: Pattern Int
+
+(head $ patToList 16 (D \\\ aeolian $ "0 1 2 4") )
+
+let patToList n pat = fmap value $ queryArc pat (Arc 0 n)
+
+(fromList $ patToList 1 $ D \\\ aeolian $ "0 1 2 4" :: Pattern Int)
+
+(head $ patToList 16 (k p :: Pattern Int))
+
+hush

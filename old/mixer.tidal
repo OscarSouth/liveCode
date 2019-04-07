@@ -1,0 +1,19 @@
+  -- MIXER
+d1 $ do
+  let master = 0.0
+  let vol = (*master)
+  stack [s "~"
+    ,harmonics $ vol 9
+    ,slicer $ vol 9
+    ,ruismk $ vol 9
+    ,drumkit $ vol 9
+    ,analog $ vol 9
+    ,modelD $ vol 6
+    ,mersenne $ vol 9
+    ,piano $ vol 9
+    ,wurlitz $ vol 9
+    ,fxsendA $ vol 9
+    ,fxsendB $ vol 9
+    ]
+
+-- BootTidal Staging

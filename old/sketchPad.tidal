@@ -1,0 +1,32 @@
+d1 $ stack [ s "~"
+  ,midinote "49*4"
+  ,fast 2 $ midinote "~ 51"
+  ,midinote "63*16"
+] #s "midi" #midichan 9 #gain 1.2
+
+d4 $ stack [ s "~"
+  ,fast 2 $midinote "71(9,16,2)" |+|note "0 3 7" |+|note 12
+] #s "midi" #midichan 10
+
+hush
+
+d3$slow 2 $note (toScale Scales.aeolian "0 1 2 3 4 5 6 7")
+  #s "midi"
+  #midichan 12
+  |+|note (-12)
+
+d1 $ n (toScale [0, 4, 7] "0 1 2 3") # sound "supermandolin"
+
+d4$note "0*4" #s "midi" #midichan 10
+
+d3$note "0*2" #s "midi" #midichan 11
+
+
+hush1
+
+d1 $ stack [ s "~"
+  ,midinote "49*2"
+  -- ,midinote "49(5,8)?"
+  -- ,midinote "[~ 51]*2"
+  -- ,midinote "63*8"
+] #s "midi" #midichan 9 #gain 1

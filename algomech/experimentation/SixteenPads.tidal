@@ -1,0 +1,135 @@
+  -- PADS 01-04 | OVERTONE SAMPLES A
+(pad01, pad02, pad03, pad04) = (d01 silence ,
+                                d02 silence,
+                                d03 silence,
+                                d04 silence)
+
+  -- PAD 05 | STOCHASTIC SLICER
+
+  -- PAD 06 | SLICER
+pad05 = d05 silence
+
+  -- PAD 07 | WAVETABLE SYNTH
+p07 p0 = d07 $ do
+  let hipass = cc 3
+  stack [silence
+    ,fast 8 $ note "0 0"
+    -- ,hipass "[0.9 0.5 . 0.1]*4"
+    ,hipass "[0.1 0.4 . 0.6]*4"
+    ] |= ch 07
+      |+ note (keySig "0")
+      |- note (fast 4 "36 . 24 36")
+      |= vel (fast 4 "0.1 . 0.11 0.1")
+      -- |+ note "[0 -24!3]*4"
+      -- |= vel (pullBy (1/4) $ fast 4 $ "0.01 0.3 0.01")
+      -- |+ vel (slow 4 $ lfo sine 0.01 0.05)
+      -- >> silence
+
+  -- PAD 08 | 303 SYNTH
+p06 p0 = d06 $ do
+  id $
+    mono $
+    -- every 2 (trunc 0.825) $
+    -- every 4 (pullBy crotchet) $
+    -- every 2 (trunc $ 15/16) $
+    -- every 2 (within (0.5, 1) $ fast 2) $
+    -- every 2 (within (0, 1) $ rev) $
+    stack [silence
+      ,fast 4 $ tb 2 "[~ x:a x x, x(3,8)]"
+      |+ note "0!3 <0 -12 0 12>"
+      |+ note (slow 4 $ keySig "<0 2> . <4 6> . <5 3> . <4 2>")
+      ] |= ch 08
+        |= vel (p0 + 0.01)
+        |+ note 12
+        |+ vel "0 0.6!3"
+        -- >> silence
+
+
+  -- PAD 09 | DRUM SYNTH
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      ,ruismk 1 "[sub:crotchet]"
+      -- ,ruismk crotchet "~ hh"
+      -- ,ruismk (1/2) "~ cp"
+      -- ,ruismk 1 "[pc]*16" |+ vel "[0.06!2 0.94 0.06]*4" |+ humanise 0.4
+      ] |= ch 09
+        |+ vel p0 -0.5
+        -- >> silence
+
+  -- PAD 10 | ACOUSTIC KIT
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,crash "0"
+      ] |= ch 10
+        |= legato semiquaver
+        -- >> silence
+
+  -- PAD 11 | VOYAGER SYNTH
+pad12 p0 = d11 $ do
+  id $ pushBy (11/16 -semiquaver) $
+    stack [silence
+      ,midinote "60"
+      ] |= ch 11
+        |= legato semiquaver
+        -- >> silence
+
+  -- PAD 12 | MODEL D SYNTH
+pad12 p0 = d12 $ do
+    pullBy 2 $
+    stack [silence
+      ,"0"
+      ] |= ch 12
+        |+ note 12
+        |+ note (slow 4 $ keySig "3 1 0 0")
+        -- >> silence
+
+  -- PAD 13 | RESONATOR SYNTH
+pad13 p0 = d13 $ do
+  id $ pushBy (13/16 -semiquaver) $
+    stack [silence
+      ,midinote "60"
+      ] |= ch 13
+        |= legato semiquaver
+        -- >> silence
+
+  -- PAD 14 | FM BELL SYNTH
+pad14 p0 = d14 $ do
+  id $ pushBy (14/16 -semiquaver) $
+    stack [silence
+      ,midinote "60"
+      ] |= ch 14
+        |= legato semiquaver
+        -- >> silence
+
+  -- PAD 15 | ELECTRIC PIANO SAMPLER
+pad15 p0 = d15 $ do
+  id $ pushBy (15/16 -semiquaver) $
+    stack [silence
+      ,midinote "60"
+      ] |= ch 15
+        |= legato semiquaver
+        -- >> silence
+
+  -- PAD 16 | ACOUSTIC PIANO SAMPLER
+pad16 p0 = d16 $ do
+  id $ pushBy (16/16 -semiquaver) $
+    stack [silence
+      ,midinote "60"
+      ] |= ch 16
+        |= legato semiquaver
+        -- >> silence
+
+
+
+
+
+
+
+
+stochastic = cc' 6 9
+slicer = cc' 6 8
+wavetable = cc' 7 2
+tb303 = cc' 6 7
+laplace = cc' 13 3

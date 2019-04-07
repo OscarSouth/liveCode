@@ -1,0 +1,60 @@
+runWith moderato
+
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      -- ,ruismk minim "[~ sn]"
+      ,ruismk crotchet "sb"
+      -- ,ruismk 1 "hats"
+      -- ,ruismk quaver "fm"
+      ] |= ch 09
+        |* vel p0
+        -- >> silence
+
+p05 p0 = d05 $ do
+  id $
+    -- pullBy 1 $ every 8 (const $
+      -- harmonics quaver "E2"
+      -- ) $
+      stut 3 0.1 semiquaver $
+    stack [silence
+      ,harmonics 1 "~ e1 . ~ g1 ~ e2 . ~ g1 . ~ e1 ~ b1"
+      ,sus 1
+      ] |= vel 0.3
+
+
+p05 p0 = d05 $ do
+  id $
+    stack[silence
+      ,var 4 (harmonics 1 "E2 ~ ~ G1 ~ ~ B1 ~ ~ G1 ~ ~ E1 ~ ~ ~")
+      (harmonics 1 "E1 ~ ~ B1 ~ ~ G2 ~ ~ B1 ~ ~ E1 ~ ~ ~")
+    ,sus "1!7 0"
+    ]
+
+touch val = control (ccScale val) #midicmd "touch"
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
+      ,kit 1 "[bd:echo bd:lead]" #vel 0.8
+      ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
+      ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
+      -- ,cymbals crotchet "~ rd" #vel 0.6
+      ] |= ch 10
+        -- |* vel "1.1 0.9!15"
+        |* vel p0
+        |+ humanise 0.2
+        -- >> silence
+
+p08 p0 = d08 $ do
+  let prog = inKey keySig 4
+  id $
+    stack [silence
+    ,tb 1 "x!3 x!5"
+    ,
+    ] |= ch 08
+      -- |- note 12
+      |+| prog ("2 0 .-3 "
+       +| "[0 12 0 12]*16"
+        )

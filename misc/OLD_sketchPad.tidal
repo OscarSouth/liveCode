@@ -1,0 +1,50 @@
+hush
+
+d1 $ midinote "49" # s "midi" # midichan 12
+
+d1 $ s "test"
+
+overtoneSets 2 [C,D, F] [D, G, F']
+
+:m MusicData Chorale Utility Main Markov Lib Overtone Sound.Tidal.Context
+
+Db
+
+:set -XOverloadedStrings
+
+d2 $ do
+  let sub = fast 4 $ midinote "49"
+  let kick = fast 4 $ midinote "51"
+  let snare = fast 2 $ midinote "~ 54"
+  let clap = fast 2 $ midinote "~ 56"
+  let closedhat = fast 16 $ midinote "58"
+  let openhat = fast 4 $ midinote "~ 61"
+  let perc = fast 4 $ midinote "~ 63"
+  stack[s "~"
+    ,sub #vel 9
+    -- ,kick #vel 9
+    -- ,snare #vel 7
+    ,clap #vel 6
+    ,closedhat #vel 4
+    ,openhat #vel 5
+    -- ,perc #vel 3
+    ] #ch 11 |+|humanise 1
+
+bps 1
+
+
+let ch n = (s "midi" #midichan (n - 1))
+
+let cc n = (midicmd "control" #ctlNum n)
+
+let midiscale n = 0.9 + n*0.03
+
+let vel n = gain $ midiscale n
+
+let vel' n = gain $ n*0.03
+
+let humanise n = gain $ (scale (-0.01 * n) (0.01 * n) $ rand)
+
+let (\\\) n s = toScale $ fromIntegral <$> (+ i n) <$> toInteger <$> s
+
+let bps x = cps (x/2)

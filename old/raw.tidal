@@ -1,0 +1,80 @@
+hush
+
+cps (-1) >> cps (96/60/4)
+
+d2 $ do
+  let keySig = G \\\ harmonicMinor
+  let on = "0"
+  let up = "~ 0"
+  let
+-- RHYTHM/DRUMKIT
+    rhythm = stack [silence
+      ,fast 4 $ subkick on #vel 9
+      -- ,fast 2 $ kick on #vel 5
+      ,clap up #vel 4
+      ,fast 2 $ snare up #vel 4
+      ,fast 2 $ c'hat on #vel 3
+      -- ,fast 4 $ o'hat up #vel 2
+      -- ,fast 2 $ perc "0(3,8)" #vel 2
+      -- ,degradeBy 0.1 $ (const $ fast 2 $ crash on #vel 4 |+|humanise 4) $ rarely (0.25 ~>) $ crashbell up #vel 6
+      -- ,slow 4 $ crash "0 ~ 0 0 " #vel 5
+      -- ,slow 4 $ ridebell "0 ~ 0 0 " #vel 3
+      -- ,bd "[0 ~ ~ 0?] 0(3,8)" #vel 7
+      -- ,fast 2 $ bd on #vel 7
+      -- ,fast 2 $ sn up #vel 9
+      -- ,fast 4 $ ride up #vel 5
+      -- ,trunc 0.75 $ fast (2 * irand 4) $ degradeBy 0.3 $ fast (irand 2) $ sn "0(7,8,3)" #vel ((irand 2) + (slow 4 $ lfo sine 1 3)) |-|vel' 3 |+|humanise 3
+      -- ,every 2 (trunc 0.25) $ fast 2 $ click "3(3,8,1)?" #vel 4 |+|humanise 2
+      -- ,fast 2 $ hatpedal up #vel 1
+      ] |+|humanise 1
+  --------------------------------------------------------------------------------
+  let
+-- MOOG MODEL D
+    modelD = stack [silence
+      ,fast 2 $ note "0(3,8)"
+        |+|note (slow 4 $ keySig $ "0 1 2 4" + slow 2 "0 -2")
+      ] #ch 12
+        #legato 1
+        |+|oct (fast 4 "-1")
+-- TRANSPORT
+    -- transportStart n = cc' 1 118 (if 0 /= 1 then 0 else 1)
+-- ARRANGEMENT
+  stack [silence
+    ,rhythm
+    -- ,modelD
+    -- ,viking
+    ] #s "sync"
+
+
+d2 $ cc'' 1 118 9
+
+d3 $ sound "sync" # midicmd "start"
+
+
+d3 $ sound "sync" # midicmd "continue"
+
+
+let cc'' c n val = control (ccScale val) #io n c where io n c = (s "sync" #midicmd "control" #midichan (c-1) #ctlNum (n))
+
+d1 $ midicmd "[start/4,midiClock*24]" # s "sync" # nudge 0.1
+
+d1 $ sound "sync" # midicmd "stop"
+
+cps (-1) >> cps (96/60/4) >> (d1 $ midicmd "[start/4,midiClock*24]" # sound "sync" #nudge (-0.095))
+
+cps (-1) >> cps (96/60/4) >> (d1 $ midicmd "[start/4,midiClock*24]" # sound "sync" #nudge (1.095))
+
+hush
+
+d1 $ seqP [(0, 1, silence)
+    ,(1, 4, fast 4 $ perc "0" #vel 2)
+    ,(2, 4, fast 2 $ subkick "0(3,8)" #vel 9)
+    ]
+
+runWithTempo 120
+
+runWithTempo bpm = cps (-1) >> cps (bpm/60/4)
+
+d1 $ fast 4 $ o'hat "0" #vel 2 #sound "internal"
+
+hush

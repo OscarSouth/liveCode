@@ -1,0 +1,119 @@
+hush
+
+-- MIXER
+d1 $ do
+  -- let master = 0.5
+  let vol = (*master)
+  stack [s "~"
+    ,harmonics $ vol 9
+    ,slicer $ vol 9
+    ,organ $ vol 9
+    ,winds $ vol 9
+    ,strings $ vol 9
+    ,ruismk $ vol 9
+    ,kit $ vol 9
+    ,viking $ vol 9
+    ,animoog $ vol 9
+    ,tbmk $ vol 9
+    ,mersenne $ vol 9
+    ,piano $ vol 9
+    ,wurlitz $ vol 9
+    ]
+
+d2 $ do -- synth drums
+-- 808 ch 11
+
+d3 $ do -- acoustic drums
+-- kit ch 10
+-- dungur ch 10
+
+d4 $ do -- mono synths
+-- viking ch 12
+-- 303 ch 13
+
+d5 $ do -- poly synths
+-- animoog ch 11
+-- mersenne ch 14
+
+d6 $ do -- keys
+-- e.piano ch 15
+-- a.piano ch 16
+
+d7 $ do -- overtones
+-- electric ch 1,2,3,4
+-- acoustic ch 5,6,7,8
+
+d8 $ do -- fx busses
+-- bus a
+-- bus b
+
+
+let stop xs = mapM_ ($silence) xs
+
+
+stop [d9]
+
+
+d7 $ do
+  let k = keySig
+  stack [bass k, keys k]
+
+
+let lfo wave lo hi = _discretise 128 $ scale (s lo) (s hi) $ wave where s n = n -- (n/9) * 11.5 + 46.5
+
+let oct' n = note (keySig $ n*7)
+
+let lfo wave lo hi = _discretise 128 $ scale (s lo) (s hi) $ wave where s n = (n/9) * 11.5 + 46.5
+
+
+control lfo #io 10 10
+
+(9/9) * 127
+
+11 * 11
+
+riff key = d5 $ cat [bass key, keys key]
+
+riff key
+
+d7 $ keys key
+
+
+
+d5 $ do
+  let key = key
+  let one = note "0"
+  stack [s "#"
+    ,one #vel 0 |-|vel "8"
+    ] #ch 12
+
+
+d8 $ do
+  let one = "0"
+  let up = "~ 0"
+  stack [s "~"
+    -- ,palindrome $ slow 2 $ stut 8 0.8 0.25 $ floortom one #vel 7
+    -- ,rev $ stut' 2 0.5 (#vel 1) $ fast 2 $ bd one #vel 6
+    -- ,stut 4 0.7 0.25 $ fast 4 $ hatpedal up #vel 3
+    ] |+|humanise 1
+
+d8 $ (pure now) ~> seqPLoop[
+  (0, 8, bd "0*4"),
+  (4, 8, sn "[~ 0]*4")
+  ]
+
+t8 (xfadeIn 4) $ bd "0*8" #vel 8
+
+
+t8 (xfadeIn 4) $ hatclosed "[~ 8]*8" #vel 6
+
+
+let lfo' wave lo hi = _discretise 128 $ scalex (s lo) (s hi) $ wave where s n | n > 0 = n | n <= 0 = 0.001
+
+hush
+
+
+
+test n | n > 0 = n | n <= 0 = 0.001
+
+test (-1)

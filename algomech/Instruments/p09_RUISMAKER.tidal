@@ -1,0 +1,31 @@
+ruismk bars pat = do
+  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
+  let ps = [("sb", sb "0"),
+            ("bd", bd "0"),
+            ("sn", sn "0"),
+            ("cp", cp "0"),
+            ("hh", hh "0"),
+            ("oh", oh "0"),
+            ("fm", fm "0"),
+            ("hats", pat1)
+          ]
+          where pat1 = slow (0.25*mult) $ stack [silence
+                        ,hh "0 0 ~ 0"
+                        ,oh "~ ~ 0 ~"
+                        ]
+  let fs = [("minim", fast 2),
+            ("2", fast 2),
+            ("crotchet", fast 4),
+            ("4", fast 4),
+            ("quaver", fast 8),
+            ("8", fast 8),
+            ("semiquaver", fast 16),
+            ("16", fast 16),
+            ("demisemiquaver", fast 32),
+            ("32", fast 32),
+            ("echo" , stut 2 0.7 (semiquaver/mult)),
+            ("echos" , stut 2 0.7 (quaver/mult)),
+            ("leads" , ((rev) . (stut 2 0.75) (crotchet/mult))),
+            ("lead" , ((rev) . (stut 2 0.75) (quaver/mult)))
+          ]
+   in ur bars pat ps fs

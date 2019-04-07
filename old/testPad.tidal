@@ -1,0 +1,173 @@
+hush
+
+d1 $ do
+  let kick = fast 2 $ note "1 1"
+  let snare = fast 2 $ note "[~ 2]"
+  let click = degradeBy 0.75 $ rev $ note "3(3,8)"
+  let rim = degradeBy 0.9 $note "[~ 4]*2"
+  let hatpedal = fast 2 $ note "~ 5" #vel 3
+  let hatclosed = fast 4 $ note "~ [6]" #vel 1
+  let hathalf = fast 4 $ note "7" #vel 1
+  let hatopen = fast 2 $ note "~ 8" #vel 2
+  let ride = fast 4 $ note "~ 9" #vel 7
+  let ridebell = fast 4 $ note "~ 10" #vel 5
+  let crash = fast 2 $ note "11" #vel 5
+  let crashbell = fast 2 $ note "~ 12" #vel 8
+  let hatchoke = fast 4 $ note "13" #vel 3
+  let ridechoke = fast 4 $ note "14" #vel 3
+  let crashchoke = fast 4 $ note "15" #vel 3
+  let floortom  = fast 1 $ note "[~ [~ 16?] [~ 16?] 16]" #vel 4
+  stack[s "~"
+    ,kick #vel 7
+    -- ,snare #vel 9
+    -- ,click #vel 1
+    -- ,rim #vel 4
+    ,hatpedal #vel 5 |+|humanise 1
+    -- ,hatclosed |+|vel' 2 |+|humanise 1
+    -- ,hathalf |+|vel' 3 |+| humanise 1
+    -- ,hatopen |+|vel' 0 |+| humanise 1
+    -- ,ride |+|vel' 3 |+|humanise 2
+    -- ,ridebell |+|vel' 6 |+|humanise 1
+    -- ,crash |+|vel' 6 |+|humanise 1
+    -- ,crashbell |+|vel' 6 |+|humanise 1
+    -- ,hatchoke |+|vel' 6 |+|humanise 1
+    -- ,ridechoke |+|vel' 6 |+|humanise 1
+    -- ,crashchoke |+|vel' 6 |+|humanise 1
+    -- ,floortom |+|vel' 6 |+|humanise 2
+    ] #ch 10
+
+d2 $ do
+  let bc = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 4 #vel 6
+  let g = note "[~ ~ ~ [2 ~] ~ ~ ~ ~]" #ch 3 #vel 6
+  let e = note "1 ~ ~ 1" #ch 2 #vel 5
+  let a = note "" #ch 1 #vel 5
+  let v = (-1)
+  stack[s "~"
+    ,bc
+    ,g
+    ,e
+    -- ,a
+    ] |+|vel' v #sustain 0.2
+      -- |+| note (irand 2)
+
+d3 $ do
+  let eight = fast 8 $ note "0" #vel 9 |-|note 1
+  stack[s "~"
+    ,eight |+|note 0
+    ] #ch 12 #sustain 0.5
+
+d9 $do
+  let io c n = (s "midi" #midicmd "control" #midichan c #ctlNum n)
+  let lfo = (_discretise 128 $ slow 8 (scale 30 60 $ (sine1)))
+  control lfo #io 10 10
+
+section
+
+riff (-1)
+
+four
+
+revRiff (-1)
+
+onemute
+
+twomute
+
+threemute
+
+
+hush
+
+
+d2 $ do
+  let sub = fast 4 $ midinote "49"
+  let kick = fast 4 $ midinote "51"
+  let snare = fast 2 $ midinote "~ 54"
+  let clap = fast 2 $ midinote "~ 56"
+  let closedhat = fast 16 $ midinote "58"
+  let openhat = fast 4 $ midinote "~ 61"
+  let perc = fast 4 $ midinote "~ 63"
+  stack[s "~"
+    ,sub #vel 7
+    -- ,kick #vel 5
+    -- ,snare #vel 4
+    ,clap #vel 6
+    -- ,closedhat #vel 4
+    -- ,openhat #vel 5
+    -- ,perc #vel 3
+    ] #ch 9 |+|humanise 1
+
+d3 $ do
+  let one = slow 4 $ note "[[0,3,7]*16 [-1,3,7] *16]" #sustain 0.08
+  let high = slow 2 $ note "24(3,8)" |+|note "0 3 -5" #sustain 3
+  let mid = fast 2 $ note "19(5,8)"
+  stack[s"~"
+    -- ,one #vel 5
+    ,degradeBy 0.6 high #vel 1 |+|humanise 2
+    ,degradeBy 0.8 mid #vel 1 |+|humanise 1
+    ] #ch 7
+
+
+d4 $ do
+  let eight = slow 4 $ note "[[0 -9]*8 [-1 -5]*8]" #vel 9
+  let long = slow 2 $ note "0(5,8)" #sustain 3
+  let scale s = (toScale (i' $ (Eb+|) <$> [0,3,7]) s)
+  stack[s "~"
+    ,long |+|note (scale $ irand 3)
+    -- ,eight
+    ] #ch 12 |+|note 36
+
+ts = "0 ~ ~ 12 0 ~ 0 ~"
+
+d5 $
+  do
+  let test p = fast 1 $ note p #sustain 0.05
+  let mode p = (toScale harmonicMinor p)
+  stack[ s "~"
+    ,test ts #vel 9 |+|note (mode $ irand 5)
+    ] #ch 13 |-|note 24 |+|humanise 4 |-|vel' 2
+
+d5 $ silence
+
+d3 $ silence
+
+key = Eb \\\ Scale.major
+
+test k = d3 $ do
+  let key = k
+  let one = fast 2 $ n "0(3,8)" #sustain 0.5
+  let upbeats = fast 4 $ n "~ 0" #sustain 0.05
+  let groove = fast 4 $ n "0"
+  let high = n "0(5,8)"
+  stack[s"~"
+    ,one |-|n 36 |+|n (slow 4 $ key "0 5 4 0")
+    ,palindrome $ high |+|n 12 |+|n (slow 2 $ key "0 5 4 0")
+    ,upbeats #vel 5 |+|n (key "[-3,0,2]")
+    -- ,groove |+|note (key $ "0 1 2 4")
+    ] #ch 14 #vel 2 |+|humanise 1
+
+test $ G \\\ harmonicMinor
+
+test $ G \\\ Scale.mixolydian
+
+Scale.scaleTable
+
+d1 $ slow 4 $ n (Eb \\\ Scale.minPent "0 .. 4") #ch 15
+
+d1 $ slow 2 $ n ("0 -1 -2 -4" + chord "minor dim major major") #ch 15
+
+d3 $ cat[test $ C \\\ Scale.diminished2, test $ Db \\\ Scale.harmonicMinor] #ch 15 |+|humanise 2
+
+
+test k = do
+  let key = k
+  let one = fast 2 $ n "0(3,8)" #sustain 0.5
+  let upbeats = fast 4 $ n "~ 0" #sustain 0.05
+  let groove = fast 4 $ n "0"
+  let high = n "0(5,8)"
+  stack[s"~"
+    ,one |-|n 36 |+|n (slow 4 $ key "0 5 4 0")
+    ,palindrome $ high |+|n 12 |+|n (slow 2 $ key "0 5 4 0")
+    ,upbeats #vel 5 |+|n (key "[-3,0,2]")
+    -- ,groove |+|note (Eb \\\ Scale.aeolian $ "0 1 2 4")
+    ] #vel 2 |+|humanise 1

@@ -1,0 +1,159 @@
+hush
+
+let keySig = C \\\ ionian
+
+  -- MIXER
+d1 $ do
+  let master = 0.6
+  let vol = (*master)
+  stack [s "~"
+    ,harmonics $ vol 7
+    ,slicer $ vol 7
+    ,organ $ vol 9
+    ,winds $ vol 9
+    ,strings $ vol 9
+    ,ruismk $ vol 9
+    ,kit $ vol 9
+    ,analog $ vol 6
+    ,polybass $ vol 9
+    ,tbmk $ vol 7
+    ,mersenne $ vol 5
+    ,piano $ vol 9
+    ,wurlitz $ vol 9
+    ,fxsendA $ vol 9
+    ,fxsendB $ vol 9
+    ]
+
+  -- RHYTHM/DRUMKIT
+d2 $ slow 2 $rarely (trunc 0.76) $ do
+  let on = "0"
+  let up = "~ 0"
+  stack [s "~"
+    ,fast 4 $ subkick on #vel 5
+    ,fast 2 $ kick on #vel 5
+    ,fast 2 $ clap up #vel 4
+    ,fast 2 $ snare up #vel 4
+    ,fast 16 $ c'hat on #vel 3
+    ,fast 4 $ o'hat up #vel 2
+    ,fast 2 $ perc "0(3,8)" #vel 2
+    ,degradeBy 0.1 $ (const $ fast 2 $ crash on #vel 4 |+|humanise 4) $ rarely (0.25 ~>) $ crashbell up #vel 6
+    ,bd "[0 ~ ~ 0?] 0(3,8)" #vel 7
+    ,fast 2 $ sn up #vel 9
+    ,fast 4 $ ride up #vel 5
+    ,trunc 0.75 $ fast 2 $ degradeBy 0.3 $ fast 1 $ sn "0(7,8,3)" #vel ((irand 2) + (slow 4 $ lfo sine 1 3)) |-|vel' 1 |+|humanise 3
+    ,every 2 (trunc 0.25) $ fast 2 $ click "3(3,8,1)?" #vel 6 |+|humanise 2
+    ,fast 2 $ hatpedal up #vel 1
+    ] |+|humanise 1
+
+d3
+
+d4 $ do
+  let key = keySig
+  let four = note "0 12" #vel 0 |+|oct 3
+  let env = cc 1
+  let sendB = cc 108
+  let del = cc 106
+  stack [s "~"
+    ,four |+|note (key $ slow 4 "0 . 2 . -2 -4 -4 . -1 - 3 -3")
+    ,env (fast 3 $ lfo' saw 0 9)
+    ,sendB 9
+    ,del 0
+    ] #ch 11
+      #legato 1.1
+
+d4 $ do
+  let key = keySig
+  let one = note "0" #vel 0 |-|oct 1
+  stack [s "~"
+    ,one |+|note (key $ slow 4 "0 . 2 . -2 -4 -4 . -1 - 3 -3")
+    ] #ch 11
+
+
+  -- POLY BASS
+d5$ do
+  let key = keySig
+  let one = note "0 12" #vel 0 |-|oct 3
+  stack [s "~"
+    ,fast 8 $ one |+|note (key $ slow 32 "0 . 2 . -2 -4 -4 . -1 - 3 -3")
+    ] #ch 12
+      -- |-|vel' 8
+      |-|vel' "[8 8 8 0?]*4"
+
+  -- MERSENNE
+d6 $ do
+  let key = keySig
+  let one = note "0"
+  stack [ silence
+    ,one |+|note (slow 4 $ key ("0 2 -2 -3" + "[0,2,4]"))
+    ] #ch 14
+
+
+d7 $ do
+  let key = keySig
+  let four = fast 8 $ note "~ <0>"
+  let sendA = cc 107
+  stack[silence
+    ,one |+|note "0"
+    ,four |+|note (key "[2 <4 0>] . [2 <5 0>][<4 1> 7]")
+    -- ,sendA 9
+    -- ,ped "0 9"
+    ] #ch 15
+
+
+d8
+
+
+  -- BASS HARMONICS
+riff2 = do
+  let b = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 4
+  let g = note "[~ ~ ~ [2 ~] ~ ~ ~ ~]" #ch 3
+  let e = note "1 ~ ~ 1" #ch 2
+  let a = note "" #ch 1
+  let v = (5)
+  stack[s "~"
+    ,b
+    ,g
+    ,e
+    ] #vel 6
+      -- |+|note (irand 2)
+
+riff2' = do
+  let b = note "[~ ~ ~ [1 ~] ~ ~ ~ ~]" #ch 4
+  let g = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 3
+  let e = note "2 ~ ~ 1" #ch 2
+  let a = note "" #ch 1
+  let v = (5)
+  stack[s "~"
+    ,b
+    ,g
+    ,e
+    ] #vel 5
+
+d9 $ do
+  let ped = cc' 1 64
+  stack[s "~"
+    ,cat [riff2, riff2, riff2, riff2']
+    -- ,attack $ (lfo sine 1 3) - 0.5
+    -- ,attack 0
+    ,ped "9 9 9 0"
+    ,cut 0
+    ] |+| vel' 9
+      #legato 0.2
+
+h1
+
+h2
+
+h3
+
+h4
+
+h5
+
+h6
+
+h7
+
+h8
+
+h9

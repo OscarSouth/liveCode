@@ -1,0 +1,51 @@
+runWithTempo 180
+
+d1 $ do
+  let keySig = Bb \\\ harmonicMinor
+  let out = 4
+  let
+-- SEQUENCE
+  seqP [begin, bar 0 0 $ metronome #ch' 10
+    ,clockStart, clockRun, clockStop
+-- DRUM SYNTH
+    ,bar 1 out $ pulse #ch' 10
+    ,bar 3 out $
+      stack [silence
+      ] #ch' 10
+-- MOOG MODEL D
+    ,bar 1 4 $ n ("0*16" - 12) #midithru #ch 12
+      |+|n (slow 4 $ keySig "0")
+    ]
+
+d2 $ n ("0*16" - 12) #ch 10
+
+hush
+
+
+let din = s "din"
+let ch n = (s "[midi, din]" #midichan (n - 1))
+let ch' n = (s "midi" #midichan (n - 1))
+
+
+let clockStart = (1, 2, midicmd "start" #din)
+let clockRun = (1, out+2, midicmd "midiClock*24" #din)
+let clockStop = (out+3, out+4, midicmd "stop" #din)
+
+let bar b1 b2 p = (b1+2, b2+3, p)
+
+
+d3 $ midicmd "midiClock*96" #din
+
+d4 $ seqP [(0, 1, silence)
+          ,(1, 2, midicmd "start" #din)
+          -- ,(1, 3, midicmd "midiClock*96" #din)
+          ,(2, 3, midicmd "stop" #din)
+          ,(1, 2, n ("[0 3 7 3]*4") #vel 9 #legato 1 #midi #midichan 11)]
+
+runWithTempo 120
+
+hush
+
+d3 $ midicmd "start" #din
+
+d3 $ midicmd "stop" #din

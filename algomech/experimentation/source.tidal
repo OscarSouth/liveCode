@@ -1,0 +1,182 @@
+hush
+
+runWith adagio
+
+pad10 = d10 $ do
+  stack [silence
+    ,fast 2 $ stut 2 0.8 0.125 $ kick "0" #vel 0.8
+    ,degrade $ within (0.7, 1) (stut 4 0.6 (1/16)) $ snare "[~ . ~ ?0] ~ 0 ?0" #vel 0.7
+    ,fast 16 $ ride "0" #vel 0.3 |+ humanise (slow 4 $ lfo sine 0 1)
+    ,fast 4 $ hpedal "~ 0" #vel 0.3 |+ humanise 0.2
+    -- ,fast 4 $ sub "0" #vel 0.2
+    ]
+
+ch16 = d16 $ do
+  let (inKey, transpose) = C /// aeolian
+  let pat = "[0, 2, 4]" + "0 1"
+  stack[silence
+    ,fast 2 $ n "0" |+ (slow 4 $ inKey pat) #vel 0.2
+    -- ,n ("0 0"-12) |+ (slow 2 $ inKey "0 <[-3 -5] [1 [3, 5]]>") #vel 0.6
+    ] #ch 16
+      |- n 12
+      |+ humanise 0.3
+
+ch15 = d15 $ do
+  let p = fast 8 $ n "0"
+  stack [silence
+    ,within (0.25, 1) (|+ n (toScale [0, 2, 3, 5] $ irand 12+3)) p
+    ] #ch 15
+      #vel "0 0.1 0.2 0.3"
+      |+ humanise 0.2
+
+
+hush
+
+
+let pad1 = p "silence" silence
+let pad2 = p "silence" silence
+let pad3 =  p "silence" silence
+let pad4 = p "silence" silence
+let pad5 = p "silence" silence
+let pad6 = p "silence" silence
+let pad7 = p "silence" silence
+let pad8 = p "silence" silence
+let pad9 = p "silence" silence
+let pad10 = p "silence" silence
+let pad11 = p "silence" silence
+let pad12 = p "silence" silence
+let pad13 = p "silence" silence
+let pad14 = p "silence" silence
+let pad15 = p "silence" silence
+let pad16 = p "silence" silence
+
+import           Data.Map             (Map)
+import qualified Data.Map             as Map (fromList, lookup)
+
+indie = Map.fromList $
+  [("A",[0,4,7]),
+  ("B",[0,3,7]),
+  ("B'",[0,3,7]),
+  ("A'",[0,4,10])]
+
+indie
+
+melMin1 = [0,2,3,5,7,9,11]
+
+(subtract $ head $ tail scale) <$> (tail melMin1 ++ [12])
+
+invert [0,3,5]
+
+invert :: [a] -> [[a]]
+invert xs =
+  let l = [0 .. length xs - 1]
+      shift n xs = zipWith const (drop n $ cycle xs) xs
+      lAppend acc key = acc ++ [shift key xs]
+   in foldl lAppend [] l
+
+
+shift n xs = take (length xs) (drop n $ cycle xs)
+
+replaceAtIndex n item ls = a ++ (item:b) where (a, (_:b)) = splitAt n ls
+
+replaceAtIndex 2 4 [1,2,3]
+
+shift 1 [1,3,5]
+
+
+rotTransp xs = tail xs ++ [head xs + 12] where ps = i' $ pcSet xs
+
+rotTransp . rotTransp $ [1,2,3]
+
+
+
+:{
+melMin :: Num a => [a]
+melMin = [0,2,3,5,7,9,11]
+:}
+:{
+melmin2 :: Num a => [a]
+melMin2 = [0,1,3,5,7,9,10]
+:}
+:{
+melMin3 :: Num a => [a]
+melMin3 = [0,2,4,6,8,9,11]
+:}
+:{
+melMin4 :: Num a => [a]
+melMin4 = [0,2,4,6,7,9,10]
+:}
+:{
+melMin5 :: Num a => [a]
+melMin5 = [0,2,4,5,7,8,10]
+:}
+:{
+melMin6 :: Num a => [a]
+melMin6 = [0,2,3,5,6,8,10]
+:}
+:{
+melMin7 :: Num a => [a]
+melMin7 = [0,1,3,4,6,8,10]
+:}
+:{
+harmMin :: Num a => [a]
+harmMin = [0,2,3,5,7,8,11]
+:}
+:{
+harmMin2 :: Num a => [a]
+harmMin2 = [0,1,3,5,6,9,10]
+:}
+:{
+harmMin3 :: Num a => [a]
+harmMin3 = [0,2,4,5,8,9,11]
+:}
+:{
+harmMin4 :: Num a => [a]
+harmMin4 = [0,2,3,6,7,9,10]
+:}
+:{
+harmMin5 :: Num a => [a]
+harmMin5 = [0,1,4,5,7,8,10]
+:}
+:{
+harmMin6 :: Num a => [a]
+harmMin6 = [0,3,4,6,7,9,11]
+:}
+:{
+harmMin7 :: Num a => [a]
+harmMin7 = [0,1,3,4,6,8,9]
+:}
+:{
+penta :: Num a => [a]
+penta = [0,2,4,7,9]
+:}
+:{
+penta2 :: Num a => [a]
+penta2 = [0,2,5,7,10]
+:}
+:{
+penta3 :: Num a => [a]
+penta3 = [0,3,5,8,10]
+:}
+:{
+penta4 :: Num a => [a]
+penta4 = [0,2,5,7,9]
+:}
+:{
+penta5 :: Num a => [a]
+penta5 = [0,3,5,7,10]
+:}
+:{
+dimWhole :: Num a => [a]
+dimWhole = [0,2,3,5,6,8,9,11]
+:}
+:{
+dimHalf :: Num a => [a]
+dimHalf = [0,1,3,4,6,7,9,10]
+:}
+:{
+wholeTone :: Num a => [a]
+wholeTone = [0,2,4,6,8,10]
+:}
+
+i' <$> inversions harmMin

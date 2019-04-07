@@ -1,0 +1,149 @@
+d1 $ stack [ s "~" -- ANALOG DRUMS
+  -- ,midinote "49*2"
+  -- ,midinote "49(5,8)?"
+  -- ,midinote "[~ 51]"
+  ,midinote "63*4"
+] #s "midi" #midichan 9 #gain 1
+
+d3$slow 2 $note (toScale Scales.aeolian "0 1 2 3 4 5 6 7")
+  #s "midi"
+  #midichan 12
+  |+|note (toScale Scales.dorian (-0))
+
+hush1
+
+d7$slow 2 $note (toScale Scales.aeolian "0 1 2 3 4 5 6 7")
+    #s "midi"
+    #midichan 13
+    |+|note (toScale Scales.phrygian (5))
+
+d7$ stack[s"~"
+  -- ,note (toScale Scales.aeolian "0 1 2 3 4 5 6 7")
+  -- ,note (toScale Scales.dorian "0 1 2 3 4 5 6 7") |+|note 12 #midichan 14
+  ,slow 16 $note (toScale Scales.ionian "[3] [1 . 4 5]") #midichan 15 #gain 0.6
+-- |-|note (toScale Scales.phrygian 3)
+  -- ,slow 8 $note (toScale Chords.major "4 6 10 7 8 5") #midichan 13
+  -- |-|note (toScale (irand 3)).
+  -- ,slow 16 $note (toScale Chords.major "-8") #midichan 15 #gain 0.5
+] #s "midi"
+
+hush
+
+
+d4$note (toScale Scales.aeolian "0*2") #s "midi" #midichan 10
+  |+|note (toScale Scales.aeolian (-0))
+  -- d3$note "0" #s "midi" #midichan 11
+
+hush
+
+
+
+do -- RUISMAKER
+  let kick1234 = "51*2"
+  let snare3 = "~ 54"
+  d1$stack[ s "~"
+    ,midinote kick1234 #gain 1.3
+    ,fast 2 $midinote snare3
+    ,midinote "63*16"
+    ] #s "midi" #midichan 9
+
+do
+  let origin = "<[0*4] [-5*4]>?" + 12
+  let up = (toScale Scales.aeolian "0 1 2 4")
+  let down = "0 -2 -3 -4"
+  d7 $fast 4 $note origin #s "midi" #midichan 14
+    |+|note up #gain 0.8
+
+d4$s
+
+d7 $ silence
+  --
+
+do
+  let eight = (toScale Scales.aeolian "0*16")
+  let one = (toScale Scales.aeolian "0 ~")
+  let three = (toScale Scales.aeolian (-0))
+  d4 $fast 2 $s "midi(3,8)" #note three #midichan 10
+    |+|note (toScale Chords.minor "~ <2 -1> 0")
+    #sustain 1
+
+aeolian n = (toScale Scales.aeolian n)
+
+do
+  let origin = "0*8"
+  d4 $slow 2 $note origin #s "midi" #midichan 10
+    |+|note (toScale Scales.aeolian "0 -3 -2 2 2 -3 -1 3")
+    -- #sustain 1
+
+
+
+do
+  let origin = "[0, 1, 3]"
+  let tonic = (toScale Chords.minor origin)
+  let dom = (toScale Chords.minor origin + "-1 -1 0")
+  d6 $note origin #s "midi" #midichan 13
+   |+|note tonic
+
+d9 $slow 2 $note "[0, 3, 7] [-2, 0, 3] [-2, 0, 3] [-2, 0, 2]" #s "midi" #midichan 12 #gain 1.2 #sustain 0.25
+
+d9 $slow 2 $note "[~ [0, 3, 7]]" #s "midi" #midichan 13 #gain 1.2 #sustain 0.1
+
+
+d6$silence
+
+d4$silence
+
+d6 $note "12" #s "midi" #midichan 15 #gain 1.2
+
+husher
+
+do -- RUISMAKER
+  let one = "[~ 49]/2"
+  let kick1234 = "51*4"
+  let snare1 = "~ 54"
+  let snare2 = "~ 56"
+  let son = "[61 [~ 61] ~ 61]*2"
+  d1 $stack[ s "~"
+    ,midinote one
+    ,midinote kick1234 #gain 1.3
+    -- ,fast 2 $midinote snare1
+    -- ,fast 2 $midinote snare2
+    -- ,fast 2 $midinote "~ 58" #gain 2
+    -- ,midinote son
+    -- ,midinote "[63 63]*8" #gain 1.4
+    ] #s "midi" #midichan 9
+
+d2 $midinote "[45, 47, 49, 51]" #s "midi" #midichan 8
+  |+|note (irand 24 + (irand 12))
+
+d8 $slow 4 $ note "[0 , 7] . [3 , 8]" #s "midi" #midichan 15 #gain 2
+
+d9 $silence
+
+let test p = (note p |+|note aeolian)
+
+do -- MODEL D
+  let three = "0(3,8)"
+  let eight = "0*8"
+  let aeolian = (toScale Scales.aeolian 0)
+  let lydian = (toScale Scales.aeolian (-2))
+  let test = (note eight |+|note aeolian)
+  let test2 = (note eight |+|note lydian)
+  d4 $fast 2 $cat [test, test, test2, test2
+    ] #s "midi" #midichan 10 #gain 2
+
+d1$silence
+
+hush
+
+do
+  let up = (toScale Scales.aeolian "[0 1 2 4]?")
+  d5 $stack[ s "~"
+    ,palindrome $note "0*4"
+      |+|note up #gain 1.5
+      -- |+|note (toScale Scales.aeolian) #sustain (scale 0.5 3 $ rand)
+    ] #s "midi" #midichan 11 #gain 0.1
+
+d6 $slowcat
+
+$t

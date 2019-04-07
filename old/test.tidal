@@ -1,0 +1,64 @@
+hush
+
+d1$ slow 8$ note "19 18 12 11 9" #s "midi"
+
+d3$ midinote "49(3,8)" #s "midi" # midichan 9
+
+d4$midinote "63*8" #s "midi" #midichan 9
+
+d5$midinote "49*2" #s "midi" #midichan 9
+
+d6$midinote "63 63 63" #s "midi" #midichan 9
+
+
+d2$ midinote "~ 51" #s "midi" # midichan 9
+
+d1$ midinote "51 [~ 51] ~ [~ 55] ~ 51 51 ~ " #s "midi" #midichan 9
+
+d1$ note "[ ~ -1 1 ~ ]" #s "midi"
+
+d1 $ every 2 (|+| note "-12") $ every (irand 3) (|+| note (irand 3)) $midinote "34*4" #s "midi"
+
+d1$midinote "34 ~ ~ 46 ~ ~ ~ 41 ~" |+| note (slow 4 "2 3 -4") #s "midi" #midichan 0
+
+d1$midinote "34 ~ ~ 46 ~ ~ ~ 41 ~" |+| note (irand 12) #s "midi" #midichan 0
+
+d1$midinote "34 ~ ~ 46 ~ ~ ~ 41 ~" |+|note "-12" #s "midi" #midichan 0
+
+d1$midinote (fmap (subtract 12) "34 ~ ~ 46 ~ ~ ~ 41 ~") #s "midi" #midichan 0
+
+
+d1 $note (irand 3) #s "midi" #midichan 0
+hush
+
+d1 $ note "0(3,8)" # midichan 0 # s "midi" #midichan 9
+
+d1 $ stack [
+  note "[-24 -23 -22 -21]"
+] # midichan 0 # s "midi"
+
+"-12 24 5 2 4 7 12 9 12]"" |+| note (slow 4 "2 7 12")
+
+d1$midinote "34 ~ ~ 46 ~ ~ ~ 41 ~" #s "midi" #midichan 0
+"
+
+solo $ d2 $jux (stut 2 0.6 0.75) $ stack[ s "~" -- bodhran
+  ,s "bodhran*2" #n (irand 5 + 21) #release 0.6 #pan 0.35 #gain 1.2
+  ,s "bodhran*16" #n (irand 36) #release (scale 0.35 0.45 $ rand)
+] #orbit 1 #verb 0.2 0.2 #gain 0.8
+
+hush
+
+d1$slow 4 $midinote "49 49 49 49 49 49 49 49 " #s "midi" #midichan 9 #gain 1.1
+
+d2$midinote "40 ~ ~ 52 . ~"  #s "midi"
+  #midichan 8
+  #sustain 0.2
+  #gain (scale 1.05 1.25 $ rand)
+
+d3 $ midinote "51*16" #s "midi"
+  #midichan 9
+  #gain (scale 0.4 0.5 $ rand)
+
+
+hush1

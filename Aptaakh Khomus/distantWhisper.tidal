@@ -1,0 +1,70 @@
+runWithTempo 96
+
+d1 $ do
+  let keySig = Bb \\\ harmonicMinor
+  let out = 4
+  let
+-- SEQUENCE
+  seqP [begin, bar 0 0 $ metronome #midithru
+    ,clockStart, clockRun, clockStop
+-- DRUM SYNTH
+    ,bar 1 out $ pulse #midithru
+    ,bar 3 out $
+      stack [silence
+      ] #midithru
+-- DRUMKIT
+    ,bar 1 out $
+      stack [silence
+      ]
+-- MOOG MODEL D
+    ,bar 1 4 $ n ("0*16" - 12) #midithru #ch 12
+      |+|n (slow 4 $ keySig "0")
+    ]
+
+bpm 96
+
+d1 $ stack [silence
+  ,sub "0*4"
+  ,fast 2 $ pc "~ 0"
+  ,hats
+  ] #midi
+
+let keySig = Bb \\\ harmonicMinor
+
+
+
+d2 $ do
+  let p = "0"
+  stack [silence
+    ,fast 16 $ p
+      |+|note (fast 4 $ keySig "0 2 4 2")
+      -- |+|n (slow 2 $"0 1")
+      ] #midi #ch 12
+
+octUp p n = p + n*12
+octDn p n = p - n*12
+
+d2 $ do
+  let key = keySig
+  let p = note "0" |-| oct 2
+  stack [silence
+    ,fast 16 p #vel 6 |+|note (key $ "0 4 2 [4 7]")
+    ] #ch 12
+      #legato 0.9
+      |+|note (slow 8 $ keySig "0 3")
+
+d3 $ fast 2 $ rev $ do
+  let key = keySig
+  let p = note "-24"
+  stack [silence
+    ,fast 4 p #vel 6 |+|note (key $ "0 4 2 [4 7]")
+    ] #ch 11
+      #legato 1.1
+      |+|note (slow 8 $ keySig "0 3")
+
+
+d3 $ slow 4 $ note "0" |-|oct 2
+  |+|note (slow 8 $ keySig "0 3")
+  #ch 11
+
+hush

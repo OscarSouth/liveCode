@@ -1,0 +1,20 @@
+timeFuncs mult = [("breve", slow 2),
+                  ("semibreve", fast 1),
+                  ("minim", fast 2),
+                  ("crotchet", fast 4),
+                  ("quaver", fast 8),
+                  ("semiquaver", fast 16),
+                  ("demisemiquaver", fast 32),
+                  ("echo" , stut 2 0.75 (quaver/mult)),
+                  ("echos" , stut 2 0.75 (crotchet/mult)),
+                  ("echoq" , stut 2 0.75 (minim/mult)),
+                  ("echom" , stut 2 0.75 (1/mult)),
+                  ("lead" , ((rev) . (stut 2 0.75) (quaver/mult))),
+                  ("leads" , ((rev) . (stut 2 0.75) (crotchet/mult))),
+                  ("leadq" , ((rev) . (stut 2 0.75) (minim/mult))),
+                  ("leadm" , ((rev) . (stut 2 0.75) (1/mult))),
+                  ("pull", pullBy (quaver/mult)),
+                  ("pull", pushBy 0.125)
+                ]
+
+inKey k b p = note (slow b $ k p)

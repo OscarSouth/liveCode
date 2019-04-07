@@ -1,0 +1,231 @@
+hush
+
+key = B \\\ aeolian
+
+d9 $ attack 0
+
+  -- MIXER
+d1 $ do
+  let master = 0.0
+  let vol = (*master)
+  stack [s "~"
+    ,harmonics $ vol 6
+    ,slicer $ vol 7
+    ,organ $ vol 9
+    ,winds $ vol 9
+    ,strings $ vol 9
+    ,ruismk $ vol 9
+    ,kit $ vol 9
+    ,analog $ vol 9
+    ,polybass $ vol 9
+    ,tbmk $ vol 7
+    ,mersenne $ vol 5
+    ,piano $ vol 9
+    ,wurlitz $ vol 9
+    ,fxsendA $ vol 9
+    ,fxsendB $ vol 9
+    ]
+
+  -- RHYTHM/DRUMKIT
+d2 $ rarely (trunc 0.75) $ slow 2 $ rarely (trunc 0.825) $ do
+
+d2 $ do
+  let on = "0"
+  let up = "~ 0"
+  stack [s "~"
+    ,fast 4 $ subkick on #vel 5
+    -- ,fast 2 $ kick on #vel 5
+    -- ,fast 2 $ clap up #vel 4
+    -- ,fast 2 $ snare up #vel 4
+    -- ,fast 16 $ c'hat on #vel 3
+    -- ,fast 4 $ o'hat up #vel 2
+    -- ,fast 2 $ perc "0(3,8)" #vel 2
+    -- ,degradeBy 0.1 $ (const $ fast 2 $ crash on #vel 4 |+|humanise 4) $ rarely (0.25 ~>) $ crashbell up #vel 6
+    -- ,bd "[0 ~ ~ 0?] 0(3,8)" #vel 7
+    -- ,fast 2 $ sn up #vel 9
+    -- ,fast 4 $ ride up #vel 5
+    -- ,trunc 0.75 $ fast 2 $ degradeBy 0.3 $ fast 1 $ sn "0(7,8,3)" #vel ((irand 2) + (slow 4 $ lfo sine 1 3)) |-|vel' 1 |+|humanise 3
+    -- ,every 2 (trunc 0.25) $ fast 2 $ click "3(3,8,1)?" #vel 6 |+|humanise 2
+    -- ,fast 2 $ hatpedal up #vel 1
+    ] |+|humanise 1
+
+  -- SLICER
+d3 $ do
+  let samplerate = cc 102
+  let bitdepth = cc 103
+  let cutoff = cc 104
+  let res = cc 105
+  stack[s"~"
+    -- ,slow 4 $ note "[0 ~ ~ 1 . 0 ~ [~ 0]] [0 1 . 2]"
+    -- ,slow 4 $ note "~ 5?"
+    -- ,slow 4 $ note "~ 9"
+    -- ,slow 4 $ note "10"
+    -- ,slow 2 $ note "11"
+    -- ,slow 4 $ note "[12 13] [14]"
+    -- ,slow 4 $ note "15"
+    -- ,slow 4 $ degradeBy 0.5 $ note "[0 1 . 2] 3" |+|note (irand 13)
+    -- ,slow 2 $ note "5 . 6 ~ ~ ~"
+    -- ,slow 2 $ note "~ 14"
+    -- ,samplerate 9 -- $ (irand 5) + 4
+    -- ,bitdepth 9 -- $ (fast 1.1 $ irand 5) + 4
+    -- ,fast 8 $ cutoff (lfo (rev saw) 4 9)
+    ,cutoff 9
+    ,res 0
+    ] #ch 5
+
+
+  -- ANALOG MONO
+d4 $ note "0" #ch 12
+
+  -- let key = key
+  let one = note "0"
+  stack [s"~"
+    ,one |+|note (key "2")
+    ] #ch 12
+
+  -- POLY BASS
+d5 $ do
+  let key = key
+  let four = fast 4 $ note "0 12" #vel 0 |-|oct 3
+  stack [s "~"
+    ,four |+|note (key "0 4 -2 -1")
+    ] #ch 12
+    |-|vel' "8 . 8 0 . 8 . 8 0"
+    -- |+|humanise 1
+
+  -- 303
+d6 $ do
+  let key = keySig
+  let four = fast 8 $ note "~ 0" #sustain 0.05
+  let one = note "0 0 0 0" #sustain 0.2
+  stack [s "~"
+    ,four |+|note (key "[2 <4 0>] . [2 <5 0>][<4 1> 7]")
+    ,one |+|note (key "0 7 -2 -1")
+    ] #ch 14
+      |-|oct 0
+      #vel 6
+      |+|humanise 2
+
+  -- MERSENNE
+d6 $ do
+  let key = keySig
+  let one = note "0"
+  stack [s "~"
+    -- ,one |+|note (key "[0,2,4]")
+    -- ,one |+|note (key $ "[-2,0,2]")
+    -- ,one |+|note (key $ "[-1,3,4]")
+    -- ,one |+|note (key $ "[3,5,7]")
+    ] #ch 14
+
+  -- KEYS
+d7 $ do
+  let key = keySig
+  let four = fast 8 $ note "~ <0 12>" #sustain 0.05
+  let one = note "0 <0 12> 0 <0 12>" #sustain 0.2
+  stack [s "~"
+    ,four |+|note (key "[2 <4 0>] . [2 <5 0>][<4 1> 7]")
+    ,one |+|note (key "0 7 -2 -1")
+    ] #ch 15
+
+  -- BASS HARMONICS
+d9 $ do
+
+riff = do
+  let bc = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 4 #vel 6
+  let g = note "[~ ~ ~ [2 ~] ~ ~ ~ ~]" #ch 3 #vel 6
+  let e = note "1 ~ ~ 1" #ch 2 #vel 5
+  let a = note "" #ch 1 #vel 5
+  let v = (5)
+  let ped = cc' 1 64
+  stack[s "~"
+    ,bc
+    ,g
+    ,e
+    -- ,a
+    ,ped "9 9 9 0"
+    ,attack (lfo sine 0 2)
+    ] |-|vel' v
+      #legato 0.2
+
+riff1' v = do
+  let bc = note "[~ ~ ~ [1 ~] ~ ~ ~ ~]" #ch 4 #vel 6
+  let g = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 3 #vel 6
+  let e = note "2 ~ ~ 1" #ch 2 #vel 5
+  let a = note "" #ch 1 #vel 5
+  let v = v
+  stack[s "~"
+    ,bc
+    ,g
+    ,e
+    -- ,a
+    ,attack 0
+    ] |-|vel' v
+
+
+d9 $ every 2 (trunc 0.25) $ do
+  let ped = cc' 1 64
+  stack[s "~"
+    ,cat [riff1, riff1, riff1, riff1']
+    ,attack $ (lfo sine 1 3) - 0.5
+    -- ,ped "9 9 9 0"
+    ,cut 0
+    ] |+| vel' 9
+
+d9 $ do
+  let b = note "[~ ~ ~ [~ ~ ~ 1]]"
+  let g = note "[~ [~ 1 ~ ~] [~ 1] ~ ]"
+  let e = note "[[~ 1] [~ ~ ~ 2] ~ [~ 1 ~ ~]]"
+  let a = note "" #ch 1 #vel 5
+  stack[s "~"
+    ,b # ch 4
+    ,g #ch 3
+    ,e #ch 2
+    -- ,a #ch 1
+    ,attack 0
+    ] #vel 5
+
+d9 $ do
+  let b = note "[~ [~ ~ ~ 1] ~ [~ ~ ~ 1]]"
+  let g = note "[~ [~ 1 ~ ~] ~ [~ 1 ~ ~]]"
+  let e = note "[[~ 2] ~ [~ 2]  ~]"
+  let a = note "" #ch 1 #vel 5
+  stack[s "~"
+    ,b # ch 4
+    ,g #ch 3
+    ,e #ch 2
+    ,a #ch 1
+    ,attack 1
+    ] #vel 5
+
+t9 (xfadeIn 4) $ do
+  let b = n "[~ [~ 1 ~ ~] [~ 1] [~ ~ ~ 1]]"
+  let g = n "[[~ 1] [~ 1 ~ 2] [~ 1] [~ 1 ~ 1]]"
+  let e = n "[[~ 1] [~ ~ ~ 2] ~ [~ 1 ~ ~]]"
+  let a = n "~"
+  stack[s "~"
+    ,b # ch 4
+    ,g #ch 3
+    ,e #ch 2
+    ,a #ch 1
+    ,attack 1
+    ] #vel 5
+
+let attack = cc' 16 27
+
+h1
+
+h2
+
+h3
+
+h4
+
+h5
+
+h6
+
+h7
+
+h8
+
+h9

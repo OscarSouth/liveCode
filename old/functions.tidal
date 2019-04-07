@@ -1,0 +1,21 @@
+hush
+
+d1 $ every 4 (fast 8) $ palindrome $ subkick "0 0 0 0"
+
+d9 $ snare "~ 0 ~ 0"
+
+d1 $ midinote "49 49 49 49" #sound "midi" #midichan 8
+
+let subkick p = n p #midinote "49 51" #ch 9
+
+let ch n = (s "midi" #midichan (n - 1))
+
+d4 $ do
+  let one = note "0"
+  stack [silence
+    ,bd one
+    ]
+
+d5 $ do
+  let one = "0 7"
+  one "0 0" #ch 15

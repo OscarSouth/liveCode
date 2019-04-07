@@ -1,0 +1,41 @@
+d1 $do
+    let io = (s "midi" #midichan 0)
+    let one = "0 1 2 3"
+    note one #io
+        #sustain 0.01
+        #gain 1
+
+d1 $do
+    let io = (s "midi" #midichan 8)
+    let kick = "[0(3,8) [~ 0 ~ 0]?]"
+    let four = "0"
+    let snare = "~ 1"
+    -- let floor = " ~ [~ 15] 15 ~"
+    let pedal = "~ 4"
+    let hat = "6"
+    let rim = "3?"
+    let crash = "10"
+    stack[ s "~"
+        ,note four #gain 1.1
+        -- ,note snare #gain 1.3
+        -- ,slow 2 $note floor #gain 1.2
+        -- ,fast 2 $note pedal #gain 1.1
+        -- ,fast 2 $note hat #gain 1.1
+        -- ,fast 2 $note crash #gain 1.2
+        ] #io
+
+hush
+
+
+
+
+    d4 $do
+      let mode p = (toScale Scales.aeolian p)
+      let origin = "[0 1 2 4]?"
+      stack[ s "~"
+        ,palindrome $note "0*4"
+          |+|note up #gain 1.5
+          |+|note (toScale Scales.aeolian) #sustain (scale 0.5 3 $ rand)
+        ] #s "midi" #midichan 12 #gain 0.5
+
+hush

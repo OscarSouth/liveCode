@@ -1,0 +1,52 @@
+runWith allegro
+
+pad09 p0 = d09 $ ruismk 1 "[bd:crotchet, [~ hh]*4, oh]" 0
+
+pad10 p0 = d10 $ do
+  stack [silence
+    ,ride "0"
+    ] #ch 10
+      |+ vel 1
+
+pad12 p0 = d12 $ do
+  stack [silence
+    ,fast 4 $ midinote "0 60!3"
+    ] |+ vel 0.4
+      |+ note (keySig "0")
+      |+ humanise 0.1
+      #legato 0.4
+      #ch 12
+      -- >> silence
+
+pad07 p0 = d07 $ do
+  stack [silence
+    ,fast 16 $ "0"
+    ] |+ note (keySig "0!3 [0!3 4]")
+      |+ vel (fast 4 "0.02 0.1!3")
+      |+ pushBy crotchet (vel "<[0 [0.2 0]]> 0 0 0")
+      |+ pushBy crotchet (note "<[0 [12 0]]> 0 0 0")
+      |- note 24
+      #ch 07
+      -- >> silence
+
+
+
+let animoog = cc' 7 2
+
+pad08 p0 = d08 $ do
+  stack [silence
+    ,fast 2 $ note "0(3,8)"
+    -- ,note "~ [~ ~ ~ 4]"
+    ] |+ vel 1
+      |+ pushBy crotchet (note (fast 2 "0 11 4"))
+      |+ note 1
+      #ch 08
+      -- >> silence
+
+hush
+
+stopTransportNow
+
+runWith andante
+
+pad09 p0 = d09 $ ruismk 1 "sub:crotchet" p0

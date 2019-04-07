@@ -1,0 +1,54 @@
+runWith andante
+
+let keySig = A \\\ aeolian
+
+p "urungTulluk" $ do
+  let out = 8*9999
+  let
+  seqP [sync,startTransport,stopTransport out
+    ,bar 0 out metronome
+    ]
+
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
+      ,kit 1 "[bd:echo bd:lead]" #vel 0.8
+      ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
+      ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
+      -- ,cymbals crotchet "~ rd" #vel 0.6
+      ] |= ch 10
+        -- |* vel "1.1 0.9!15"
+        |* vel p0
+        |+ humanise 0.2
+        -- >> silence
+
+p09 p0 = d09 $ d9
+  id $
+    stack [silence
+      ,ruismk minim "[~ sn]"
+      ,ruismk crotchet "sb"
+      -- ,ruismk 1 "hats"
+      -- ,ruismk quaver "fm"
+      ] |= ch 09
+        |* vel p0
+        -- >> silence
+
+p12 p0 = d12 $ do
+  let prog = inKey keySig 4
+  id $
+    stack [silence
+      -- ,quaver ~> (fast 2 $ note "<[0 0 0 ~] ~ ~ ~>" #vel 0.5)
+      ,note "0 0 0 0"
+      -- ,volume "0.2*16"
+      ] |= ch 12
+        |+ note 12
+        -- |+ vel "-0.4"
+        |+ humanise 0.1
+        -- |= legato "[0.6 0.9 0.6 ~] ~ ~ ~"
+        -- |+| prog (""
+         -- +| ""
+          -- )
+
+hush

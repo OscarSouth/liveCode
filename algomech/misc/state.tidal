@@ -1,0 +1,106 @@
+clicktrack $
+  slow 8 $
+    "0!7 [0!3 0.9] [0.9!15 0]"
+    -- 0.6
+
+let inKey = A \\\ aeolian
+
+asap $ do
+  let master = 0.99
+  let v = (*master)
+  stack [silence
+    ,overtones $v 0.99
+    ,granular $v 0.6
+    ,wavetable $v 0.7
+    ,tb303 $v 0.5
+    ,rhythmic $v 0.99
+    ,voyager $v 0.6
+    ,modelD $v 0.99
+    ,laplace $v 0.99
+    ,mersenne $v 0.99
+    ,wurlitz $v 0.8
+    ,piano $v 0.99
+    ]
+
+do
+  let dynamic = "0.7 0.9" :: Pattern Double
+  let d = (*dynamic)
+  mapM_ (id) [hush
+    -- ,p01,p02,p03,p04
+    -- ,p05 $d 0.9
+    -- ,p06 $d 0.99
+    -- ,p07 $d 0.99
+    -- ,p08 $d 0.99
+    -- ,p09 $d 0.4
+    -- ,p10 $d 0.99
+    -- ,p11 $d 0.99
+    -- ,p12 $d 0.99
+    -- ,p13 $d 0.99
+    -- ,p14 $d 0.99
+    -- ,p15 $d 0.99
+    ,p16 $d 0.99
+    ]
+
+asap $ do
+  stack
+    [silence
+    ,volume 1
+    ,modwheel 0
+    ,modsource 0
+    ,finetune 0
+    ,glide 0
+    ,glideio 0
+    ,decayio 0
+    ,oscmod 0
+    ,osc3ctrl 0
+    ,osc1range 0
+    ,osc1wave 0
+    ,osc2range 0
+    ,osc2tune 0
+    ,osc2wave 0
+    ,osc3range 0
+    ,osc3tune 0
+    ,osc3wave 0
+    ,osc1vol 0
+    ,osc1io 0
+    ,osc2vol 0
+    ,osc2io 0
+    ,osc3vol 0
+    ,osc2io 0
+    ,feedbackvol 0
+    ,feedbackio 0
+    ,noisevol 0
+    ,noiseio 0
+    ,noisetype 0
+    ,filtermod 0
+    ,keyboard1 0
+    ,keyboard2 0
+    ,fresonance 0
+    ,fdecay 0
+    ,fattack 0
+    ,fcutoff 0
+    ,fcontour 0
+    ,fsustain 0
+    ,adecay 0
+    ,aattack 0
+    ] |= ch 12
+    -- >> silence
+
+stopTransportNow
+
+pickup mixer
+
+p "transport" $ do
+  let out = 8*9999
+  let
+  seqP [sync
+    ,startTransport
+    ,stopTransport out
+    ,bar 0 out metronome
+    ]
+
+runWith andante
+runWith moderato
+runWith allegro
+
+hush
