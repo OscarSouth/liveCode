@@ -1,7 +1,3 @@
-runWith andante
-
-let keySig = A \\\ aeolian
-
 p "urungTulluk" $ do
   let out = 8*9999
   let
@@ -9,46 +5,144 @@ p "urungTulluk" $ do
     ,bar 0 out metronome
     ]
 
+runWith andante
+
+keySig = A \\\ aeolian
+
+verse = "[0 3 . 3 0 [3 4] 0]"
+chorus = "0 2 6 5 5 3 4 0"
+
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      ,ruismk minim "[~ cp]"
+      ,ruismk 1 "~ ~ bd ~"
+      -- ,ruismk crotchet "sb"
+      ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
+      ,ruismk 1 "hats"
+      ,ruismk quaver "fm"
+      -- ,ruismk quaver "~ hh"
+      ] |= ch 09
+        |* vel p0
+        -- >> silence
 
 p10 p0 = d10 $ do
   id $
+    -- on2 (every 2 (pullBy 0.5)) $
     stack [silence
       ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
       ,kit 1 "[bd:echo bd:lead]" #vel 0.8
       ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
       ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
-      -- ,cymbals crotchet "~ rd" #vel 0.6
+      ,cymbals crotchet "~ rd" #vel 0.6
       ] |= ch 10
-        -- |* vel "1.1 0.9!15"
+        |* vel "[1.1 0.9!7]*4"
+        |+ vel 0.3
         |* vel p0
         |+ humanise 0.2
         -- >> silence
 
-p09 p0 = d09 $ d9
+p08 p0 = d08 $ do
+  let prog = inKey keySig
   id $
     stack [silence
-      ,ruismk minim "[~ sn]"
-      ,ruismk crotchet "sb"
-      -- ,ruismk 1 "hats"
-      -- ,ruismk quaver "fm"
-      ] |= ch 09
+      ,note "0*8 0*8"
+      -- ,note "0"
+      -- ,note "0" #legato "[0.55!3 0.5]/4"
+      ] |= ch 08
+        -- |+ note 12
+        -- |= legato "1.1!7 0.7"
         |* vel p0
-        -- >> silence
+        |+| prog 4 (verse
+        -- |+| prog 4 (chorus
+         +| "[0 4 6 7]*16"
+          )
 
 p12 p0 = d12 $ do
-  let prog = inKey keySig 4
+  let prog = inKey keySig
+  let lfo1 = (slow 5 $ 0.5 <~ lfo sine 0.01 0.1)
+  let verseA = "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]"
+  let verseB = "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
+  let chorusA = "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]"
+  let chorusB = "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
   id $
     stack [silence
-      -- ,quaver ~> (fast 2 $ note "<[0 0 0 ~] ~ ~ ~>" #vel 0.5)
-      ,note "0 0 0 0"
-      -- ,volume "0.2*16"
+      ,dPsyTrance 0.5 0.6 0.2 0 0 lfo1
+      ,note "0"
       ] |= ch 12
         |+ note 12
-        -- |+ vel "-0.4"
-        |+ humanise 0.1
-        -- |= legato "[0.6 0.9 0.6 ~] ~ ~ ~"
-        -- |+| prog (""
-         -- +| ""
-          -- )
+        |* vel p0
+        -- |+| prog 4 (fastcat[chorusA,chorusB]
+        |+| prog 4 (fastcat[verseA,verseB]
+          ) 
+          |+ note "0 <0 0 0 [0 1]> 0 0"
+
+
+dPsyTrance p1 p2 p3 p4 p5 p6 = do
+  stack
+    [silence
+    -- CONTROLLERS
+    ,volume 1
+    ,modwheel p6
+    ,modsource 1
+    ,modlfo 0
+    ,finetune 0
+    ,glide 0.3
+    ,glideio 1
+    ,decayio 1
+    -- OSCILLATOR BANK
+    ,oscmod p5
+    ,osc3ctrl 0
+    ,osc1range 0.4
+    ,osc1wave 0.2
+    ,osc2range 0.4
+    ,osc2tune "-0.1"
+    ,osc2wave 1
+    ,osc3range 0.6
+    ,osc3tune 0.2
+    ,osc3wave 1
+    -- MIXER
+    ,osc1vol 1
+    ,osc1io 1
+    ,osc2vol (p4*0.5)
+    ,osc2io 1
+    ,osc3vol p4
+    ,osc3io 1
+    ,feedbackvol 0
+    ,feedbackio 0
+    ,noisevol 0.12
+    ,noiseio 1
+    ,noisetype 0
+    -- MODIFIERS
+    ,filtermod 1
+    ,keyboard1 1
+    ,keyboard2 0
+    ,fcutoff p1
+    ,fresonance p2
+    ,fcontour p3
+    ,fattack 0
+    ,fdecay 0.6
+    ,fsustain 1
+    ,aattack 0
+    ,adecay 0.1
+    ,asustain 1
+    -- WOW FILTERBOX
+    ] |= ch 12
 
 hush
+
+p16 p0 = d16 $ do
+  let prog = inKey keySig
+  id $
+    stack [silence
+      ,note "0 0" #vel 0.4
+      -- ,
+      ,ped "1!15 0"
+      ] |= ch 16
+        -- |= legato (slow 3.5 $ lfo sine 0.2 2)
+        |- note 36
+        |- legato "1!15 2"
+        |* vel p0
+        |+| prog 4 ( -- "0 2 6 5 5 3 4 0"
+         -- +|
+          )

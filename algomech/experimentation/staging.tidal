@@ -18,3 +18,20 @@ timeFuncs mult = [("breve", slow 2),
                 ]
 
 inKey k b p = note (slow b $ k p)
+
+dFilter p1 p2 p3 p4 p5 p6 = 
+  stack[silence
+    ,fcutoff p1
+    ,fresonance p2
+    ,fcontour p3
+    ,fattack p4
+    ,fdecay p5
+    ,fdecay p6
+    ]
+
+dAmp p1 p2 p3 =
+  stack[
+  ,aattack p1
+  ,adecay p2
+  ,asustain p3
+  ]

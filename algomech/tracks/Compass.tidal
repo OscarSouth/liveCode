@@ -14,8 +14,8 @@ keySig = E \\\ aeolian
 p09 p0 = d09 $ do
   id $
     stack [silence
-      -- ,ruismk crotchet "[~ sn]"
-      ,ruismk quaver "sb"
+      ,ruismk crotchet "[~ sn]"
+      -- ,ruismk quaver "sb"
       -- ,ruismk quaver "hh fm"
       ] |= ch 09
         |* vel p0
@@ -31,6 +31,7 @@ p10 p0 = d10 $ do
       ,kit 2 "~ ~ ~ [~ . ~!2 floortom!2]" |= vel 0.4
       ] |= ch 10
         -- |* vel "1.1 0.9!15"
+        |+ vel 0.4
         |* vel p0
         |+ humanise 0.2
         -- >> silence
@@ -42,15 +43,16 @@ p15 p0 = d15 $ do
       ,note "<0 [0, ~!3 0] 0 [0 . 0 0]>" #vel 0.5
       -- ,volume "0.2*16"
       ] |= ch 15
-        -- |- note 12
-        -- |+ vel "0.4"
+        |- note 12
         |= vel (slow 16 $ lfo saw 0.3 0.9)
+        |+ vel "0.1"
         |+ humanise 0.1
         |+ legato 1
         |+| prog ("0 2 1 [0 . -2 -3]"
          -- +| "[0 4 9 4]*32"
-         +| "[4 0]!8 [5 0]!4 [4 <2 0>]!4"
-         +| "[0 12]*32"
+         -- +| "[4 0]!8 [5 0]!4 [4 <2 0>]!4"
+         -- +| "[0 9]*32"
+         -- +| "[0 12]*32"
           )
 
 p16 p0 = d16 $ do
@@ -59,12 +61,13 @@ p16 p0 = d16 $ do
     stack [silence
       ,note "<0 0 0 [0 . 0 0]>" |- note 24 #vel 0.5
       ] |= ch 16
-        -- |- note 12
+        |- note 12
         -- |= legato 0.5
         |= vel (slow 16 $ lfo saw 0.3 0.9)
         |+ humanise 0.3
         |+| prog ("0 2 -1 [-2 . -4 -3]"
-         +| "[0 4 9 4]*16"
+         -- +| "[0 4 9 4]*16"
+         -- +| "[0,4]*16"
           )
         -- >> silence
 

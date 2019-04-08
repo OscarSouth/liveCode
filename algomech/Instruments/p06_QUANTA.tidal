@@ -21,7 +21,7 @@ quanta bars pat = do
 p06 p0 = d07 $ do
   id $
     stack [silence
-      ,note "[0]*4"
+      ,note "0(3,8)"
       ,cc 1 (rev $ lfo saw 0.64 0.93)
       ,cc 74 1
       ] |= ch 06

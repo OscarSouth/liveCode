@@ -1,0 +1,6 @@
+phrase bars pat = do
+  let mult = (fromList [(fromIntegral . ceiling) bars] :: Pattern Time)
+  let ps = [("bd", kick "0"),
+          ]
+  let fs = timeFuncs mult
+   in ur bars pat ps fs
