@@ -23,22 +23,23 @@ once $ do
     ]
 
 do
+  let p = v
   let dynamic = "0.8" :: Pattern Double
   let d = (*dynamic)
   mapM_ (id) [hush
     -- ,p01,p02,p03,p04
     -- ,p05 $d 0.9
-    -- ,p06 $d 0.99
-    -- ,p07 $d 0.99
-    ,p08 $d 0.99
-    ,p09 $d 0.4
-    ,p10 $d 0.99
-    -- ,p11 $d 0.99
-    ,p12 $d 0.99
-    -- ,p13 $d 0.99
-    -- ,p14 $d 0.99
-    -- ,p15 $d 0.99
-    -- ,p16 $d 0.99
+    ,p06 p $d 0.99
+    -- ,p07 p $d 0.99
+    ,p08 p $d 0.99
+    ,p09 p $d 0.4
+    ,p10 p $d 0.99
+    -- ,p11 p $d 0.99
+    ,p12 p $d 0.99
+    -- ,p13 p $d 0.99
+    -- ,p14 p $d 0.99
+    -- ,p15 p $d 0.99
+    -- ,p16 p $d 0.99
     ]
 
 dInit = do

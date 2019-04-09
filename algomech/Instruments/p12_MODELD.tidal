@@ -1,6 +1,32 @@
+:{
+
 phrase bars pat = do
-  let mult = (fromList [(fromIntegral . ceiling) bars] :: Pattern Time)
-  let ps = [("bd", kick "0"),
+  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
+  let ps = [("w", note "0" #legato 1),
+            ("m", note "0" #legato minim),
+            ("c", kick "0" #legato crotchet),
+            ("q", note "0" #legato quaver),
+            ("s", note "0" #legato semiquaver),
+            ("d", note "0" #legato demisemiquaver),
+            ("h", note "0" #legato hemidemisemiquaver)
           ]
-  let fs = timeFuncs mult
+  let fs = (timeFuncs mult) ++ [
+           (">", (#vel 1)),
+           (".", (#legato 0.2)),
+           (".>", (#vel 1) . (#legato 0.2))
+           ]
    in ur bars pat ps fs
+
+:}
+
+
+-- p12 p0 = d12 $ do
+--   let prog = inKey keySig 4
+--   id $
+--     stack [silence
+--       ,phrase 1 "0"
+--       ] |= ch 12
+--         |* vel p0
+--         |+| prog ("0"
+--          +| "0"
+--           )

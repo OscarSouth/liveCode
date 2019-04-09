@@ -385,7 +385,7 @@ wholeTone :: Num a => [a]
 wholeTone = [0,2,4,6,8,10]
 :}
 
-runSilence p0 = p "silence" silence
+runSilence p0 p = p "silence" silence
 runSilence' = p "silence" silence
 p01 = runSilence'
 p02 = runSilence'
@@ -406,5 +406,10 @@ p16 = runSilence
 
 :{
 :}
+
+:s ~/liveCode/algomech/Instruments/timeFuncs.tidal
+:s ~/liveCode/algomech/Instruments/p09_RUISMAKER.tidal
+:s ~/liveCode/algomech/Instruments/p10_DRUMKIT.tidal
+:s ~/liveCode/algomech/Instruments/p12_MODELD.tidal
 
 :set prompt "tidal> "

@@ -1,3 +1,5 @@
+:{
+
 ruismk bars pat = do
   let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
   let ps = [("sb", sb "0"),
@@ -29,3 +31,5 @@ ruismk bars pat = do
             ("lead" , ((rev) . (stut 2 0.75) (quaver/mult)))
           ]
    in ur bars pat ps fs
+
+:}

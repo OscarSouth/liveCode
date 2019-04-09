@@ -9,32 +9,73 @@ runWith andante
 
 keySig = A \\\ aeolian
 
-verse = "[0 3 . 3 0 [3 4] 0]"
-chorus = "0 2 6 5 5 3 4 0"
+(v,v',c,c') = (verse, verse',chorus,chorus')
+    where
+      verse = cat[
+        "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]" :: Pattern Double,
+        "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]" :: Pattern Double
+        ]
+      verse' = "[0 3 . 3 0 [3 4] 0]"
+      chorus = cat [
+        "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]" :: Pattern Double,
+        "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]" :: Pattern Double
+        ]
+      chorus' = "-2 2 6 5 5 3 4 0"
 
-p09 p0 = d09 $ do
+p06 p0 p1 = d07 $ do
+  let (prog, motion) = (inKey keySig, p1)
   id $
     stack [silence
-      ,ruismk minim "[~ cp]"
-      ,ruismk 1 "~ ~ bd ~"
-      -- ,ruismk crotchet "sb"
-      ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
-      ,ruismk 1 "hats"
-      ,ruismk quaver "fm"
+      ,note "0*4"
+      ,cc 1 (lfo saw 0.65 0.69)
+      ,cc 74 0.7
+      ] |= ch 06
+        -- |- note 12
+        |+| prog 4 (motion
+         -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
+         -- +| "[0 <-5 -3>]*16"
+         -- +| "[4,7,9]*16"
+          )
+
+p08 p0 p1 = d08 $ do
+  let (prog, motion) = (inKey keySig, p1)
+  id $
+    stack [silence
+      ,note "0*16"
+      -- ,note "0"
+      -- ,note "0" #legato "[0.25!3 0.5]/4"
+      ] |= ch 08
+        -- |+ note 12
+        -- |= legato "1.1!7 0.7"
+        |* vel p0
+        -- |+| prog 4 (verse
+        |+| prog 4 (motion
+         -- +| "[7 0 4 6]*16"
+          )
+
+p09 p0 p1 = d09 $ do
+  id $
+    stack [silence
+      -- ,ruismk minim "[~ cp]"
+      ,ruismk crotchet "[~ sn]/2"
+      ,ruismk crotchet "sb"
+      -- ,ruismk 1 "~ ~ bd ~"
+      -- ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
+      -- ,ruismk 1 "hats"
+      -- ,ruismk quaver "fm"
       -- ,ruismk quaver "~ hh"
       ] |= ch 09
         |* vel p0
         -- >> silence
 
-p10 p0 = d10 $ do
+p10 p0 p1 = d10 $ do
   id $
-    -- on2 (every 2 (pullBy 0.5)) $
     stack [silence
       ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
       ,kit 1 "[bd:echo bd:lead]" #vel 0.8
       ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
       ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
-      ,cymbals crotchet "~ rd" #vel 0.6
+      -- ,cymbals crotchet "~ rd" #vel 0.6
       ] |= ch 10
         |* vel "[1.1 0.9!7]*4"
         |+ vel 0.3
@@ -42,97 +83,32 @@ p10 p0 = d10 $ do
         |+ humanise 0.2
         -- >> silence
 
-p08 p0 = d08 $ do
-  let prog = inKey keySig
+p12 p0 p1 = d12 $ do
+  let (prog, motion) = (inKey keySig, p1)
+  let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
   id $
     stack [silence
-      ,note "0*8 0*8"
-      -- ,note "0"
-      -- ,note "0" #legato "[0.55!3 0.5]/4"
-      ] |= ch 08
-        -- |+ note 12
-        -- |= legato "1.1!7 0.7"
-        |* vel p0
-        |+| prog 4 (verse
-        -- |+| prog 4 (chorus
-         +| "[0 4 6 7]*16"
-          )
-
-p12 p0 = d12 $ do
-  let prog = inKey keySig
-  let lfo1 = (slow 5 $ 0.5 <~ lfo sine 0.01 0.1)
-  let verseA = "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]"
-  let verseB = "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
-  let chorusA = "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]"
-  let chorusB = "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
-  id $
-    stack [silence
-      ,dPsyTrance 0.5 0.6 0.2 0 0 lfo1
-      ,note "0"
+      ,dPsyTrance
+        0.32 -- cutoff
+        0.3 -- res
+        (2 <~ lfo1*3) -- contour
+        0.2 --  osc23
+        0 -- oscmod
+        (lfo1*9) -- lfo
+        (slow 2 $ 3 <~ lfo1 * 9) -- mod
+      ,phrase 1 "w"
       ] |= ch 12
         |+ note 12
         |* vel p0
         -- |+| prog 4 (fastcat[chorusA,chorusB]
-        |+| prog 4 (fastcat[verseA,verseB]
-          ) 
-          |+ note "0 <0 0 0 [0 1]> 0 0"
-
-
-dPsyTrance p1 p2 p3 p4 p5 p6 = do
-  stack
-    [silence
-    -- CONTROLLERS
-    ,volume 1
-    ,modwheel p6
-    ,modsource 1
-    ,modlfo 0
-    ,finetune 0
-    ,glide 0.3
-    ,glideio 1
-    ,decayio 1
-    -- OSCILLATOR BANK
-    ,oscmod p5
-    ,osc3ctrl 0
-    ,osc1range 0.4
-    ,osc1wave 0.2
-    ,osc2range 0.4
-    ,osc2tune "-0.1"
-    ,osc2wave 1
-    ,osc3range 0.6
-    ,osc3tune 0.2
-    ,osc3wave 1
-    -- MIXER
-    ,osc1vol 1
-    ,osc1io 1
-    ,osc2vol (p4*0.5)
-    ,osc2io 1
-    ,osc3vol p4
-    ,osc3io 1
-    ,feedbackvol 0
-    ,feedbackio 0
-    ,noisevol 0.12
-    ,noiseio 1
-    ,noisetype 0
-    -- MODIFIERS
-    ,filtermod 1
-    ,keyboard1 1
-    ,keyboard2 0
-    ,fcutoff p1
-    ,fresonance p2
-    ,fcontour p3
-    ,fattack 0
-    ,fdecay 0.6
-    ,fsustain 1
-    ,aattack 0
-    ,adecay 0.1
-    ,asustain 1
-    -- WOW FILTERBOX
-    ] |= ch 12
-
-hush
+        |+| prog 4 (motion
+         -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
+         -- +| "[0 2]*16"
+          )
+          -- |+ note "0 <0 0 0 [0 1]> 0 0"
 
 p16 p0 = d16 $ do
-  let prog = inKey keySig
+  let (prog, motion) = (inKey keySig, p1)
   id $
     stack [silence
       ,note "0 0" #vel 0.4
@@ -143,6 +119,8 @@ p16 p0 = d16 $ do
         |- note 36
         |- legato "1!15 2"
         |* vel p0
-        |+| prog 4 ( -- "0 2 6 5 5 3 4 0"
+        |+| prog 4 (motion
          -- +|
           )
+
+hush
