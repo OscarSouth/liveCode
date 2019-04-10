@@ -9,7 +9,7 @@ runWith andante
 
 keySig = A \\\ aeolian
 
-(v,v',c,c') = (verse, verse',chorus,chorus')
+(v,c) = ((verse, verse'),(chorus,chorus'))
     where
       verse = fast 2 $ cat[
         "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]" :: Pattern Int,
@@ -22,8 +22,8 @@ keySig = A \\\ aeolian
         ]
       chorus' = "-2 2 6 5 5 3 4 0" :: Pattern Int
 
-p06 p0 = d07 $ do
-  let prog = inKey keySig
+p06 p0 p1 = d07 $ do
+  let (motion, prog) = (fst p0, inKey keySig)
   id $
     stack [silence
       ,note "0*4"
@@ -31,26 +31,26 @@ p06 p0 = d07 $ do
       ,cc 74 0.7
       ] |= ch 06
         -- |- note 12
-        |+| prog 4 (c
+        |+| prog 4 (motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
          +| "[0 <-5 -3>]*16"
          -- +| "[4,7,9]*16"
           )
 
-p08 p0 = d08 $ do
-  let prog = inKey keySig
+p08 p0 p1 = d08 $ do
+  let (motion, prog) = (snd p0, inKey keySig)
   id $
     stack [silence
       ,note "0*16"
-      -- ,note "0"
+      -- ,midinote "60"
       -- ,note "0" #legato "[0.25!3 0.5]/4"
       ] |= ch 08
         -- |+ note 12
         -- |= legato "1.1!7 0.7"
-        |* vel p0
-        |+| prog 4 (c'
-         -- +| "[7 0 4 6]*16"
-         +| "[0 7]*16"
+        |* vel p1
+        |+| prog 4 (motion
+         +| "[7 0 4 6]*16"
+         -- +| "[0 7]*16"
           )
 
 p09 p0 = d09 $ do
@@ -62,7 +62,7 @@ p09 p0 = d09 $ do
       -- ,ruismk 1 "~ ~ bd ~"
       -- ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
       -- ,ruismk 1 "hats"
-      ,ruismk quaver "hh"
+      -- ,ruismk quaver "hh"
       ] |= ch 09
         |* vel p0
         -- >> silence
@@ -82,32 +82,32 @@ p10 p0 = d10 $ do
         |+ humanise 0.2
         -- >> silence
 
-p12 p0 = d12 $ do
-  let prog = inKey keySig
+p12 p0 p1 = d12 $ do
+  let (motion, prog) = (fst p0, inKey keySig)
   let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
   id $
     stack [silence
       ,dPsyTrance
-        0.32 -- cutoff
-        0.3 -- res
-        (2 <~ lfo1) -- contour
-        0 --  osc23
-        0.1 -- oscmod
-        (lfo1*1) -- lfo
-        (slow 2 $ 3 <~ lfo1 * 2) -- mod
+        (lfo sine 0.4 0.7) -- 0.62 -- cutoff
+        0.7 -- res
+        (2 <~ lfo1*5) -- contour
+        (lfo1 *1) --  osc23
+        0 -- oscmod
+        (lfo1*2) -- lfo
+        (slow 2 $ 3 <~ lfo1 * 1) -- mod
       ,phrase 1 "w"
       ] |= ch 12
         |+ note 12
-        |* vel p0
-        |+| prog 4 (v
-         +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
+        |* vel p1
+        |+| prog 4 (motion
+         -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
          -- +| "[0 2]*16"
           )
-          |+ note "0 <0 0 0 [0 1]> 0 0"
-          >> silence
+          -- |+ note "0 <0 0 0 [0 1]> 0 0"
+          -- >> silence
 
-p13 p0 = d13 $ do
-  let prog = inKey keySig
+p13 p0 p1 = d13 $ do
+  let (motion, prog) = (fst p0, inKey keySig)
   id $
     stack [silence
       ,phrase 1 "w"
@@ -115,12 +115,12 @@ p13 p0 = d13 $ do
       -- ,toneB 0.7 1 1
       ] |= ch 13
         -- |- note 24
-        |* vel p0
-        |+| prog 4 (c
-         -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
-         -- +| "[0 2]*16"
-         +| "[0]*8"
+        |* vel p1
+        |+| prog 4 (motion
+         +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
+         +| "[0 2]*16"
+         -- +| "[0]*8"
           )
-          |+ note "0 <0 0 0 [0 1]> 0 0"
+          -- |+ note "0 <0 0 0 [0 1]> 0 0"
 
 hush
