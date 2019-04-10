@@ -1,45 +1,44 @@
 clicktrack $
   slow 8 $
-    "0!7 [0!3 0.9] [0.9!15 0]"
+    "0!7 [0!3 0.7] [0.7!15 0]"
     +| 0
 
 let inKey = A \\\ aeolian
 
 once $ do
-  let master = 0.99
+  let master = 0.9
   let v = (*master)
   stack [silence
-    ,overtones $v 0.99
-    ,granular $v 0.6
-    ,wavetable $v 0.7
-    ,tb303 $v 0.5
-    ,rhythmic $v 0.99
-    ,voyager $v 0.6
-    ,modelD $v 0.7
+    ,overtones $v 0.9
+    ,granular $v 0.3
+    ,wavetable $v 0.9
+    ,rhythmic $v 0.9
+    ,voyager $v 0.9
+    ,modelD $v 0.9
     ,laplace $v 0.99
-    ,mersenne $v 0.99
-    ,wurlitz $v 0.8
+    ,mersenne $v 0.8
+    ,wurlitz $v 0.99
     ,piano $v 0.99
     ]
 
 do
-  let p = v
-  let dynamic = "0.8" :: Pattern Double
+  -- let p = v
+  let dynamic = 0.7 :: Pattern Double
   let d = (*dynamic)
   mapM_ (id) [hush
     -- ,p01,p02,p03,p04
     -- ,p05 $d 0.9
-    ,p06 p $d 0.99
-    -- ,p07 p $d 0.99
-    ,p08 p $d 0.99
-    ,p09 p $d 0.4
-    ,p10 p $d 0.99
-    -- ,p11 p $d 0.99
-    ,p12 p $d 0.99
-    -- ,p13 p $d 0.99
-    -- ,p14 p $d 0.99
-    -- ,p15 p $d 0.99
-    -- ,p16 p $d 0.99
+    -- ,p06 $d 0.6
+    -- ,p07 $d 0.99
+    -- ,p08 $d 0.99
+    -- ,p09 $d 0.7
+    -- ,p10 $d 0.6
+    -- ,p11 $d 0.99
+    -- ,p12 $d 0.99
+    -- ,p13 $d 0.99
+    -- ,p14 $d 0.99
+    -- ,p15 $d 0.99
+    -- ,p16 $d 0.99
     ]
 
 dInit = do

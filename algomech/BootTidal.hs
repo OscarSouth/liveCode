@@ -404,12 +404,12 @@ p14 = runSilence
 p15 = runSilence
 p16 = runSilence
 
-:{
-:}
+-- :{
+-- :}
 
-:s ~/liveCode/algomech/Instruments/timeFuncs.tidal
-:s ~/liveCode/algomech/Instruments/p09_RUISMAKER.tidal
-:s ~/liveCode/algomech/Instruments/p10_DRUMKIT.tidal
-:s ~/liveCode/algomech/Instruments/p12_MODELD.tidal
+-- :s ~/liveCode/algomech/Instruments/timeFuncs.tidal
+-- :s ~/liveCode/algomech/Instruments/p09_RUISMAKER.tidal
+-- :s ~/liveCode/algomech/Instruments/p10_DRUMKIT.tidal
+-- :s ~/liveCode/algomech/Instruments/p12_MODELD.tidal
 
 :set prompt "tidal> "
