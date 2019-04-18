@@ -1,21 +1,39 @@
 runWith allegro
 
-pad09 p0 = d09 $ ruismk 1 "[bd:crotchet, [~ hh]*4, oh]" 0
+keySig = F \\\ aeolian
 
-pad10 p0 = d10 $ do
+v = ("0", "0") :: (Pattern Int, Pattern Int)
+
+p09 p1 = d09 $ do
+  id $
+    stack [silence
+      -- ,ruismk minim "[~ sn]"
+      -- ,ruismk minim "[~ cp]"
+      ,ruismk crotchet "sb"
+      ,ruismk crotchet "~ hh"
+      -- ,ruismk 1 "hats"
+      ] |= ch 09
+        |* vel p1
+        -- >> silence
+
+p10 p0 = d10 $ do
   stack [silence
-    ,ride "0"
+    ,cymbals quaver "rd"
     ] #ch 10
-      |+ vel 1
+      |= vel (fast 2 $ 0.75 <~ lfo sine 0.3 0.6)
 
-pad12 p0 = d12 $ do
-  stack [silence
-    ,fast 4 $ midinote "0 60!3"
-    ] |+ vel 0.4
-      |+ note (keySig "0")
-      |+ humanise 0.1
-      #legato 0.4
-      #ch 12
+p12 p0 p1 = d12 $ do
+  let (motion, prog) = (fst p0, inKey keySig)
+  id $
+    stack [silence
+      ,fast 4 $ midinote "60"
+      ] |+ vel 0.4
+        |= ch 12
+        |+ humanise 0.1
+        |= legato 0.4
+        |+| prog 4 (motion
+         -- +| ""
+          )
       -- >> silence
 
 pad07 p0 = d07 $ do
@@ -34,19 +52,15 @@ pad07 p0 = d07 $ do
 let animoog = cc' 7 2
 
 pad08 p0 = d08 $ do
-  stack [silence
-    ,fast 2 $ note "0(3,8)"
-    -- ,note "~ [~ ~ ~ 4]"
-    ] |+ vel 1
-      |+ pushBy crotchet (note (fast 2 "0 11 4"))
-      |+ note 1
-      #ch 08
-      -- >> silence
+  let (motion, prog) = (fst p0, inKey keySig)
+  id $
+    stack [silence
+      ,fast 2 $ note "0(3,8)"
+      -- ,note "~ [~ ~ ~ 4]"
+      ] |+ vel 1
+        |+ pushBy crotchet (note (fast 2 "0 11 4"))
+        |+ note 1
+        #ch 08
+        -- >> silence
 
-hush
-
-stopTransportNow
-
-runWith andante
-
-pad09 p0 = d09 $ ruismk 1 "sub:crotchet" p0
+  hush

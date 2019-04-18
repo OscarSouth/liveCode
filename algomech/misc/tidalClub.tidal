@@ -1,0 +1,15 @@
+sock <- carabiner tidal 4 (-0.14)
+
+
+d1 $ note "0 3 7 12" # sound "khomus"
+  #legato 0.9
+  -- $ slice 32 "6(3,8)"
+  -- >> silence
+
+d2 $ note "0 7"
+  # splice 32 (1 + irand 31)
+  # sound "overtone"
+  # legato 0.5
+  -- >> silence
+
+hush

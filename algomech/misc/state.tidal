@@ -1,44 +1,44 @@
 clicktrack $
   slow 8 $
     "0!7 [0!3 0.7] [0.7!15 0]"
-    +| 0
+    -- +| 0.8
 
-let inKey = A \\\ aeolian
+keySig = A \\\ aeolian
 
 once $ do
   let master = 0.9
   let v = (*master)
   stack [silence
     ,overtones $v 0.9
-    ,granular $v 0.6
+    ,granular $v 0.9
     ,wavetable $v 0.9
     ,rhythmic $v 0.9
     ,voyager $v 0.9
-    ,modelD $v 0.4
+    ,modelD $v 0.6
     ,laplace $v 0.99
-    ,mersenne $v 0.8
-    ,wurlitz $v 0.99
+    ,mersenne $v 0.6
+    ,wurlitz $v 0.7
     ,piano $v 0.99
     ]
 
 do
-  let p = v
+  let s = v
   let dyn = 0.7 :: Pattern Double
   let d = (*dyn)
   mapM_ (id) [hush
     -- ,p01,p02,p03,p04
     -- ,p05 $d 0.9
-    ,p06 p $d 0.6
+    ,p06 s $d 0.6
     -- ,p07 $d 0.99
-    ,p08 p $d 0.99
-    ,p09 $d 0.7
-    ,p10 $d 0.7
+    ,p08 s $d 0.7
+    ,p09 $d 0.8
+    ,p10 $d 0.9
     -- ,p11 $d 0.99
-    ,p12 p $d 0.99
-    -- ,p13 p $d 0.99
-    -- ,p14 $d 0.99
-    -- ,p15 $d 0.99
-    -- ,p16 $d 0.99
+    ,p12 s $d 0.7
+    -- ,p13 s $d 0.6
+    ,p14 s $d 0.99
+    -- ,p15 s $d 0.29
+    -- ,p16 s $d 0.4
     ]
 
 dInit = do

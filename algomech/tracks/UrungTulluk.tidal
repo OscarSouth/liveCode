@@ -9,17 +9,18 @@ runWith andante
 
 keySig = A \\\ aeolian
 
-(v,c) = ((verse, verse'),(chorus,chorus'))
+(v,c) = ((verse, verse'),
+         (chorus, chorus'))
     where
       verse = fast 2 $ cat[
-        "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]" :: Pattern Int,
-        "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]" :: Pattern Int
-        ]
+        "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]",
+        "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
+        ] :: Pattern Int
       verse' = "[0 3 . 3 0 [3 4] 0]" :: Pattern Int
       chorus = fast 2 $ cat [
-        "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]" :: Pattern Int,
-        "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]" :: Pattern Int
-        ]
+        "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]",
+        "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
+        ] :: Pattern Int
       chorus' = "-2 2 6 5 5 3 4 0" :: Pattern Int
 
 p06 p0 p1 = d07 $ do
@@ -33,8 +34,8 @@ p06 p0 p1 = d07 $ do
         -- |- note 12
         |+| prog 4 (motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
-         +| "[0 <-5 -3>]*16"
-         -- +| "[4,7,9]*16"
+         -- +| "[0 <-5 -3>]*16"
+         +| "[4,7,9]*16"
           )
 
 p08 p0 p1 = d08 $ do
@@ -56,12 +57,12 @@ p08 p0 p1 = d08 $ do
 p09 p0 = d09 $ do
   id $
     stack [silence
-      ,ruismk minim "[~ cp]"
-      -- ,ruismk crotchet "[~ sn]/2"
+      -- ,ruismk minim "[~ cp]"
+      ,ruismk crotchet "[~ sn]/2"
       ,ruismk crotchet "sb"
       -- ,ruismk 1 "~ ~ bd ~"
       -- ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
-      -- ,ruismk 1 "hats"
+      ,ruismk 1 "hats"
       -- ,ruismk quaver "hh"
       ] |= ch 09
         |* vel p0
@@ -89,21 +90,22 @@ p12 p0 p1 = d12 $ do
     stack [silence
       ,dPsyTrance
         (lfo sine 0.4 0.7) -- 0.62 -- cutoff
-        0.7 -- res
+        0.6 -- res
         (2 <~ lfo1*5) -- contour
         (lfo1 *1) --  osc23
-        0 -- oscmod
+        "0 1" -- oscmod
         (lfo1*2) -- lfo
         (slow 2 $ 3 <~ lfo1 * 1) -- mod
       ,phrase 1 "w"
       ] |= ch 12
-        |+ note 12
+        |+ note 24
         |* vel p1
         |+| prog 4 (motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
-         -- +| "[0 2]*16"
+         -- +| "[0 <2 4 [5 3] 0>]*4"
+         +| "0*16"
           )
-          -- |+ note "0 <0 0 0 [0 1]> 0 0"
+          |+ note "0 <0 0 0 [0 1]> 0 0"
           -- >> silence
 
 p13 p0 p1 = d13 $ do
@@ -114,13 +116,17 @@ p13 p0 p1 = d13 $ do
       -- ,toneA 0.4 1 1
       -- ,toneB 0.7 1 1
       ] |= ch 13
-        -- |- note 24
+        |- note 12
         |* vel p1
         |+| prog 4 (motion
-         +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
-         +| "[0 2]*16"
-         -- +| "[0]*8"
+         -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
+         -- +| "[0 2]*16"
+         +| "[7 2 4 2]*16"
+         +| "0*16"
           )
-          -- |+ note "0 <0 0 0 [0 1]> 0 0"
+          |+ note "0 <0 0 0 [0 1]> 0 0"
 
 hush
+
+
+inKey k b p = note (slow b $ k p)
