@@ -1,4 +1,5 @@
 :set -XOverloadedStrings
+:set -XFlexibleContexts
 :set prompt ""
 :set prompt-cont ""
 
@@ -8,36 +9,36 @@ import Sound.Tidal.Scales
 -- total latency = oLatency + cFrameTimespan
 tidal <- startTidal (superdirtTarget {oLatency = 0.2, oAddress = "127.0.0.1", oPort = 57120}) (defaultConfig {cFrameTimespan = 1/20})
 
-let p = streamReplace tidal
-let hush = streamHush tidal
-let list = streamList tidal
-let mute = streamMute tidal
-let unmute = streamUnmute tidal
-let solo = streamSolo tidal
-let unsolo = streamUnsolo tidal
-let once = streamOnce tidal
-let asap = once
-let nudgeAll = streamNudgeAll tidal
-let all = streamAll tidal
-let resetCycles = streamResetCycles tidal
-let setcps = asap . cps
-let xfade i = transition tidal True (Sound.Tidal.Transition.xfadeIn 4) i
-let xfadeIn i t = transition tidal True (Sound.Tidal.Transition.xfadeIn t) i
-let histpan i t = transition tidal True (Sound.Tidal.Transition.histpan t) i
-let wait i t = transition tidal True (Sound.Tidal.Transition.wait t) i
-let waitT i f t = transition tidal True (Sound.Tidal.Transition.waitT f t) i
-let jump i = transition tidal True (Sound.Tidal.Transition.jump) i
-let jumpIn i t = transition tidal True (Sound.Tidal.Transition.jumpIn t) i
-let jumpIn' i t = transition tidal True (Sound.Tidal.Transition.jumpIn' t) i
-let jumpMod i t = transition tidal True (Sound.Tidal.Transition.jumpMod t) i
-let mortal i lifespan release = transition tidal True (Sound.Tidal.Transition.mortal lifespan release) i
-let interpolate i = transition tidal True (Sound.Tidal.Transition.interpolate) i
-let interpolateIn i t = transition tidal True (Sound.Tidal.Transition.interpolateIn t) i
-let clutch i = transition tidal True (Sound.Tidal.Transition.clutch) i
-let clutchIn i t = transition tidal True (Sound.Tidal.Transition.clutchIn t) i
-let anticipate i = transition tidal True (Sound.Tidal.Transition.anticipate) i
-let anticipateIn i t = transition tidal True (Sound.Tidal.Transition.anticipateIn t) i
-let forId i t = transition tidal False (Sound.Tidal.Transition.mortalOverlay t) i
+p = streamReplace tidal
+hush' = streamHush tidal
+list = streamList tidal
+mute = streamMute tidal
+unmute = streamUnmute tidal
+solo = streamSolo tidal
+unsolo = streamUnsolo tidal
+once = streamOnce tidal
+asap = once
+nudgeAll = streamNudgeAll tidal
+all = streamAll tidal
+resetCycles = streamResetCycles tidal
+setcps = asap . cps
+xfade i = transition tidal True (Sound.Tidal.Transition.xfadeIn 4) i
+xfadeIn i t = transition tidal True (Sound.Tidal.Transition.xfadeIn t) i
+histpan i t = transition tidal True (Sound.Tidal.Transition.histpan t) i
+wait i t = transition tidal True (Sound.Tidal.Transition.wait t) i
+waitT i f t = transition tidal True (Sound.Tidal.Transition.waitT f t) i
+jump i = transition tidal True (Sound.Tidal.Transition.jump) i
+jumpIn i t = transition tidal True (Sound.Tidal.Transition.jumpIn t) i
+jumpIn' i t = transition tidal True (Sound.Tidal.Transition.jumpIn' t) i
+jumpMod i t = transition tidal True (Sound.Tidal.Transition.jumpMod t) i
+mortal i lifespan release = transition tidal True (Sound.Tidal.Transition.mortal lifespan release) i
+interpolate i = transition tidal True (Sound.Tidal.Transition.interpolate) i
+interpolateIn i t = transition tidal True (Sound.Tidal.Transition.interpolateIn t) i
+clutch i = transition tidal True (Sound.Tidal.Transition.clutch) i
+clutchIn i t = transition tidal True (Sound.Tidal.Transition.clutchIn t) i
+anticipate i = transition tidal True (Sound.Tidal.Transition.anticipate) i
+anticipateIn i t = transition tidal True (Sound.Tidal.Transition.anticipateIn t) i
+forId i t = transition tidal False (Sound.Tidal.Transition.mortalOverlay t) i
 d01 = p "1"
 d02 = p "2"
 d03 = p "3"
@@ -54,7 +55,7 @@ d13 = p "13"
 d14 = p "14"
 d15 = p "15"
 d16 = p "16"
-hush = mapM_ ($ silence) [d01,d02,d03,d04,d05,d06,d07,d08,d09,d10,d11,d12,d13,d14,d15,d16] -- >> click 0
+hush = mapM_ ($ silence) [d01,d02,d03,d04,d05,d06,d07,d08,d09,d10,d11,d12,d13,d14,d15,d16]
 
 n \\\ s = toScale $ fromIntegral . (+ i n) . toInteger <$> s
 r /// m = (r \\\ m, transpose) where transpose = toScale m
@@ -65,7 +66,7 @@ motion = p "" silence
 midi = s "din"
 ch n = (midi #midichan (n - 1))
 bar b1 b2 p = (b1+2, b2+3, p)
-sync = (0, 1, silence)
+syncStart = (0, 1, silence)
 out = 4
 setCC c n val = once $ control (val) #io n c where io n c = (midi #midicmd "control" #midichan (c-1) #ctlNum (n))
 setCC' c n val = control (val) #io n c where io n c = (midi #midicmd "control" #midichan (c-1) #ctlNum (n))
@@ -73,7 +74,8 @@ startTransport = bar 0 0 (setCC' 6 50 127)
 startTransport' = setCC' 6 00 127
 stopTransport out = bar (out+1) (out+1) (setCC' 6 50 0)
 stopTransport' = setCC' 6 50 0
-stopTransportNow = once stopTransport' >> hush >> (p "transport" $ silence)
+-- stopTransportNow = once stopTransport' >> hush >> (p "transport" $ silence)
+hush'' = once stopTransport' >> hush'
 midiScale n = 0.9 + n*0.03
 ccScale = (*127)
 cc n val = control (ccScale val) #io n where io n = (midicmd "control" #ctlNum n)
@@ -89,10 +91,16 @@ patToList n pat = fmap value $ queryArc pat (Arc 0 n)
 pullBy = (<~)
 pushBy = (~>)
 (|=) = (#)
-prog bars keyPat = note (slow bars $ keyPat)
+prog bars keyPat = note (slow bars keyPat)
 var each v p = pullBy 1 $ every each v p
 inKey k b p = note (slow b $ k p)
 
+:{
+type Section = ((Pattern Int, Pattern Double),(Pattern Int, Pattern Double))
+(v,c,b) =
+  let sec = (("0","0"),("0","0")) :: Section
+   in (sec, sec, sec)
+:}
 
 on1 = within (0,0.25)
 up1 = within (0.125,0.25)
@@ -159,7 +167,12 @@ bossa23 = 0.5 <~ bossa32
 -- MODEL D BINDINGS
 volume val = cc 7 (val)
 modwheel val = cc 1 (val)
-modsource val = cc 14 (val)
+modsourceA val = cc 14 (val)
+modsourceB val = cc 15 (val)
+arpio val = cc 16 (val)
+bendio val = cc 17 (val)
+delayio val = cc 18 (val)
+modmix val = cc 31 (val)
 finetune val = cc 3 (((val-(-2.5))*1)/5)
 glide val = cc 5 (val)
 modlfo val = cc 4 (val)
@@ -200,11 +213,28 @@ aattack val = cc 78 (val)
 asustain val = cc 79 (val)
 
 -- MERSENNE BINDINGS
-toneA lvl atk rel = stack [(cc 2 lvl), (cc 3 atk), (cc 4 rel)] #ch 14
-toneB lvl atk rel = stack [(cc 5 lvl), (cc 6 atk), (cc 7 rel)] #ch 14
+toneA lvl atk rel = stack [cc 2 lvl, cc 3 atk, cc 4 rel] #ch 14
+toneB lvl atk rel = stack [cc 5 lvl, cc 6 atk, cc 7 rel] #ch 14
 
 -- LAPLACE BINDINGS
+blend mix = stack [cc 2 mix, cc 3 lvl] #ch 13 where lvl = ((((1-mix)-(-0.75))*0.33)/1)
 
+-- ANIMOOG BINDINGS
+hipass = cc 3
+xcoord = cc 4
+ycoord = cc 5
+xmult = cc 6
+ymult = cc 7
+orbit = cc 8
+sync = cc 9
+fdrive = cc 10
+fenv = cc 11
+ffreq = cc 12
+fres = cc 13
+crush = cc 14
+drive = cc 15
+detune = cc 16
+unison = cc 17
 
 sb p = n p #midinote 49 #vel 0.4 #ch 9
 bd p = n p #midinote 51 #vel 0.4 #ch 9
@@ -236,13 +266,16 @@ overtones = cc' 6 10
 granular = cc' 6 8
 wavetable = cc' 7 2
 tb303 = cc' 8 7
-rhythmic n = stack[(cc' 6 7 n), (cc' 9 "[33, 41, 49, 57, 66, 74, 82]" n)]
-voyager = cc' 6 2
+samplekit n = cc' 6 7 n
+synthdrum n = cc' 9 "[33, 41, 49, 57, 66, 74, 82]" n
+voyagerA = cc' 6 2
+voyagerB = cc' 6 13
 modelD = cc' 12 2
-laplace = cc' 13 3
+laplace = cc' 13 4
 mersenne = cc' 6 4
 wurlitz = cc' 6 5
 piano = cc' 6 (6*2)
+samplr = cc' 6 11
 clicktrack v = p "click" $ cc' 9 90 v
 
 pickup xs = mapM_ (once) (xs $ lfo saw 1 0)
@@ -253,16 +286,28 @@ mixer p =
 --    ,stochastic p
     ,granular p
     ,wavetable p
-    ,tb303 p
-    ,rhythmic p
-    ,voyager p
+--    ,tb303 p
+    ,samplekit p
+    ,synthdrum p
+    ,voyagerA p
+    ,voyagerB p
     ,modelD p
     ,laplace p
     ,mersenne p
     ,wurlitz p
     ,piano p
+    ,samplr p
     ,click p
     ]
+
+macros p =
+    [cc' 5 2 p
+    ,cc' 5 3 p
+    ,cc' 5 4 p
+    ,cc' 5 5 p
+    ,cc' 5 (6*2) p
+    ]
+
 :}
 
 hemidemisemiquaver = 1/64
@@ -275,132 +320,77 @@ minim = 1/2
 :{
 ionian :: Num a => [a]
 ionian = [0,2,4,5,7,9,11]
-:}
-:{
 dorian :: Num a => [a]
 dorian = [0,2,3,5,7,9,10]
-:}
-:{
 phrygian :: Num a => [a]
 phrygian = [0,1,3,5,7,8,10]
-:}
-:{
 lydian :: Num a => [a]
 lydian = [0,2,4,6,7,9,11]
-:}
-:{
 mixolydian :: Num a => [a]
 mixolydian = [0,2,4,5,7,9,10]
-:}
-:{
 aeolian :: Num a => [a]
 aeolian = [0,2,3,5,7,8,10]
-:}
-:{
 locrian :: Num a => [a]
 locrian = [0,1,3,5,6,8,10]
-:}
-:{
 melMin :: Num a => [a]
 melMin = [0,2,3,5,7,9,11]
-:}
-:{
 melMin2 :: Num a => [a]
 melMin2 = [0,1,3,5,7,9,10]
-:}
-:{
 melMin3 :: Num a => [a]
 melMin3 = [0,2,4,6,8,9,11]
-:}
-:{
 melMin4 :: Num a => [a]
 melMin4 = [0,2,4,6,7,9,10]
-:}
-:{
 melMin5 :: Num a => [a]
 melMin5 = [0,2,4,5,7,8,10]
-:}
-:{
 melMin6 :: Num a => [a]
 melMin6 = [0,2,3,5,6,8,10]
-:}
-:{
 melMin7 :: Num a => [a]
 melMin7 = [0,1,3,4,6,8,10]
-:}
-:{
 harmMin :: Num a => [a]
 harmMin = [0,2,3,5,7,8,11]
-:}
-:{
 harmMin2 :: Num a => [a]
 harmMin2 = [0,1,3,5,6,9,10]
-:}
-:{
 harmMin3 :: Num a => [a]
 harmMin3 = [0,2,4,5,8,9,11]
-:}
-:{
 harmMin4 :: Num a => [a]
 harmMin4 = [0,2,3,6,7,9,10]
-:}
-:{
 harmMin5 :: Num a => [a]
 harmMin5 = [0,1,4,5,7,8,10]
-:}
-:{
 harmMin6 :: Num a => [a]
 harmMin6 = [0,3,4,6,7,9,11]
-:}
-:{
 harmMin7 :: Num a => [a]
 harmMin7 = [0,1,3,4,6,8,9]
-:}
-:{
 penta :: Num a => [a]
 penta = [0,2,4,7,9]
-:}
-:{
 penta2 :: Num a => [a]
 penta2 = [0,2,5,7,10]
-:}
-:{
 penta3 :: Num a => [a]
 penta3 = [0,3,5,8,10]
-:}
-:{
 penta4 :: Num a => [a]
 penta4 = [0,2,5,7,9]
-:}
-:{
 penta5 :: Num a => [a]
 penta5 = [0,3,5,7,10]
-:}
-:{
 dimWhole :: Num a => [a]
 dimWhole = [0,2,3,5,6,8,9,11]
-:}
-:{
 dimHalf :: Num a => [a]
 dimHalf = [0,1,3,4,6,7,9,10]
-:}
-:{
 wholeTone :: Num a => [a]
 wholeTone = [0,2,4,6,8,10]
 :}
 
-runSilence p0 p = p "silence" silence
+runSilence p0 p1 p2 = p "silence" silence
+runSilence'' p0 = p "silence" silence
 runSilence' = p "silence" silence
 p01 = runSilence'
 p02 = runSilence'
 p03 = runSilence'
 p04 = runSilence'
-p05 = runSilence'
+p05 = runSilence
 p06 = runSilence
 p07 = runSilence
 p08 = runSilence
-p09 = runSilence
-p10 = runSilence
+p09 = runSilence''
+p10 = runSilence''
 p11 = runSilence
 p12 = runSilence
 p13 = runSilence
@@ -408,12 +398,14 @@ p14 = runSilence
 p15 = runSilence
 p16 = runSilence
 
--- :{
--- :}
+:s ~/liveCode/algomech/Instruments/timeFuncs.tidal
+:s ~/liveCode/algomech/Instruments/p01-05_OVERTONES.tidal
+:s ~/liveCode/algomech/Instruments/p06_QUANTA.tidal
+:s ~/liveCode/algomech/Instruments/p09_RUISMAKER.tidal
+:s ~/liveCode/algomech/Instruments/p10_DRUMKIT.tidal
+:s ~/liveCode/algomech/Instruments/p12_MODELD.tidal
+:s ~/liveCode/algomech/Instruments/pXX_PHRASE.tidal
 
--- :s ~/liveCode/algomech/Instruments/timeFuncs.tidal
--- :s ~/liveCode/algomech/Instruments/p09_RUISMAKER.tidal
--- :s ~/liveCode/algomech/Instruments/p10_DRUMKIT.tidal
--- :s ~/liveCode/algomech/Instruments/p12_MODELD.tidal
+keySig = C \\\ aeolian
 
 :set prompt "tidal> "

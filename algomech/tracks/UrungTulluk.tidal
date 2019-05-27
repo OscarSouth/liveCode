@@ -1,69 +1,48 @@
-p "urungTulluk" $ do
-  let out = 8*9999
-  let
-  seqP [sync,startTransport,stopTransport out
-    ,bar 0 out metronome
-    ]
+-- URUNG TULLUK
 
 runWith andante
 
 keySig = A \\\ aeolian
 
-(v,c) = ((verse, verse'),
-         (chorus, chorus'))
-    where
-      verse = fast 2 $ cat[
-        "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]",
-        "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
-        ] :: Pattern Int
-      verse' = "[0 3 . 3 0 [3 4] 0]" :: Pattern Int
-      chorus = fast 2 $ cat [
-        "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]",
-        "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
-        ] :: Pattern Int
-      chorus' = "-2 2 6 5 5 3 4 0" :: Pattern Int
-
-p06 p0 p1 = d07 $ do
-  let (motion, prog) = (fst p0, inKey keySig)
+p06 p0 p1 p2 = d06 $ do
+  let (motion, prog) = (fst p0, inKey p1)
   id $
     stack [silence
       ,note "0*4"
       ,cc 1 (lfo saw 0.65 0.69)
       ,cc 74 0.7
-      ] |= ch 06
+      ] |* vel p2 #ch 06
         -- |- note 12
-        |+| prog 4 (motion
+        |+| prog 4 (fst motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
          -- +| "[0 <-5 -3>]*16"
-         +| "[4,7,9]*16"
-          )
+         -- +| "[4,7,9]*16"
+          ) |+ note (snd motion)
 
-p08 p0 p1 = d08 $ do
-  let (motion, prog) = (snd p0, inKey keySig)
+p08 p0 p1 p2 = d08 $ do
+  let (motion, prog) = (snd p0, inKey p1)
   id $
     stack [silence
-      ,note "0*16"
-      -- ,midinote "60"
-      -- ,note "0" #legato "[0.25!3 0.5]/4"
-      ] |= ch 08
-        -- |+ note 12
-        -- |= legato "1.1!7 0.7"
-        |* vel p1
-        |+| prog 4 (motion
-         +| "[7 0 4 6]*16"
-         -- +| "[0 7]*16"
-          )
+      ,phrase 1 "mp"
+      -- ,fast "8!2 12 <12 16>" (modwheel $ fastcat [lfo sine 0 1])
+      ,modwheel 0.0
+      ] |* vel p2 #ch 08
+        -- |- note 12
+        |+| prog 4 (fst motion
+         -- +| "[7 0 4 6]*16"
+         -- +| "[0 0]*32"
+          ) |+ note (snd motion)
 
 p09 p0 = d09 $ do
   id $
     stack [silence
-      -- ,ruismk minim "[~ cp]"
-      ,ruismk crotchet "[~ sn]/2"
+      ,ruismk minim "[~ cp]"
+      -- ,ruismk crotchet "[~ sn]/2"
       ,ruismk crotchet "sb"
       -- ,ruismk 1 "~ ~ bd ~"
-      -- ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
-      ,ruismk 1 "hats"
-      -- ,ruismk quaver "hh"
+      ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
+      -- ,ruismk 1 "hats"
+      ,ruismk minim "~ hh"
       ] |= ch 09
         |* vel p0
         -- >> silence
@@ -75,58 +54,63 @@ p10 p0 = d10 $ do
       ,kit 1 "[bd:echo bd:lead]" #vel 0.8
       ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
       ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
-      -- ,cymbals crotchet "~ rd" #vel 0.6
-      ] |= ch 10
+      ,cymbals crotchet "~ rd" #vel 0.6
+      ] |* vel p0 #ch 10
         |* vel "[1.1 0.9!7]*4"
         |+ vel 0.3
-        |* vel p0
         |+ humanise 0.2
         -- >> silence
 
-p12 p0 p1 = d12 $ do
-  let (motion, prog) = (fst p0, inKey keySig)
+p11 p0 p1 p2 = d11 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      ,modwheel 0.2
+      ] |* vel p2 #ch 11
+        |+ note 12
+        -- |= legato "1.1!7 0.7"
+        |+| prog 4 (fst motion
+         -- +| "[7 0 4 6]*16"
+         -- +| "[0 -5]*4"
+         -- +| "[0 0]*32"
+          ) |+ note (snd motion)
+
+p12 p0 p1 p2 = d12 $ do
+  let (motion, prog) = (fst p0, inKey p1)
   let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
   id $
     stack [silence
-      ,dPsyTrance
-        (lfo sine 0.4 0.7) -- 0.62 -- cutoff
-        0.6 -- res
-        (2 <~ lfo1*5) -- contour
-        (lfo1 *1) --  osc23
-        "0 1" -- oscmod
-        (lfo1*2) -- lfo
-        (slow 2 $ 3 <~ lfo1 * 1) -- mod
-      ,phrase 1 "w"
-      ] |= ch 12
+      ,dOcean
+        (lfo sine 0.3 0.4) -- 0.62 -- cutoff
+        0.4 -- res
+        (2 <~ lfo1*2) -- contour
+        (lfo1 *1) -- osc2&3
+        0 -- oscmod
+        (lfo1*1) -- lfo
+      ,phrase 1 "mp"
+      ] |* vel p2 #ch 12
         |+ note 24
-        |* vel p1
-        |+| prog 4 (motion
+        |+| prog 4 (fst motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
-         -- +| "[0 <2 4 [5 3] 0>]*4"
-         +| "0*16"
-          )
-          |+ note "0 <0 0 0 [0 1]> 0 0"
+         +| "[0 <2 4 [5 3] 0>]*4"
+         -- +| "0*16"
+          ) |+ note (snd motion)
           -- >> silence
+          p13 p0 p1 p2 = d13 $ do
 
-p13 p0 p1 = d13 $ do
-  let (motion, prog) = (fst p0, inKey keySig)
+  let (motion, prog) = (fst p0, inKey p1)
   id $
-    stack [silence
-      ,phrase 1 "w"
-      -- ,toneA 0.4 1 1
-      -- ,toneB 0.7 1 1
-      ] |= ch 13
+      stack [silence
+      ,phrase 1 "mp"
+      ,blend 0
+      ] |* vel p2 #ch 13
         |- note 12
-        |* vel p1
-        |+| prog 4 (motion
+        |+| prog 4 (fst motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
-         -- +| "[0 2]*16"
-         +| "[7 2 4 2]*16"
-         +| "0*16"
-          )
-          |+ note "0 <0 0 0 [0 1]> 0 0"
+         +| "[0 2]*16"
+         -- +| "[7 2 4 2]*16"
+         +| "0*32"
+          ) |+ note (snd motion)
 
 hush
-
-
-inKey k b p = note (slow b $ k p)

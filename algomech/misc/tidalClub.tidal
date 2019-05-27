@@ -13,3 +13,5 @@ d2 $ note "0 7"
   -- >> silence
 
 hush
+
+let hush' = streamHush tidal

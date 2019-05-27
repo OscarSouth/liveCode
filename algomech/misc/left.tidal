@@ -13,9 +13,9 @@ p09 p0 = d09 $ do
 
 p05 p0 = d05 $ do
   id $
-    -- pullBy 1 $ every 8 (const $
-      -- harmonics quaver "E2"
-      -- ) $
+    pullBy 1 $ every 8 (const $
+      harmonics quaver "E2"
+      ) $
       stut 3 0.1 semiquaver $
     stack [silence
       ,harmonics 1 "~ e1 . ~ g1 ~ e2 . ~ g1 . ~ e1 ~ b1"
@@ -58,7 +58,6 @@ p08 p0 = d08 $ do
       |+| prog ("2 0 .-3 "
        +| "[0 12 0 12]*16"
         )
-
 
 adagio = do
     setCC 6 51 127

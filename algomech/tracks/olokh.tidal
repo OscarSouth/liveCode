@@ -1,0 +1,135 @@
+-- OLOKH
+
+runWith adagio
+
+p08 p0 p1 p2 = d08 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      -- ,modwheel (rev . fast 2 $ lfo saw 0 0.3)
+      ,modwheel 0.0
+      ] |* vel p2 #ch 08
+        -- |+ note 12
+        |+| prog 4 (fst motion
+         +| "7*64"
+         -- +| "[0!2 ~!14]*4"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      ,ruismk crotchet "bd"
+      -- ,ruismk 1 "bd"
+      ,ruismk 1 "hats"
+      -- ,ruismk 1 "sb:echo"
+      ,ruismk minim "~ hh"
+      -- ,ruismk minim "~ sn"
+      ] |* vel p0 #ch 09
+      -- >> silence
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      -- ,kit minim "bd:leadq" #vel 0.9
+      -- ,hats crotchet "~ c"
+      ,fast 2 $ degrade $ 0.5 <~ (stut 8 0.6 0.125 $ kit 1 "rm") #vel 0.5
+      ,demisemiquaver <~ (degradeBy 0.9 $ kit semiquaver "sn" |+ humanise 0.3 |* vel 0.2)
+      ,kit semiquaver "sn" |+ humanise 0.6 |- vel 0.15
+        -- |+ vel "[0 0 0.2 0]*4"
+        -- |+ vel "[0 0 [0.2 0] 0]*2"
+      -- ,cymbals 1 "rd [rd rd?] rd rd" #vel 0.8 |* vel (0.25 <~ lfo sine 0.6 0.9)
+      ,cymbals crotchet "cr" |+ vel 0.1
+      ] |* vel p0 #ch 10
+        |+ vel 0.2
+        |+ humanise 0.1
+      -- >> silence
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
+      ,kit 1 "[bd:echo bd:lead]" #vel 0.8
+      ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
+      ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
+      ,cymbals crotchet "~ rd" #vel 0.9
+      ] |* vel p0 #ch 10
+        |* vel "[1.1 0.9!7]*4"
+        |+ vel 0.3
+        |+ humanise 0.2
+        -- >> silence
+
+p11 p0 p1 p2 = d11 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      ,modwheel (slow 16 $ lfo saw 0.2 (slow 3 $ lfo sine 0.3 0.4))
+      -- ,modwheel 0.5
+      ] |* vel p2 #ch 11
+        |+ note 12
+        |+| prog 4 (fst motion
+         -- +| ("[[7 2][2 1][5 2][9 . 8 7]]*8" |- 7)
+        -- |+ "[~ ~ ~ [~ 0]]*8"
+         +| "[0]*8"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p12 p0 p1 p2 = d12 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      -- ,modwheel (fast 16 $ lfo square 0.3 0)
+      ,modwheel 0.0
+      ,dDroneLead ,osc3tune 4.4
+      ] |* vel p2 #ch 12
+        -- |+ note "12"
+        -- |- note 24
+        |+| prog 4 (fst motion
+         +| "[<0 [2 . 2 3] 2 [7 . 7 6]>]*4"
+         -- +| "[<0 7> . 3 4]*8"
+         -- +| "[<7 9 14 [17 16]>]*8"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p15 p0 p1 p2 = d15 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      ,hemidemisemiquaver ~> ped "[0 1!31]"
+      ] |* vel p2 #ch 15
+        |+ humanise 0.1
+        |+ note 12
+        |+| prog 4 (fst motion
+         -- +| "[0,4]*4"
+         +| "[<[7 0][6 2][5 1][4 3]>]*8"
+         -- +| "<0 7 14>*4"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p16 p0 p1 p2 = d16 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  id $
+    within (0.1,1) degrade $
+    sometimes ((|+ note 12) . rev) $
+    stack [silence
+      ,phrase 2 "mp"
+      ,hemidemisemiquaver ~> ped "[0 1!31]"
+      ] |* vel p2 #ch 16
+        |+ humanise 0.1
+        |- note 12
+        |+| prog 4 (fst motion
+        -- |+  "[[0,9,4] [2,11,7] [-3,7,2] [0,9,4]]*4"
+         +| "[0 2 4 6 7 8 9 11]*8"
+         -- +| "[[0,4] 2 4 7]*16"
+         -- +| "[0 . 7 <9 [11 21]>]*8"
+          ) |+ note (snd motion)
+            -- |+ legato 0.4
+            |+ vel "0.2"
+      -- >> silence
+
+hush

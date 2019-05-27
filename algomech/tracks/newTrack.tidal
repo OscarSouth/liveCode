@@ -1,0 +1,101 @@
+prog bars keyPat = note (slow bars keyPat)
+
+(v,c) = ((vTheme,vHarm)
+        ,(cTheme,cHarm)
+        )
+    where
+      vTheme = (fastcat [
+        "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]",
+        "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
+        ],
+        "0 <0 0 0 [0 1]> 0 0"
+        )
+      vHarm = (fastcat [
+        "0 3 . 3 0 [3 4] 0"
+        ],
+        "0"
+        )
+      cTheme = (fastcat [
+        "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]",
+        "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
+        ],
+        "0"
+        )
+      cHarm = (fastcat [
+        "-2 2 6 5 5 3 4 0"
+        ],
+        "0"
+        )
+
+type Section = ((Pattern Int, Pattern Double),(Pattern Int, Pattern Double))
+
+(v,c,b) =
+  let s = (("0","0"),("0","0")) :: Section
+   in (s,s,s)
+
+(v,c) = (
+  (f vTheme, f vHarm) :: Section,
+  (f cTheme, f cHarm) :: Section
+  )
+    where
+      f a = (fastcat $ fst a, fastcat $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]",
+        "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
+        ],[ -- TRANSPOSE
+        "0 <0 0 0 [0 1]> 0 0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0 3 . 3 0 [3 4] 0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]",
+        "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "-2 2 6 5 5 3 4 0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+p16 p0 p1 = d16 $ do
+  let (motion, prog) = (fst p0, inKey keySig)
+  id $
+    stack [silence
+      ,phrase 1 "x"
+        |- note 12
+        |+| prog 4 (fst motion
+          ) |+ note (snd motion)
+      ,semiquaver ~> ped "[1!7 0]"
+      ] |* vel p1 #ch 16
+        |+ humanise 0.1
+      -- >> silence
+
+p15 p0 p1 = d16 $ do
+  let (motion, prog) = (snd p0, inKey keySig)
+  id $
+    stack [silence
+      ,phrase 1 "x"
+      ,semiquaver ~>  ped "[0 1!7]"
+      ] |* vel p1 #ch 16
+        |- note 12
+        |+ humanise 0.1
+        |+| prog 4 (fst motion
+         -- +| ""
+          ) |+ note (snd motion)
+      -- >> silence
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,hats 1 "~ c"
+      ,kit 1 "bd"
+      ] |* vel p0 #ch 10
+        |+ humanise 0.1
+      -- >> silence
+
+hush

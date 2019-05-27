@@ -1,0 +1,124 @@
+-- vi VI V I
+(keySig,fineTune,v,c) = (
+  B \\\ aeolian, 0
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  )
+    where
+      t = slow 2
+      f a = ((t . fastcat) $ fst a, (t . fastcat) $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "4 5 3 4"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0 -2 -1 2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+
+-- i VI
+(keySig,fineTune,v,c) = (
+  B \\\ aeolian, 0
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  )
+    where
+      t = slow 2
+      f a = ((t . fastcat) $ fst a, (t . fastcat) $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0 -2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "[-3 -2]*2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+-- vi IV I V
+(keySig,fineTune,v,c) = (
+  B \\\ aeolian, 0
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  )
+    where
+      t = slow 2
+      f a = ((t . fastcat) $ fst a, (t . fastcat) $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0 -2 3 -1"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+-- i VI
+(keySig,fineTune,v,c) = (
+  B \\\ aeolian, 0
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  )
+    where
+      t = id
+      f a = ((t . fastcat) $ fst a, (t . fastcat) $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "5 4 3 3"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])

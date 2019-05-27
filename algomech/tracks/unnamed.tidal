@@ -1,0 +1,133 @@
+-- UNNAMED
+
+runWith andante
+
+p08 p0 p1 p2 = d08 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  id $
+    stack [silence
+      ,note "0/2"
+      -- ,note "2/2"
+      -- ,modwheel (slow 6 $ lfo sine 0 1)
+      ,modwheel 0
+      ] |* vel p2 #ch 08
+        |+ note 0
+        |+| prog 4 (fst motion
+         -- +| "[0 4 7 9]*16"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      -- ,ruismk 2 "hats"
+      -- ,ruismk minim "~ cp"
+      ,ruismk 4 "sb!6 ~!2"
+      -- ,ruismk crotchet "bd"
+      ] |* vel p0 #ch 09
+      -- >> silence
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,kit 1 "bd:lead" #vel 0.7
+      ,hats 1 "~ c"
+      ,fast 2 $ degrade $ 0.5 <~ (stut 8 0.6 0.125 $ kit 1 "rm") #vel 0.5
+      ,cymbals 1 "rd [rd rd?] rd rd" #vel 0.8 |* vel (0.25 <~ lfo sine 0.6 0.9)
+      ] |* vel (p0*1.2) #ch 10
+        |+ humanise 0.1
+      -- >> silence
+
+
+p11 p0 p1 p2 = d11 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "x"
+      ,modwheel (slow 7 $ lfo sine 0.2 0.4)
+      ] |* vel p2 #ch 11
+        |+ note 12
+        |+| prog 4 (fst motion
+         +| "[0]*16"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p12 p0 p1 p2 = d12 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
+  id $
+    stack [silence
+      ,note "2/2"
+      ,modwheel 0.0
+      ,dArpPad
+      ] |* vel p2 #ch 12
+        -- |+ note 24
+        |+| prog 4 (fst motion
+         -- +| "[0,3,4]"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p13 p0 p1 p2 = d13 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  id $
+    stack [silence
+      -- ,note "2/2"
+      ,note "0/2"
+      ,blend (slow 3 $ lfo sine 0.25 0.5)
+      ] |* vel p2 #ch 13
+        |- note 24
+        |+| prog 4 (fst motion
+         -- +| "[0 4 7 9]"
+         -- +| "[0 7 4 9]*2"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p14 p0 p1 p2 = d14 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  id $
+    stack [silence
+      ,note "0/2"
+      ,toneA 0.6 0.8 0.4
+      ,toneB 0.8 0.6 1
+      ] |* vel p2 #ch 14
+        -- |+ note 12
+        |+| prog 4 (fst motion
+         +| "[0 -3 -5 [0 -1]]*2"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p15 p0 p1 p2 = d15 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  id $
+    every 2 (rev) $
+    stack [silence
+      ,note "0/2"
+      -- ,note "2/2"
+      ,semiquaver ~>  ped "[0 1!7]"
+      ] |* vel p2 #ch 15
+        |+ humanise 0.1
+        |+ note "[0 <0 12>]/4"
+        |+| prog 4 (fst motion
+         -- +| "[0 4 7 9]*4"
+        |+ "[0,<2 2 -3 [4 3]>]"
+         +| "[0 4 7 [2 1]]"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p16 p0 p1 p2 = d16 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  id $
+    -- stut 3 0.6 0.125 $
+    stack [silence
+      ,note "0/2"
+      ,semiquaver ~>  ped "[0 1!7]"
+      ] |* vel p2 #ch 16
+        |- note 24
+        -- |- note 12
+        |+ humanise 0.1
+        |+| prog 4 (fst motion
+         +| "[0 , 7 <9 [11 . 14 21]>]*8"
+          ) |+ note (snd motion)
+      -- >> silence
+
+hush

@@ -1,3 +1,5 @@
+:{
+
 harmonics bars pat = do
   let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
   let leg = (legato ( (1/4) *
@@ -36,95 +38,81 @@ harmonics bars pat = do
             ("A2", note 2 #ch 1 #vel 0.9),
             ("A3", note 3 #ch 1 #vel 0.9)
           ]
-  let fs = [("breve", slow 2),
-            ("semibreve", fast 1),
-            ("minim", fast 2),
-            ("crotchet", fast 4),
-            ("quaver", fast 8),
-            ("semiquaver", fast 16),
-            ("demisemiquaver", fast 32),
-            ("echos" , stut 2 0.75 (crotchet/mult)),
-            ("echo" , stut 2 0.75 (quaver/mult)),
-            ("leads" , ((rev) . (stut 2 0.75) (crotchet/mult))),
-            ("lead" , ((rev) . (stut 2 0.75) (quaver/mult))),
-            ("t", (|= vel 1.0)),
-            ("p", (|= vel 0.0))
+  let fs = (timeFuncs mult) ++ [
+           (".", (#legato 0.125)),
+           ("t", (|= vel 0.9)),
+           ("p", (|= vel 0.1))
           ]
    in ur bars pat ps fs
 
-riff = do
-  let bc = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 4
-  let g = note "[~ ~ ~ [2 ~] ~ ~ ~ ~]" #ch 3
-  let e = note "1 ~ ~ 1" #ch 2
-  let a = note "" #ch 1
-  stack[s "~"
-    ,bc
-    ,g
-    ,e
-    -- ,a
-    ]
+:}
 
-riff' = do
-  let bc = note "[~ ~ ~ [1 ~] ~ ~ ~ ~]" #ch 4
-  let g = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 3
-  let e = note "2 ~ ~ 1" #ch 2
-  let a = note "" #ch 1
-  stack[s "~"
-    ,bc
-    ,g
-    ,e
-    -- ,a
-    ]
-
-p01 = d01 $ do
-  stack [silence
-    ,cat [riff, riff, riff, riff']
-    ] |+ vel 0.1
-
-p05 = d05 $ do
-  id $
-    stack [silence
-      ,pullBy crotchet $ ped "[0 1!7]"
-      ] |= ch 05
-        -- >> silence
-
-(p01, p02, p03, p04, p05) =
-  let p05 = note bc #ch 4
-      p04 = note g #ch 3
-      p03 = note e #ch 2
-      p02 = note a # ch 1
-      p01 = sus #ch 5
-   in (d01 p01, d02 p02, d03 p03, d04 p04, d05 p05)
-    where
-      sus = stack [silence
-              ,pullBy crotchet $ ped "[0 1!7]"
-              ,portamento "0"
-              ]
-      bc  = "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]"
-      g   = "[~ ~ ~ [2 ~] ~ ~ ~ ~]"
-      e   = "1 ~ ~ 1"
-      a   = ""
-
-
-
-
-p05 p0 = d01 $ do
-  id $
-    every 4 (const $
-      harmonics 1 "E2*8"
-      ) $
-    stut 3 0.1 semiquaver $
-    stack [silence
-      ,harmonics 1 "~ e1 . ~ g1 ~ e2 . ~ g1 . ~ e1 ~ b1"
-      ,ped 0 #ch 5
-      ] |= vel 1
-
-hush
-
-
-overtones = cc' 6 10
-
--- LEARN TO WRITE DRUMBEAT AND 2 OVERTONE RIFFS
-
-
-hush
+-- riff = do
+--   let bc = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 4
+--   let g = note "[~ ~ ~ [2 ~] ~ ~ ~ ~]" #ch 3
+--   let e = note "1 ~ ~ 1" #ch 2
+--   let a = note "" #ch 1
+--   stack[s "~"
+--     ,bc
+--     ,g
+--     ,e
+--     -- ,a
+--     ]
+--
+-- riff' = do
+--   let bc = note "[~ ~ ~ [1 ~] ~ ~ ~ ~]" #ch 4
+--   let g = note "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]" #ch 3
+--   let e = note "2 ~ ~ 1" #ch 2
+--   let a = note "" #ch 1
+--   stack[s "~"
+--     ,bc
+--     ,g
+--     ,e
+--     -- ,a
+--     ]
+--
+-- p01 = d01 $ do
+--   stack [silence
+--     ,cat [riff, riff, riff, riff']
+--     ] |+ vel 0.1
+--
+-- p05 = d05 $ do
+--   id $
+--     stack [silence
+--       ,pullBy crotchet $ ped "[0 1!7]"
+--       ] |= ch 05
+--         -- >> silence
+--
+-- (p01, p02, p03, p04, p05) =
+--   let p05 = note bc #ch 4
+--       p04 = note g #ch 3
+--       p03 = note e #ch 2
+--       p02 = note a # ch 1
+--       p01 = sus #ch 5
+--    in (d01 p01, d02 p02, d03 p03, d04 p04, d05 p05)
+--     where
+--       sus = stack [silence
+--               ,pullBy crotchet $ ped "[0 1!7]"
+--               ,portamento "0"
+--               ]
+--       bc  = "[[~ ~ ~ 1] ~ [~ 1 ~ ~] ~]"
+--       g   = "[~ ~ ~ [2 ~] ~ ~ ~ ~]"
+--       e   = "1 ~ ~ 1"
+--       a   = ""
+--
+--
+--
+--
+-- p05 p0 = d01 $ do
+--   id $
+--     every 4 (const $
+--       harmonics 1 "E2*8"
+--       ) $
+--     stut 3 0.1 semiquaver $
+--     stack [silence
+--       ,harmonics 1 "~ e1 . ~ g1 ~ e2 . ~ g1 . ~ e1 ~ b1"
+--       ,ped 0 #ch 5
+--       ] |= vel 1
+--
+--
+--

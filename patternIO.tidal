@@ -1,0 +1,38 @@
+import qualified Sound.Tidal.Tempo as T
+import qualified Sound.OSC.FD as O
+import Control.Concurrent.MVar
+import Control.Concurrent
+
+onTick :: MVar (Pattern (IO b)) -> MVar T.Tempo -> T.State -> IO ()
+onTick pMV tempoMV st = do tempo <- readMVar tempoMV
+                           p <- readMVar pMV
+                           now <- O.time
+                           let es = filter eventHasOnset $ queryArc p (T.nowArc st)
+                               on e = (sched tempo $ start $ whole e)
+                           mapM_ (\e -> do threadDelay (floor $ (on e - now) * 1000000)
+                                           value e
+                                 ) es
+                           return ()
+patternIO :: IO (Pattern (IO ()) -> IO ())
+patternIO = do pMV <- newMVar empty
+               (tempoMV, _) <- T.clocked defaultConfig (onTick pMV)
+               return $ \x -> do swapMVar pMV x
+                                 return ()
+
+p1 <- patternIO
+
+p2 <- patternIO
+
+p3 <- patternIO
+
+p1
+  $ listToPat [
+    p2
+      $ ("{0.25 0 1}%2" ~>)
+      $ outside 2 (spread ($) [id, rev, linger 0.125])
+      $ listToPat [d1 $ n "2 5" # s "ifdrums" # cps 1, putStr "WAT", all (# lpq 0.6), d2 $ s "cp*4" # end 0.2],
+    p3
+      $ every 3 rev $ slow 2
+      $ listToPat [d1 $ s "clak*4", all (# lpf 800), d2 $ s "ifdrums*8" # cps 1.2, hush, return (), all id]
+  ]
+

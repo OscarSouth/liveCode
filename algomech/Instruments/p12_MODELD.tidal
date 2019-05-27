@@ -1,32 +1,113 @@
 :{
 
-phrase bars pat = do
-  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
-  let ps = [("w", note "0" #legato 1),
-            ("m", note "0" #legato minim),
-            ("c", kick "0" #legato crotchet),
-            ("q", note "0" #legato quaver),
-            ("s", note "0" #legato semiquaver),
-            ("d", note "0" #legato demisemiquaver),
-            ("h", note "0" #legato hemidemisemiquaver)
-          ]
-  let fs = (timeFuncs mult) ++ [
-           (">", (#vel 1)),
-           (".", (#legato 0.2)),
-           (".>", (#vel 1) . (#legato 0.2))
-           ]
-   in ur bars pat ps fs
+dOcean p1 p2 p3 p4 p5 p6 = do
+  stack
+    [silence
+    -- EFFECTS
+    ,arpio 0
+    ,bendio 0
+    ,delayio 0
+    -- CONTROLLERS
+    ,volume 0.8
+    ,modsourceA 0
+    ,modsourceB 1
+    ,modmix 1
+    ,modlfo p6
+    ,finetune 0
+    ,glide 0.3
+    ,glideio 1
+    ,decayio 1
+    -- OSCILLATOR BANK
+    ,oscmod p5
+    ,osc3ctrl 0
+    ,osc1range 0.4
+    ,osc1wave 0.2
+    ,osc2range 0.4
+    ,osc2tune "-0.1"
+    ,osc2wave 1
+    ,osc3range 0.6
+    ,osc3tune 0.2
+    ,osc3wave 1
+    -- MIXER
+    ,osc1vol 1
+    ,osc1io 1
+    ,osc2vol (p4*0.5)
+    ,osc2io 1
+    ,osc3vol p4
+    ,osc3io 1
+    ,feedbackvol 0
+    ,feedbackio 0
+    ,noisevol 0.12
+    ,noiseio 1
+    ,noisetype 0
+    -- MODIFIERS
+    ,filtermod 1
+    ,keyboard1 1
+    ,keyboard2 0
+    ,fcutoff p1
+    ,fresonance p2
+    ,fcontour p3
+    ,fattack 0
+    ,fdecay 0.6
+    ,fsustain 1
+    ,aattack 0
+    ,adecay 0.1
+    ,asustain 1
+    ] |= ch 12
+
+dKolukecheen = do
+  stack
+    [silence
+    -- EFFECTS
+    ,arpio 1
+    ,bendio 1
+    ,delayio 1
+    -- CONTROLLERS
+    ,volume 0.7
+    ,modsourceA 0
+    ,modsourceB 1
+    ,modmix 0
+    ,modlfo 0
+    ,finetune 0
+    ,glide 0
+    ,glideio 0
+    ,decayio 1
+    -- OSCILLATOR BANK
+    ,oscmod 0
+    ,osc3ctrl 0
+    ,osc1range 0.4
+    ,osc1wave 0.6
+    ,osc2range 0.8
+    ,osc2tune 0.01
+    ,osc2wave 0.6
+    ,osc3range 0
+    ,osc3tune "-0.2"
+    ,osc3wave 0
+    -- MIXER
+    ,osc1vol 0.7
+    ,osc1io 1
+    ,osc2vol 0.85
+    ,osc2io 1
+    ,osc3vol 0
+    ,osc3io 0
+    ,feedbackvol 0.23
+    ,feedbackio 1
+    ,noisevol 0.1
+    ,noiseio 0
+    ,noisetype 0
+    -- MODIFIERS
+    ,filtermod 1
+    ,keyboard1 0
+    ,keyboard2 1
+    ,fcutoff 0.3
+    ,fresonance 0.2
+    ,fcontour 0.3
+    ,fattack 0.57
+    ,fdecay 0.57
+    ,fsustain 0.5
+    ,aattack 0
+    ,adecay 0.5
+    ,asustain 0.52
+    ] |= ch 12
 
 :}
-
-
--- p12 p0 = d12 $ do
---   let prog = inKey keySig 4
---   id $
---     stack [silence
---       ,phrase 1 "0"
---       ] |= ch 12
---         |* vel p0
---         |+| prog ("0"
---          +| "0"
---           )

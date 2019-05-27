@@ -1,0 +1,251 @@
+  -- OLOKH
+(keySig,v,c,b) = (
+  F \\\ aeolian
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  ,(f bTheme, f bHarm) :: Section
+  )
+    where
+      t = (fast 2) . fastcat
+      f a = (t $ fst a, t $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "4 2 0 4 2 0 4 2",
+        "<[-2 2 5 2 6 2 5 2] [-4 0 3 0 4 3 0 3]>"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "[0 -2 0 -4]/2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bTheme = ([ -- BREAK THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bHarm = ([ -- BREAK HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+  -- URUNG TULLUK
+(keySig,v,c,b) = (
+  A \\\ aeolian
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  ,(f bTheme, f bHarm) :: Section
+  )
+    where
+      f a = (fastcat $ fst a, fastcat $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]",
+        "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
+        ],[ -- TRANSPOSE
+        "0 <0 0 0 [0 1]> 0 0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0 3 . 3 0 [3 4] 0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]",
+        "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "-2 2 6 5 5 3 4 0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bTheme = ([ -- BREAK THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bHarm = ([ -- BREAK HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+  -- OCEAN
+(keySig,v,c,b) = (
+  Eb \\\ aeolian
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  ,(f bTheme, f bHarm) :: Section
+  )
+    where
+      f a = (fastcat $ fst a, fastcat $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "<0 2> <2 4> <1 3> [<-2 0> . <-4 -1> -3]"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0 2 -1 [-2 . -4 -3]"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bTheme = ([ -- BREAK THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bHarm = ([ -- BREAK HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+  -- AIYY UMSUUR UDAGAN YRYATA
+(keySig,v,c,b) = (
+  F \\\ aeolian
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  ,(f bTheme, f bHarm) :: Section
+  )
+    where
+      f a = (fastcat $ fst a, fastcat $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "[0 2]/2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "[0 2]/2",
+        "[4 0]/2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bTheme = ([ -- BREAK THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bHarm = ([ -- BREAK HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+  -- KOLUKECHEEN
+(keySig,v,c,b) = (
+  A \\\ aeolian
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  ,(f bTheme, f bHarm) :: Section
+  )
+    where
+      t = (fast 2) . fastcat
+      f a = ((t . fst) a, (t . snd) a)
+      vTheme = ([ -- VERSE THEME
+        "0 2 . 1 0 . 4 . 3 4",
+        "<[[3 [2 0]] . 2] [[2 3 . 2 1] 0]>"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "[0 [0 3] [3 4] [4 0]]/2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0 2 . 1 0 . 4 . 3 4",
+        "<[[3 [2 0]] . 2] [[2 3 . 2 1] 0]>"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "[2 -2 -1 2 . -2 -4 -3 0]/2"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bTheme = ([ -- BREAK THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bHarm = ([ -- BREAK HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+  -- BLANK
+(keySig,v,c,b) = (
+  F \\\ aeolian
+  ,(f vTheme, f vHarm) :: Section
+  ,(f cTheme, f cHarm) :: Section
+  ,(f bTheme, f bHarm) :: Section
+  )
+    where
+      f a = (fastcat $ fst a, fastcat $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cTheme = ([ -- CHORUS THEME
+        "0",
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      cHarm = ([ -- CHORUS HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bTheme = ([ -- BREAK THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      bHarm = ([ -- BREAK HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])

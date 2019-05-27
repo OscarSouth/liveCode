@@ -27,12 +27,12 @@ p07 p0 = d07 $ do
       ,hipass "[0.1 0.4 . 0.6]*4"
       ,midinote "60*8"
       -- ,pushBy quaver $ xcoord $ lfo tri (0.25+x) (0.75+x)
-      ,fast 2 $ ycoord $ lfo sine (0.75+y) (0.25+y)
-      ,pushBy minim $ ymult $ lfo saw 0 1
+      -- ,fast 2 $ ycoord $ lfo sine (0.75+y) (0.25+y)
+      -- ,pushBy minim $ ymult $ lfo saw 0 1
       -- ,pullBy minim $ orbit $ lfo tri 0 1
       ] |= ch 07
         |+ note (keySig 0)
-        |- note 36
+        -- |- note 36
         -- |= legato semiquaver
         -- >> silence
 
@@ -135,7 +135,7 @@ p07 p0 = d07 $ do
       ,note "0*4"
       -- ,freq "0.45"
       ,freq (fast 4 $ crotchet ~> lfo sine 0.3 0.4)
-      ,fenv "0.45" 
+      ,fenv "0.45"
       ,res "0"
       ,xcoord 0.5
       ,ycoord 0.7

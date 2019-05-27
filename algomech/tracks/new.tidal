@@ -1,0 +1,91 @@
+-- ALGYS
+
+runWith adagio
+
+keySig = D \\\ aeolian
+
+p05 p0 = d01 $ do
+  let lever = cc' 5 1
+  let transpose val = cc' 5 2 (((val-(-12))*1)/24)
+  let finetune val = cc' 5 3 (((val-(-0.5))*1)/1)
+  let attack = cc' 5 4
+  let reverb = cc' 5 5
+  let delay = cc' 5 (6*2)
+  id $
+    slow 2 $
+    stut 3 0.1 semiquaver $
+    stack [silence
+      ,harmonics 2 "a2?"
+      ,harmonics 2 "e0 e2"
+      ,harmonics 2 "~ b1 ~ b2?" |- note (0)
+      ,((irand (3+1))/4) <~ harmonics 4 "g0(3,8)" |+ note (irand 3)
+      ,slow 2 $ lever "0 1" #ch 4
+      ,ped 1 #ch 5
+      ,finetune 0
+      ,transpose 3
+      -- ,transpose ("[3 <8 8 8 -2>]*2" |- 5)
+      ,attack 0.1
+      ,reverb 1
+      ,delay 1
+      ] |= vel 0.1
+
+p06 p0 p1 p2 = d06 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  let grainlength = cc 1
+  let grainrand = cc 74
+  id $
+    stack [silence
+      ,quanta semiquaver "h" |+ vel (lfo rand 0.1 0.6)
+      -- ,slow 2 $ quanta crotchet "~ h" |+ vel (lfo rand 0.88 0.9)
+      -- ,grainlength 0.1
+      ,grainlength 0.005
+      ] |= legato 0.1 #ch 06
+        -- |+| prog 4 (fst motion
+         -- +| ""
+          -- ) |+ note (snd motion)
+      -- >> silence
+
+p09 p0 = d09 $ do
+  id $
+    -- stut 4 0.5 semiquaver $
+    stack [silence
+      -- ,ruismk 1 "bd"
+      ,ruismk 1 "bd:echo"
+      ,ruismk minim "[~!3 <sb ~>] sn" |* vel 0.8
+      ] |* vel p0 #ch 09
+      -- >> silence
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,kit minim "~ rm"
+      ,hats minim "~ h"
+      ,fast 2 $ hats quaver "h" |* vel (0.75 <~ lfo sine 0.5 1)
+      -- ,cymbals 1 "~ cr ~ ~" |+ vel 0.4
+      ] |* vel p0 #ch 10
+        |+ humanise 0.1
+      -- >> silence
+
+p12 p0 p1 p2 = d12 $ do
+  let (motion, prog) = (fst p0, inKey p1)
+  let pat1 = fast 8 $ note "0"
+  let pat2 = slow 4 $ note "0 -4"
+  let pat = pat2
+  id $
+    every 3 (|+ note 5) $
+    -- every 7 (|- note 9) $
+    stack [silence
+      ,pullBy quaver $ slow 2 $ pat, glideio 1, glide 0.89
+      -- ,within (0.25,1) (|+ note (toScale [0, 2, 3, 5] $ (irand 8)+7)) pat, glideio 0, glide 0
+      -- ,within (0.25,1) (|+ n ("~")) pat, glideio 0, glide 0
+      ,slow 13 $ osc3io "1 0!3"
+      ,slow 11 $ feedbackvol (fast 4 $ lfo saw 0 1), feedbackio 1
+      -- ,dPureTone
+      ] |= ch 12 |+ note 0
+        |+ note 2
+        -- |+ note 14
+        -- |+ note 5
+        #legato 1.1
+        -- >> silence
+
+hush
