@@ -1,4 +1,4 @@
--- vi VI V I
+  -- vi VI V I
 (keySig,fineTune,v,c) = (
   B \\\ aeolian, 0
   ,(f vTheme, f vHarm) :: Section
@@ -30,7 +30,7 @@
         ])
 
 
--- i VI
+  -- i VI
 (keySig,fineTune,v,c) = (
   B \\\ aeolian, 0
   ,(f vTheme, f vHarm) :: Section
@@ -61,7 +61,7 @@
         "0"
         ])
 
--- vi IV I V
+  -- vi IV I V
 (keySig,fineTune,v,c) = (
   B \\\ aeolian, 0
   ,(f vTheme, f vHarm) :: Section
@@ -92,9 +92,9 @@
         "0"
         ])
 
--- i VI
+  -- vi VI
 (keySig,fineTune,v,c) = (
-  B \\\ aeolian, 0
+  F \\\ aeolian, 0
   ,(f vTheme, f vHarm) :: Section
   ,(f cTheme, f cHarm) :: Section
   )
@@ -102,12 +102,12 @@
       t = id
       f a = ((t . fastcat) $ fst a, (t . fastcat) $ snd a)
       vTheme = ([ -- VERSE THEME
-        "0"
+        "0 1 2 [4!3 3]"
         ],[ -- TRANSPOSE
         "0"
         ])
       vHarm = ([ -- VERSE HARMONY
-        "5 4 3 3"
+        "0 -1 -2 -2"
         ],[ -- TRANSPOSE
         "0"
         ])

@@ -1,22 +1,22 @@
 clicktrack $
-  slow 8 $
-    "0!7 [0!3 0.8] [0.8!15 0]"
-    +| 0.0
+  slow 16 $ "0!15 [0!3 0.8] [0.8!15 0]"
+  -- slow 8 $ "0!7 [0!3 0.8] [0.8!15 0]"
+    -- +| 0.0
 
   -- MIXER
 once $ do
-  let master = 0.99
+  let master = 0.9
   let v = (*master)
   stack [silence
-    ,overtones $v 0.6
-    ,granular $v 0.8
+    ,overtones $v 0.76
+    ,granular $v 0.6
     ,wavetable $v 0.6
     ,samplekit $v 0.99
     ,synthdrum $v 0.85
-    ,voyagerA $v 0.9
+    ,voyagerA $v 0.99
     ,voyagerB $v 0.99
-    ,modelD $v 0.4
-    ,laplace $v 0.7
+    ,modelD $v 0.05
+    ,laplace $v 0.4
     ,mersenne $v 0.7
     ,wurlitz $v 0.99
     ,piano $v 0.99
@@ -26,26 +26,27 @@ once $ do
   -- LAUNCHER
 do
   let
-    dyn = (slow 32 $ lfo saw 0.3 0.5)
-    -- dyn = slow 16 (lfo saw 0.3 0.8)--
-    -- dyn = 0.7
-    s = v
+    -- dyn = (slow 32 $ lfo saw 0.3 0.7)
+    -- dyn = slow 16 (lfo saw 0.5 0.7)--
+    dyn = 0.9
+    s = c
     k = keySig
+    -- k = A \\\ aeolian
     d = (*dyn)
   mapM_ id [hush
     -- ,p01,p02,p03,p04
-    -- ,p05 $d 0.9
+    ,p05 s $d 0.7
     ,p06 s k $d 0.5
     -- ,p07 s k $d 0.5
-    -- ,p08 s k $d 0.9
-    -- ,p09 $d 0.7
-    -- ,p10 $d 0.9
-    -- ,p11 s k $d 0.5
+    -- ,p08 s k $d 0.7
+    -- ,p09 $d 0.9
+    -- ,p10 $d 0.99
+    -- ,p11 s k $d 0.8
     -- ,p12 s k $d 0.3
-    -- ,p13 s k $d 0.3
+    -- ,p13 s k $d 0.4
     -- ,p14 s k $d 0.3
     -- ,p15 s k $d 0.7
-    -- ,p16 s k $d 0.5
+    -- ,p16 s k $d 0.7
     ]
 
 p "transport" $ do
@@ -66,6 +67,7 @@ runWith allegro
 
 pickup mixer
 pickup macros
+setTuning
 
 keySig = A \\\ aeolian
 

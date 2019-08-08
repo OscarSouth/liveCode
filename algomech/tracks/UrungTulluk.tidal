@@ -5,7 +5,7 @@ runWith andante
 keySig = A \\\ aeolian
 
 p06 p0 p1 p2 = d06 $ do
-  let (motion, prog) = (fst p0, inKey p1)
+  let (motion, prog) = (fst' p0, inKey p1)
   id $
     stack [silence
       ,note "0*4"
@@ -14,13 +14,13 @@ p06 p0 p1 p2 = d06 $ do
       ] |* vel p2 #ch 06
         -- |- note 12
         |+| prog 4 (fst motion
-         -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
+         +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
          -- +| "[0 <-5 -3>]*16"
          -- +| "[4,7,9]*16"
           ) |+ note (snd motion)
 
 p08 p0 p1 p2 = d08 $ do
-  let (motion, prog) = (snd p0, inKey p1)
+  let (motion, prog) = (snd' p0, inKey p1)
   id $
     stack [silence
       ,phrase 1 "mp"
@@ -29,7 +29,7 @@ p08 p0 p1 p2 = d08 $ do
       ] |* vel p2 #ch 08
         -- |- note 12
         |+| prog 4 (fst motion
-         -- +| "[7 0 4 6]*16"
+         +| "[7 0 4 6]*16"
          -- +| "[0 0]*32"
           ) |+ note (snd motion)
 
@@ -38,11 +38,10 @@ p09 p0 = d09 $ do
     stack [silence
       ,ruismk minim "[~ cp]"
       -- ,ruismk crotchet "[~ sn]/2"
-      ,ruismk crotchet "sb"
-      -- ,ruismk 1 "~ ~ bd ~"
+      ,ruismk 1 "~ ~ bd ~"
       ,within (0.1,1) degrade $ ruismk 1 "bd(3,8) ~"
       -- ,ruismk 1 "hats"
-      ,ruismk minim "~ hh"
+      -- ,ruismk crotchet "~ hh"
       ] |= ch 09
         |* vel p0
         -- >> silence
@@ -62,22 +61,22 @@ p10 p0 = d10 $ do
         -- >> silence
 
 p11 p0 p1 p2 = d11 $ do
-  let (motion, prog) = (fst p0, inKey p1)
+  let (motion, prog) = (fst' p0, inKey p1)
   id $
     stack [silence
       ,phrase 1 "mp"
-      ,modwheel 0.2
+      ,modwheel 0.3
       ] |* vel p2 #ch 11
         |+ note 12
         -- |= legato "1.1!7 0.7"
         |+| prog 4 (fst motion
          -- +| "[7 0 4 6]*16"
-         -- +| "[0 -5]*4"
+         +| "[0 -5]*4"
          -- +| "[0 0]*32"
           ) |+ note (snd motion)
 
 p12 p0 p1 p2 = d12 $ do
-  let (motion, prog) = (fst p0, inKey p1)
+  let (motion, prog) = (fst' p0, inKey p1)
   let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
   id $
     stack [silence
@@ -93,19 +92,19 @@ p12 p0 p1 p2 = d12 $ do
         |+ note 24
         |+| prog 4 (fst motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
-         +| "[0 <2 4 [5 3] 0>]*4"
-         -- +| "0*16"
+         -- +| "[0 <2 4 [5 3] 0>]*4"
+         +| "0*16"
           ) |+ note (snd motion)
           -- >> silence
-          p13 p0 p1 p2 = d13 $ do
 
-  let (motion, prog) = (fst p0, inKey p1)
+p13 p0 p1 p2 = d13 $ do
+  let (motion, prog) = (fst' p0, inKey p1)
   id $
       stack [silence
       ,phrase 1 "mp"
-      ,blend 0
+      ,blend 0.2
       ] |* vel p2 #ch 13
-        |- note 12
+        |- note 24
         |+| prog 4 (fst motion
          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
          +| "[0 2]*16"

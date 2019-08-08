@@ -228,7 +228,7 @@ dPluck = do
     ,bendio 1
     ,delayio 0
     -- CONTROLLERS
-    ,volume 1
+    ,volume 0.7
     ,modsourceA 0
     ,modsourceB 1
     ,modmix 0
@@ -264,9 +264,9 @@ dPluck = do
     ,filtermod 1
     ,keyboard1 0
     ,keyboard2 1
-    ,fcutoff 0.23
+    ,fcutoff 0.2 -- 0.23
     ,fresonance 0.32
-    ,fcontour 0.27
+    ,fcontour 0.23 --0.27
     ,fattack 0
     ,fdecay 0.21
     ,fsustain 0

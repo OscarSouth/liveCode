@@ -1,0 +1,23 @@
+runWith moderato
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      ,hats 1 "~ c"
+      ] |* vel p0 #ch 10
+        |+ humanise 0.1
+      -- >> silence
+
+
+p10 p0 = d10 $ do
+  id $
+    stack [silence
+      -- ,on4 (pullBy semiquaver) $ hats crotchet "~ <c c c:echoq c>"
+      -- ,kit 1 "[bd bd:echo, ~!7 bd]"
+      -- ,kit minim "~ <sn [sn ~ ~ sn]>"
+      -- ,cymbals 8 "cr ~ ~ ~ ~ ~ ~ ~" |= vel "0.2 0.8"
+      ] |* vel p0 #ch 10
+        |* vel "1.1 0.9!15"
+        |+ vel 0.2
+        |+ humanise 0.2
+        -- >> silence

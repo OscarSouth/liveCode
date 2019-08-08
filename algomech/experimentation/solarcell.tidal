@@ -1,15 +1,13 @@
 runWith andante
 
-stopTransportNow
-
-pad10 p0 = d10 $ do
+p10 p0 = d10 $ do
   stack [silence
     ,fast 4 $ kick "0" |+ vel 0.2
     ,fast 2 $ hpedal "~ 0"
-    -- ,fast 2 $ click "~ <0 [0 ~]>" |+ vel 1
+    ,fast 2 $ click "~ <0 [0 ~]>" |+ vel 1
     -- ,fast 2 $ snare "~ <~ [~ 0]>" |+ vel 1
     -- ,fast 4 $ trunc 0.5 $ snare "0 0 0 0" |+ vel 1
-    -- ,fast 4 $ ride "~ 0" |+ humanise 0.3
+    ,fast 4 $ ride "~ 0" |+ humanise 0.3
     -- ,fast 4 $ hopen "0" |+ humanise 0.3
     -- ,slow 4 $ crash "0" |+ vel 0.2
     -- ,fast 4 $ trunc 0.55 $ floortom "0 ~ ~ 0?" |+ vel "0.8" |+ humanise 0.5
@@ -17,7 +15,7 @@ pad10 p0 = d10 $ do
       |+ humanise 0.1
       -- >> silence
 
-pad16 p0 = d16 $ do
+p16 p0 p1 p2 = d16 $ do
   let
     v1 = stack [silence
       ,midinote "74 [~ 70] [~ 72] ~ 74 [~ 70] [~ 79] ~" |- vel 0.2
@@ -41,13 +39,13 @@ pad16 p0 = d16 $ do
 -- ARRANGEMENT
   stack [silence
     ,cat [v1,v2,v3,v4]
-    ,ped downbeat
-    ] |+ vel 0.25 |+ vel p0
+    ,ped "0 1!31"
+    ] |+ vel 0.25 |+ vel p2
       |+ humanise 0.2
       #ch 16
       -- >> silence
 
-pad14 p0 = d14 $ do
+p14 p0 p1 p2 = d14 $ do
   let inKey = G \\\ aeolian
   let upper = note "0 [~ 0] [~ 0] ~ 0 [~ 0] [~ 0] ~"
   let lower = fast 4 $ note "0 0"
@@ -56,10 +54,10 @@ pad14 p0 = d14 $ do
     ,lower
       |+ note (inKey (slow 4 "[0 4]*12 [2 4]*4") + "0 7 4 0")
       -- |+ note (slow 4 $ inKey "[0 4]*4 [4 8]*4 [2 6]*4 [2 4]*4" + "0 0 1 0")
-    ,ped downbeat
+    ,ped "0 1!31"
     ,toneA 0.2 0.5 0.4
     ,toneB 0.5 0.1 0.8
-    ] |+ vel 0.05 |+ vel p0
+    ] |+ vel 0.05 |+ vel p2
       |+ humanise 0.2
       |- note 12
       #ch 14

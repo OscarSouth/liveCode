@@ -1,0 +1,120 @@
+p "ocean" $ do
+  let out = 8*9999
+  let
+  seqP [syncStart,startTransport,stopTransport out
+    ,bar 0 out metronome
+    ]
+
+runWith adagio
+
+p08 p0 p1 = d08 $ do
+  let prog = inKey keySig 4
+  id $
+    stack [silence
+      ,note "<0 0 0 [0 . 0 0]>" #vel 0.5
+      ,modwheel 0
+      ] |= ch 08
+        |* vel p1
+        -- |= legato 0.5
+        |= vel (slow 16 $ lfo saw 0.3 0.9)
+        |+ humanise 0.3
+        |+| prog ("0 2 -1 [-2 . -4 -3]"
+         -- +| "[0]*64"
+         -- +| "[0 4 9 4]*16"
+          )
+        -- >> silence
+
+p09 p1 = d09 $ do
+  id $
+    stack [silence
+      -- ,ruismk crotchet "[~ sn]"
+      -- ,ruismk minim "[~ sn]"
+      -- ,ruismk minim "[~ cp]"
+      ,slow 4 $ruismk quaver "sb"
+      -- ,ruismk minim "~ hh"
+      -- ,ruismk 1 "hats"
+      ] |= ch 09
+        |* vel p1
+        -- >> silence
+
+p10 p1 = d10 $ do
+  id $
+    stack [silence
+      ,on4 (pullBy semiquaver) $ hats crotchet "~ <c c c:echoq c>"
+      ,kit 1 "[bd bd:echo, ~!7 bd]"
+      ,kit minim "~ <sn [sn ~ ~ sn]>"
+      -- ,cymbals 8 "cr ~ ~ ~ ~ ~ ~ ~" |= vel "0.2 0.8"
+      -- ,kit 2 "~ ~ ~ [~ . ~!2 floortom!2]" |= vel 0.4
+      ] |= ch 10
+        -- |* vel "1.1 0.9!15"
+        |+ vel 0.4
+        |* vel p1
+        |+ humanise 0.2
+        -- >> silence
+
+p12 p0 p1 = d12 $ do
+  let prog = inKey keySig 4
+  let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
+  id $
+    stack [silence
+      ,note "<0 [0, ~!3 0] 0 [0 . 0 0]>" #vel 0.5
+      ,dOcean
+        (lfo sine 0.4 0.7) -- 0.62 -- cutoff
+        0.7 -- res
+        (2 <~ lfo1*4) -- contour
+        (lfo1 *2) --  osc23
+        0 -- oscmod
+        (lfo1*8) -- lfo
+        (slow 2 $ 3 <~ lfo1 * 9) -- mod
+      ] |= ch 12
+        |* vel p1
+        -- |+ note 12
+        |= vel (slow 16 $ lfo saw 0.3 0.9)
+        |+ vel "0.1"
+        |+ humanise 0.1
+        |+ legato 1
+        |+| prog ("0 2 1 [0 . -2 -3]"
+         +| "[0 4 9 4]*16"
+         +| "[4 0]!8 [5 0]!4 [4 <2 0>]!4"
+         +| "[0 9]*32"
+         -- +| "[0 12]*32"
+          )
+
+p14 p0 p1 = d16 $ do
+  let prog = inKey keySig 4
+  id $
+    stack [silence
+      ,note "<0 0 0 [0 . 0 0]>" #vel 0.5
+      ,toneA 0.5 0.7 1
+      ,toneB 0.8 0.45 1
+      ] |= ch 14
+        |- note 24
+        |* vel p1
+        -- |= legato 0.5
+        |= vel (slow 16 $ lfo saw 0.3 0.9)
+        |+ humanise 0.3
+        |+| prog ("0 2 -1 [-2 . -4 -3]"
+         -- +| "[0 4 9 4]*16"
+          )
+        -- >> silence
+
+p15 p0 p1 = d15 $ do
+  let prog = inKey keySig 4
+  id $
+    stack [silence
+      ,note "<0 [0, ~!3 0] 0 [0 . 0 0]>" #vel 0.5
+      -- ,volume "0.2*16"
+      ] |= ch 15
+        |* vel p1
+        -- |- note 12
+        |= vel (slow 16 $ lfo saw 0.3 0.9)
+        |+ vel "0.1"
+        |+ humanise 0.1
+        |+ legato 1
+        |+| prog ("0 2 1 [0 . -2 -3]"
+         +| "[0 4 9 4]*32"
+         +| "[4 0]!8 [5 0]!4 [4 <2 0>]!4"
+         +| "[0 9]*32"
+          )
+
+hush

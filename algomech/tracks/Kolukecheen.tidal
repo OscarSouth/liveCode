@@ -3,22 +3,24 @@
 runWith andante
 
 p08 p0 p1 p2 = d08 $ do
-  let (motion, prog) = (snd p0, inKey p1)
+  let (motion, prog) = (snd' p0, inKey p1)
   id $
     stack [silence
       -- ,phrase minim "mp(3,8)",phrase 1 "mp"
       -- ,phrase 1 "mp(3,8)"
       ,phrase 1 "mp"
       -- ,phrase 1 "mp:."
-      -- ,modwheel 0.2
-      ,modwheel (slow 5 $ lfo sine 0 0.1)
+      ,modwheel 0.2
+      -- ,modwheel (slow 5 $ lfo sine 0 0.1)
       ] |* vel p2 #ch 08
         -- |+ note 12
         |+| prog 4 (fst motion
          -- +| (every 4 rev "[0 2 4 7 11 9 4 2]*16")
          -- +| "0*64"
+         -- +| "[~ -7 0 0]*16" |+ 7
+         +| "[~ 0]*16"
          -- +| "[0 -5 -3 -5]*8" |+ 7
-        -- |+ "[0 -5 -3]"
+        -- |+ "[0 0 -5 -3]"
           ) |+ note (snd motion)
         -- >> silence
 
@@ -26,11 +28,12 @@ p09 p0 = d09 $ do
   id $
     stack [silence
       ,ruismk crotchet "sb"
-      ,ruismk 1 "bd"
+      -- ,ruismk 1 "bd"
       -- ,ruismk 1 "hats"
       -- ,ruismk minim "bd"
+      -- ,ruismk crotchet "bd"
       -- ,ruismk minim "~ sn"
-      -- ,ruismk crotchet "~ hh"
+      ,ruismk crotchet "~ hh"
       -- ,ruismk 0.25 "cp(3,8)"
       ] |* vel p0 #ch 09
       -- >> silence
@@ -40,24 +43,24 @@ p10 p0 = d10 $ do
     -- stut 2 1 quaver $
     -- degrade $
     stack [silence
-      -- ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
+      ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
       ,kit 1 "[bd:echo bd:lead]" #vel 0.8
       ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
       ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
       ,cymbals crotchet "~ rd" #vel 0.6
       ] |= ch 10
         |* vel "[1.1 0.9!7]*4"
-        |+ vel 0.3
+        -- |+ vel 0.3
         |* vel p0
         |+ humanise 0.2
         -- >> silence
 
 p11 p0 p1 p2 = d11 $ do
-  let (motion, prog) = (fst p0, inKey p1)
+  let (motion, prog) = (fst' p0, inKey p1)
   id $
     stack [silence
       ,phrase 1 "mp"
-      ,modwheel 0.4
+      ,modwheel 0.6
       ] |* vel p2 #ch 11
         |+ note 12
         -- |- note 12
@@ -76,12 +79,12 @@ p14 p0 p1 p2 = d14 $ do
       ] |* vel p2 #ch 14
         |- note 12
         |+| prog 4 (fst motion
-         +| "[0,4]!3 [0,-3] [0,4]!2 [0,-3]!2"
+         -- +| "[0,4]!3 [0,-3] [0,4]!2 [0,-3]!2"
           ) |+ note (snd motion)
       -- >> silence
 
 p15 p0 p1 p2 = d15 $ do
-  let (motion, prog) = (snd p0, inKey p1)
+  let (motion, prog) = (snd' p0, inKey p1)
   id $
     -- stut 2 1.5 semiquaver $
     stack [silence
@@ -99,7 +102,7 @@ p15 p0 p1 p2 = d15 $ do
       -- >> silence
 
 p16 p0 p1 p2 = d16 $ do
-  let (motion, prog) = (fst p0, inKey p1)
+  let (motion, prog) = (fst' p0, inKey p1)
   id $
     every 2 (pullBy crotchet) $
     stack [silence
@@ -114,3 +117,5 @@ p16 p0 p1 p2 = d16 $ do
          +| "[0 4 7 0 . ~ 7 4 2]*8"
           ) |+ note (snd motion)
           -- >> silence
+
+hush

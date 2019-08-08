@@ -21,7 +21,7 @@ p09 p0 = d09 $ do
   id $
     stack [silence
       -- ,ruismk 2 "hats"
-      -- ,ruismk minim "~ cp"
+      ,ruismk minim "~ cp"
       ,ruismk 4 "sb!6 ~!2"
       -- ,ruismk crotchet "bd"
       ] |* vel p0 #ch 09
@@ -57,7 +57,8 @@ p12 p0 p1 p2 = d12 $ do
   let lfo1 = slow 5 $ 0.5 <~ lfo sine 0.01 0.11
   id $
     stack [silence
-      ,note "2/2"
+      -- ,note "2/2"
+      ,note "0/2"
       ,modwheel 0.0
       ,dArpPad
       ] |* vel p2 #ch 12

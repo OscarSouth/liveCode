@@ -96,10 +96,13 @@ var each v p = pullBy 1 $ every each v p
 inKey k b p = note (slow b $ k p)
 
 :{
-type Section = ((Pattern Int, Pattern Double),(Pattern Int, Pattern Double))
+type Section = ((Pattern Int, Pattern Double),(Pattern Int, Pattern Double), Int)
+
 (v,c,b) =
-  let sec = (("0","0"),("0","0")) :: Section
-   in (sec, sec, sec)
+  let secV = (("0","0"),("0","0"),0) :: Section
+      secC = (("0","0"),("0","0"),1) :: Section
+      secB = (("0","0"),("0","0"),2) :: Section
+   in (secV, secC, (secB))
 :}
 
 on1 = within (0,0.25)
@@ -407,5 +410,26 @@ p16 = runSilence
 :s ~/liveCode/algomech/Instruments/pXX_PHRASE.tidal
 
 keySig = C \\\ aeolian
+
+sus v = ped v #ch 5
+-- touch val = control (ccScale val) #midicmd "touch"
+
+lever = cc' 5 1
+transpose val = cc' 5 2 (((val-(-12))*1)/24)
+finetune val = cc' 5 3 (((val-(-0.5))*1)/1)
+atk = cc' 5 4
+verb = cc' 5 5
+echo = cc' 5 (6*2)
+
+grainlength = cc 1
+grainrand = cc 74
+
+:{
+fst' :: (a, b, c) -> a
+fst' (x, _, _) = x
+
+snd' :: (a, b, c) -> b
+snd' (_, x, _) = x
+:}
 
 :set prompt "tidal> "

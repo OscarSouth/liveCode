@@ -1,0 +1,26 @@
+p08 p0 p1 p2 = d08 $ do
+  let (motion, prog) = (snd p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      -- ,modwheel (rev . fast 2 $ lfo saw 0 0.3)
+      ,modwheel 0.0
+      ] |* vel p2 #ch 08
+        -- |+ note 12
+        |+| prog 4 (fst motion
+         +| "7*64"
+         -- +| "[0!2 ~!14]*4"
+          ) |+ note (snd motion)
+      -- >> silence
+
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      ,ruismk crotchet "sb"
+      -- ,ruismk 1 "bd"
+      -- ,ruismk 1 "hats"
+      -- ,ruismk 1 "bd:echo"
+      ,ruismk crotchet "~ hh"
+      ,ruismk minim "~ sn"
+      ] |* vel p0 #ch 09
+      -- >> silence
