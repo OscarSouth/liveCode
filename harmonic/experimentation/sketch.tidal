@@ -1,0 +1,14 @@
+p08 p0 p1 p2 = d08 $ do
+  let (motion, prog) = (snd' p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      ,modwheel 0.0
+      ] |* vel p2 #ch 08
+        -- |- note 12
+        |+| prog 4 (fst motion
+         -- +| "0"
+          ) |+ note (snd motion)
+      -- >> silence
+
+once $ midinote 60 #ch 8

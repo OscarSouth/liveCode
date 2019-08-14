@@ -8,7 +8,7 @@ p05 p0 p1 = d05 $ do
         ,harmonics 1 "~ e2 . ~ g1 ~ b1 . ~ e2 . ~ g1 ~ b1"
         ]
   id $
-    trunc 0.77 $
+    -- trunc 0.77 $
     stack [silence
       ,cat [p!!1,p!!1,p!!struc,p!!struc]
       ,sus "[[1 0] 1 [1 0] 1]"
@@ -41,9 +41,9 @@ p08 p0 p1 p2 = d08 $ do
 p09 p0 = d09 $ do
   id $
     stack [silence
-      ,ruismk minim "[~ sn]"
+      -- ,ruismk minim "[~ sn]"
       ,ruismk crotchet "sb"
-      ,ruismk 1 "hats"
+      -- ,ruismk 1 "hats"
       ] |= ch 09
         |* vel p0
         -- >> silence
@@ -52,12 +52,12 @@ p10 p0 = d10 $ do
   id $
     trunc 0.77 $
     stack [silence
-      -- ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
-      ,hats 1 "8" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
-      ,kit 1 "[bd:echo bd:lead]" #vel 0.8
-      ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
-      ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
-      ,degrade $ kit minim "ss(3,8)" #vel 0.3
+      ,hats 1 "16" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
+      -- ,hats 1 "8" #vel (fast 4 $ crotchet ~> lfo sine 0.3 0.54)
+      -- ,kit 1 "[bd:echo bd:lead]" #vel 0.8
+      -- ,kit 1 "~ [~!2 bd? ss] [~ bd] ss" #vel 0.6
+      -- ,kit minim "[~ <rm:echos rm:leads>]" #vel 0.7
+      -- ,degrade $ kit minim "ss(3,8)" #vel 0.3
       -- ,degrade $ kit 1 "sn(3,8)" #vel 0.3
       -- ,cymbals crotchet "~ rd" #vel 0.6
       ] |= ch 10

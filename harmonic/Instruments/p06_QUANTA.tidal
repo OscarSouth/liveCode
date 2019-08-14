@@ -1,0 +1,51 @@
+:{
+
+quanta bars pat = do
+  let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
+  let ps = [("l", midinote 36),
+            ("m", midinote 48),
+            ("h", midinote 60)
+          ]
+  let fs = [("minim", fast 2),
+            ("2", fast 2),
+            ("crotchet", fast 4),
+            ("4", fast 4),
+            ("quaver", fast 8),
+            ("8", fast 8),
+            ("semiquaver", fast 16),
+            ("16", fast 16),
+            ("demisemiquaver", fast 32),
+            ("32", fast 32),
+            ("echo" , stut 2 0.7 (semiquaver/mult)),
+            ("echos" , stut 2 0.7 (quaver/mult)),
+            ("leads" , ((rev) . (stut 2 0.75) (crotchet/mult))),
+            ("lead" , ((rev) . (stut 2 0.75) (quaver/mult)))
+          ]   in ur bars pat ps fs
+
+:}
+--
+-- p06 p0 = d07 $ do
+--   let prog = inKey keySig
+--   let verseA = "0 [0 ~ . 0] 2 [0 2] . [1 2] [1 ~] 1 [1 ~]"
+--   let verseB = "1 [1 ~ . 1] 2 [1 2] . [1 . 0 ~] [0 -1] 0 [0 ~]"
+--   let chorusA = "2 [4 3] 4 [2 4] . [2 4] 2 4 [4 ~]"
+--   let chorusB = "3 [2 4] 3 [0 1] . 2 1 0 [0 ~]"
+--   id $
+--     stack [silence
+--       ,note "0*4"
+--       ,cc 1 (lfo saw 0.65 0.69)
+--       ,cc 74 0.8
+--       ] |= ch 06
+--         -- |- note 12
+--         -- |+| prog 4 (fastcat[chorusA,chorusB]
+--         |+| prog 4 (fastcat[verseA,verseB]
+--          -- +| "[0 0 . <-5 -3 0 <-5 0>>]*4"
+--          +| "[0 -5]*16"
+--          -- +| "[0,7]*16"
+--           )
+--         -- |- note 12
+--         -- |+ progression 4 (inKey "0 2 -2 -1")
+--
+--
+-- touch val = control (ccScale val) #midicmd "touch"
+-- bend val = control (ccScale val) #midicmd "bend"
