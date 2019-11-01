@@ -1,0 +1,33 @@
+:{
+
+phrase bars pat = do
+  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
+  let ps = [("x", note "0"),
+            ("fff", note "0" #vel 0.9),
+            ("ff", note "0" #vel 0.75),
+            ("f", note "0" #vel 0.65),
+            ("mf", note "0" #vel 0.55),
+            ("mp", note "0" #vel 0.45),
+            ("p", note "0" #vel 0.3),
+            ("pp", note "0" #vel 0.2),
+            ("ppp", note "0" #vel 0.1)
+          ]
+  let fs = (timeFuncs mult) ++ [
+           (".", (#legato 0.125))
+           -- (".", (#legato 0.125))
+           ]
+   in ur bars pat ps fs
+
+:}
+
+
+-- p12 p0 = d12 $ do
+--   let prog = inKey keySig 4
+--   id $
+--     stack [silence
+--       ,phrase 1 "0"
+--       ] |= ch 12
+--         |* vel p0
+--         |+| prog ("0"
+--          +| "0"
+--           )

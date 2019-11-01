@@ -1,0 +1,105 @@
+timeFuncs mult = [("minim", fast 2),
+                  ("2", fast 2),
+                  ("crotchet", fast 4),
+                  ("4", fast 4),
+                  ("quaver", fast 8),
+                  ("8", fast 8),
+                  ("semiquaver", fast 16),
+                  ("16", fast 16),
+                  ("demisemiquaver", fast 32),
+                  ("32", fast 32),
+                  ("echo", stut 2 0.75 (quaver/mult)),
+                  ("echos", stut 2 0.75 (crotchet/mult)),
+                  ("echoq", stut 2 0.75 (minim/mult)),
+                  ("echom", stut 2 0.75 (1/mult)),
+                  ("lead", ((rev) . (stut 2 0.75) (quaver/mult))),
+                  ("leads", ((rev) . (stut 2 0.75) (crotchet/mult))),
+                  ("leadq", ((rev) . (stut 2 0.75) (minim/mult))),
+                  ("leadm", ((rev) . (stut 2 0.75) (1/mult))),
+                  ("pull", pullBy (quaver/mult)),
+                  ("push", pushBy (quaver/mult))
+                ]
+
+harmonics bars pat = do
+  let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
+  let leg = (legato ( (1/4) *
+            (fromList [(fromIntegral . round) bars] :: Pattern Double))
+            )
+  let ps = [("b0", note 0 #ch 4 #vel 0.1),
+            ("b1", note 1 #ch 4 #vel 0.1),
+            ("b2", note 2 #ch 4 #vel 0.1),
+            ("b3", note 3 #ch 4 #vel 0.1),
+            ("g0", note 0 #ch 3 #vel 0.1),
+            ("g1", note 1 #ch 3 #vel 0.1),
+            ("g2", note 2 #ch 3 #vel 0.1),
+            ("g3", note 3 #ch 3 #vel 0.1),
+            ("e0", note 0 #ch 2 #vel 0.1),
+            ("e1", note 1 #ch 2 #vel 0.1),
+            ("e2", note 2 #ch 2 #vel 0.1),
+            ("e3", note 3 #ch 2 #vel 0.1),
+            ("a0", note 0 #ch 1 #vel 0.1),
+            ("a1", note 1 #ch 1 #vel 0.1),
+            ("a2", note 2 #ch 1 #vel 0.1),
+            ("a3", note 3 #ch 1 #vel 0.1),
+            ("B0", note 0 #ch 4 #vel 0.9),
+            ("B1", note 1 #ch 4 #vel 0.9),
+            ("B2", note 2 #ch 4 #vel 0.9),
+            ("B3", note 3 #ch 4 #vel 0.9),
+            ("G0", note 0 #ch 3 #vel 0.9),
+            ("G1", note 1 #ch 3 #vel 0.9),
+            ("G2", note 2 #ch 3 #vel 0.9),
+            ("G3", note 3 #ch 3 #vel 0.9),
+            ("E0", note 0 #ch 2 #vel 0.9),
+            ("E1", note 1 #ch 2 #vel 0.9),
+            ("E2", note 2 #ch 2 #vel 0.9),
+            ("E3", note 3 #ch 2 #vel 0.9),
+            ("A0", note 0 #ch 1 #vel 0.9),
+            ("A1", note 1 #ch 1 #vel 0.9),
+            ("A2", note 2 #ch 1 #vel 0.9),
+            ("A3", note 3 #ch 1 #vel 0.9)
+          ]
+  let fs = (timeFuncs mult) ++ [
+           (".", (#legato 0.125)),
+           ("t", (|= vel 0.9)),
+           ("p", (|= vel 0.1))
+          ]
+   in ur bars pat ps fs
+
+
+ruismk bars pat = do
+  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
+  let fs = timeFuncs mult
+  let ps = [("sb", sb "0"),
+            ("bd", bd "0"),
+            ("sn", sn "0"),
+            ("cp", cp "0"),
+            ("hh", hh "0"),
+            ("oh", oh "0"),
+            ("fm", fm "0"),
+            ("hats", pat1)
+          ]
+          where pat1 = slow (0.25*mult) $ stack [silence
+                        ,hh "0 0 ~ 0"
+                        ,oh "~ ~ 0 ~"
+                        ]
+   in ur bars pat ps fs
+
+phrase bars pat = do
+  let mult = fromList [(fromIntegral . ceiling) bars] :: Pattern Time
+  let ps = [("x", note "0"),
+            ("fff", note "0" #vel 0.9),
+            ("ff", note "0" #vel 0.75),
+            ("f", note "0" #vel 0.65),
+            ("mf", note "0" #vel 0.55),
+            ("mp", note "0" #vel 0.45),
+            ("p", note "0" #vel 0.3),
+            ("pp", note "0" #vel 0.2),
+            ("ppp", note "0" #vel 0.1)
+          ]
+  let fs = (timeFuncs mult) ++ [
+           (".", (#legato 0.125))
+           -- (".", (#legato 0.125))
+           ]
+   in ur bars pat ps fs
+
+modelDprog = progCh 12
