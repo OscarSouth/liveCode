@@ -1,0 +1,115 @@
+hush''
+
+  -- UDAGAN 6.12.19
+
+master = 1.0
+
+pickup midiParams
+
+once $ do
+  let vol = master*0.0
+  let v = (*vol)
+  stack [silence
+    ,ruismaker $v 0.87
+    ,stochastic $v 0.0
+    ,samplr $v 0.99
+    ,modelD $v 0.99
+    ,laplace $v 0.99
+    ,overtones $v 0.99
+    ,doubleBass $v 0.99
+    ,electricPiano $v 0.99
+    ,acousticPiano $v 0.99
+    ]
+
+p "transport" $ do
+  let out = 8*9999
+  let
+  seqP [syncStart
+    ,startTransport
+    ,stopTransport out
+    ,bar 0 out metronome
+    ]
+
+runWith allegro
+
+(keySig,v) = (
+  C \\\ aeolian
+  ,(f vTheme, f vHarm, 0) :: Section
+  )
+    where
+      f a =
+        let func = cat
+         in (func $ fst a, func $ snd a)
+      vTheme = ([ -- VERSE THEME
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+      vHarm = ([ -- VERSE HARMONY
+        "0"
+        ],[ -- TRANSPOSE
+        "0"
+        ])
+
+modelDprog 0
+
+  -- KHOMUS OVERTONES
+p11 p0 p1 p2 = d11 $ do
+  let (motion, prog) = (fst' p0, inKey p1)
+  let lfo1 = (lfo rand 0.5 1)
+  id $
+    -- slow 4 $
+    stack [silence
+      -- ,khomus 4 (chooseBy (segment 8 $ rand/2 +0.5) ["1","2","3","4","5","6","7"])
+      -- ,khomus minim "1 . 2 3"
+      -- ,khomus minim "4 . 5 6"
+      -- ,khomus 1 "4 [7 [4 7]]"
+      -- ,khomus 2 "7 [3 4 3] 6 [4 5 4]"
+      -- }],khomus 2 "4 [3 6]*2 [7 [4 7]]"
+      -- ,khomus 0.5 "5 ~ ~ 4 ~ ~ 6 ~ ~"
+      ,khomus 1 " ~ ~ 7 ~ ~ 6 ~ ~ 5 ~ ~ 4 ~ ~ 2 ~"
+      -- ,khomus 0.25 " 4"
+      ] |* vel p2 #ch 11
+        |+| prog 4 (fst motion
+          ) |+ note (snd motion)
+            -- |= vel (fast 2 $ lfo1)
+            |= vel 0.9
+            -- >> silence
+
+
+p09 p0 = d09 $ do
+  id $
+    -- stut 4 0.5 0.5 $
+    stack [silence
+      ,ruismk crotchet "sb"
+      ,ruismk crotchet "~ hh"
+      ] |* vel p0 #ch 09
+      -- >> silence
+
+  -- MODEL D -- TURN OFF DISTORTION
+p12 p0 p1 p2 = d12 $ do
+  let (motion, prog) = (snd' p0, inKey p1)
+  id $
+    stack [silence
+      ,phrase 1 "mp"
+      ] |* vel p2 #ch 12
+        -- |- note "12"
+        |+| prog 4 (fst motion
+          ) |+ note (snd motion)
+        -- >> silence
+
+  -- LAPLACE
+p13 p0 p1 p2 = d13 $ do
+  let (motion, prog) = (fst' p0, inKey p1)
+  id $
+    stack [silence
+      ,note "0"
+      ,blend 1
+      ] |* vel p2 #ch 13
+        |- note 12
+        |+| prog 4 (fst motion
+         +| "0*16"
+          ) |+ note (snd motion)
+            -- >> silence
+
+hush

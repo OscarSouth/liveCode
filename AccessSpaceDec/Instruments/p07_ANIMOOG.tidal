@@ -1,0 +1,149 @@
+
+once $ cc' 07 17 1
+
+hush
+
+p07 p0 = d07 $ do
+  let x = 0.25
+  let y = 0
+  let hipass = cc 3
+  let xcoord = cc 4
+  let ycoord = cc 5
+  let xmult = cc 6
+  let ymult = cc 7
+  let orbit = cc 8
+  let sync = cc 9
+  let fdrive = cc 10
+  let fenv = cc 11
+  let freq = cc 12
+  let res = cc 13
+  let crush = cc 14
+  let drive = cc 15
+  let detune = cc 16
+  let unison = cc 17
+  id $
+    pullBy minim $
+    stack [silence
+      ,hipass "[0.1 0.4 . 0.6]*4"
+      ,midinote "60*8"
+      -- ,pushBy quaver $ xcoord $ lfo tri (0.25+x) (0.75+x)
+      -- ,fast 2 $ ycoord $ lfo sine (0.75+y) (0.25+y)
+      -- ,pushBy minim $ ymult $ lfo saw 0 1
+      -- ,pullBy minim $ orbit $ lfo tri 0 1
+      ] |= ch 07
+        |+ note (keySig 0)
+        -- |- note 36
+        -- |= legato semiquaver
+        -- >> silence
+
+  -- PAD 09 | DRUM SYNTH
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      ,ruismk 1 "[bd:crotchet]"
+      -- ,ruismk crotchet "~ hh"
+      -- ,ruismk 4 "pc"
+      ,ruismk minim "~ sn"
+      -- ,ruismk 1 "hh*16" |+ vel "[0.06!2 0.94 0.06]*4" |* vel 0.2 |+ humanise 0.4
+      ] |= ch 09
+        |+ vel p0 -0.5
+        -- >> silence
+
+animoog bars pat = do
+  let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
+  let leg = (legato ( (1/4) *
+            (fromList [(fromIntegral . round) bars] :: Pattern Double))
+            )
+  let ps = [("x", midinote 60)
+          ]
+  let fs = [("breve", slow 2),
+            ("semibreve", fast 1),
+            ("minim", fast 2),
+            ("crotchet", fast 4),
+            ("quaver", fast 8),
+            ("semiquaver", fast 16),
+            ("demisemiquaver", fast 32),
+            ("echo", stut 2 0.7 (semiquaver/mult)),
+            ("echos", stut 2 0.7 (quaver/mult)),
+            ("lead", ((~>) (15*semiquaver/mult))),
+            ("leads", ((~>) (7*quaver/mult))),
+            ("a", (|= vel 1.0))
+          ]
+   in mono $ ur bars pat ps fs
+
+
+hush
+
+p07 p0 = d07 $ do
+  let x = 0.25
+  let y = 0
+  let hipass = cc 3
+  let xcoord = cc 4
+  let ycoord = cc 5
+  let xmult = cc 6
+  let ymult = cc 7
+  let orbit = cc 8
+  let sync = cc 9
+  let fdrive = cc 10
+  let fenv = cc 11
+  let freq = cc 12
+  let res = cc 13
+  let crush = cc 14
+  let drive = cc 15
+  let detune = cc 16
+  let unison = cc 17
+  id $
+    -- pullBy minim $
+    stack [silence
+      ,hipass "[0.1 0.4 . 0.6]*4"
+      -- ,note "[0,7,12]*8"
+      ,freq "0.4"
+      ,fenv "0.3"
+      ,res "0.2"
+      -- ,pushBy quaver $ xcoord $ lfo tri (0.25+x) (0.75+x)
+      ,fast 2 $ ycoord $ lfo sine (0.75+y) (0.25+y)
+      -- ,pullBy minim $ orbit $ lfo tri 0 1
+      ] |= ch 07
+        |+ note (slow 4 $ keySig "0 2 [-2 -4!2] [-1 -3!2]")
+        |- note 24
+        |= vel 0.5
+        -- |= legato semiquaver
+        -- >> silence
+
+p07 p0 = d07 $ do
+  let x = 0.25
+  let y = 0
+  let hipass = cc 3
+  let xcoord = cc 4
+  let ycoord = cc 5
+  let xmult = cc 6
+  let ymult = cc 7
+  let orbit = cc 8
+  let sync = cc 9
+  let fdrive = cc 10
+  let fenv = cc 11
+  let freq = cc 12
+  let res = cc 13
+  let crush = cc 14
+  let drive = cc 15
+  let detune = cc 16
+  let unison = cc 17
+  id $
+    -- pullBy minim $
+    stack [silence
+      ,hipass "[0.1 0.4 . 0.6]*4"
+      ,note "0*4"
+      -- ,freq "0.45"
+      ,freq (fast 4 $ crotchet ~> lfo sine 0.3 0.4)
+      ,fenv "0.45"
+      ,res "0"
+      ,xcoord 0.5
+      ,ycoord 0.7
+      ,pullBy minim $ orbit 0.8
+      ,sync 1
+      ] |= ch 07
+        |+ note (keySig "0 4 -2 -1")
+        |- note 24
+        |= vel 0.5
+        -- |= legato semiquaver
+        -- >> silence

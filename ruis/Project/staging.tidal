@@ -1,0 +1,16 @@
+
+mixer p =
+    [ruismaker p
+    ,samplr p
+    ,modelD p
+    ,overtones p
+    ,doubleBass p
+    ,electricPiano p
+    ,acousticPiano p
+    ,noir1 p
+    ,noir2 p
+    ,click p
+    ]
+
+noir1 = cc' 5 13
+noir2 = cc' 5 16

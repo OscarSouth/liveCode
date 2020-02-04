@@ -1,0 +1,48 @@
+:{
+
+harmonics bars pat = do
+  let mult = fromList [(fromIntegral . round) bars] :: Pattern Time
+  let leg = (legato ( (1/4) *
+            (fromList [(fromIntegral . round) bars] :: Pattern Double))
+            )
+  let ps = [("b0", note 0 #ch 4 #vel 0.1),
+            ("b1", note 1 #ch 4 #vel 0.1),
+            ("b2", note 2 #ch 4 #vel 0.1),
+            ("b3", note 3 #ch 4 #vel 0.1),
+            ("g0", note 0 #ch 3 #vel 0.1),
+            ("g1", note 1 #ch 3 #vel 0.1),
+            ("g2", note 2 #ch 3 #vel 0.1),
+            ("g3", note 3 #ch 3 #vel 0.1),
+            ("e0", note 0 #ch 2 #vel 0.1),
+            ("e1", note 1 #ch 2 #vel 0.1),
+            ("e2", note 2 #ch 2 #vel 0.1),
+            ("e3", note 3 #ch 2 #vel 0.1),
+            ("a0", note 0 #ch 1 #vel 0.1),
+            ("a1", note 1 #ch 1 #vel 0.1),
+            ("a2", note 2 #ch 1 #vel 0.1),
+            ("a3", note 3 #ch 1 #vel 0.1),
+            ("B0", note 0 #ch 4 #vel 0.9),
+            ("B1", note 1 #ch 4 #vel 0.9),
+            ("B2", note 2 #ch 4 #vel 0.9),
+            ("B3", note 3 #ch 4 #vel 0.9),
+            ("G0", note 0 #ch 3 #vel 0.9),
+            ("G1", note 1 #ch 3 #vel 0.9),
+            ("G2", note 2 #ch 3 #vel 0.9),
+            ("G3", note 3 #ch 3 #vel 0.9),
+            ("E0", note 0 #ch 2 #vel 0.9),
+            ("E1", note 1 #ch 2 #vel 0.9),
+            ("E2", note 2 #ch 2 #vel 0.9),
+            ("E3", note 3 #ch 2 #vel 0.9),
+            ("A0", note 0 #ch 1 #vel 0.9),
+            ("A1", note 1 #ch 1 #vel 0.9),
+            ("A2", note 2 #ch 1 #vel 0.9),
+            ("A3", note 3 #ch 1 #vel 0.9)
+          ]
+  let fs = (timeFuncs mult) ++ [
+           (".", (#legato 0.125)),
+           ("t", (|= vel 0.9)),
+           ("p", (|= vel 0.1))
+          ]
+   in ur bars pat ps fs
+
+:}

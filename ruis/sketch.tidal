@@ -1,0 +1,75 @@
+hush''
+
+master = 0.99
+
+pickup midiParams
+
+once $ do
+  let vol = master*0.99
+  let v = (*vol)
+  stack [silence
+    ,ruismaker $v 0.99
+    ,modelD $v 0.99
+    ,samplr $v 0.0
+    ,doubleBass $v 0.99
+    ,electricPiano $v 0.99
+    ,acousticPiano $v 0.99
+    ,overtones $v 0.99
+    ,noir1 $v 0.99
+    ,noir2 $v 0.8
+    ]
+
+p "transport" $ do
+  let out = 8*9999
+  let
+  seqP [syncStart
+    ,startTransport
+    ,stopTransport out
+    ,bar 0 out metronome
+    ]
+
+runWith moderato
+
+p09 p0 = d09 $ do
+  id $
+    stack [silence
+      -- ,ruismk 1 "~ ~ sb [~ sb]"
+      ,ruismk crotchet "sb"
+      -- ,ruismk crotchet "bd"
+      -- ,ruismk quaver "bd" |= vel (lfo saw 0.2 0.9),ruismk quaver "sn" |= vel (lfo saw 0.2 0.9)
+      -- ,ruismk minim "~ fm"
+      -- ,ruismk minim "~ sn"
+      ,ruismk minim "~ cp"
+      ,ruismk crotchet "~ hh"
+      -- ,ruismk quaver "oh"
+      -- ,degradeBy 0.9 $ ruismk 1 "~ ~ ~ [sn*2 ~]"
+      -- ,degradeBy 0.9 $ ruismk 1 "~ ~ [~ sn*2] [sn*2 ~]"
+      -- ,degradeBy 0.5 $ ruismk 1 "[~!3 sb] ~!3" |= vel 0.1
+      ] |* vel p0 #ch 09
+
+p13 p0 p1 p2 = d13 $ do
+  let (motion, prog) = (fst' p0, inKey p1)
+  id $
+    stack [silence
+      ,note "0"
+      ] |* vel p2 #ch 13
+        |* vel (0.0007 ~> (fast 4 $ lfo saw 0.1 1))
+        |- note 12
+        |+| prog 4 (fst motion
+         -- +| "[0(3,8)]*8"
+         +| "[0 0 4 4]*16"
+        |+  "[0 . -2]"
+          ) |+ note (snd motion)
+
+p14 p0 p1 p2 = d14 $ do
+  let (motion, prog) = (fst' p0, inKey p1)
+  id $
+    slow 4 $
+    stack [silence
+      ,note "0 7"
+      ] |* vel p2 #ch 14
+        |* vel (rev . fast 2 $ lfo tri 0.1 1)
+        -- |- note 12
+        |+| prog 4 (fst motion
+         +| "[0 2 4 7]*16"
+          ) |+ note (snd motion)

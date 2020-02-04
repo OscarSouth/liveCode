@@ -1,0 +1,15 @@
+sock <- carabiner tidal 4 (-0.29)
+
+p09 p0 = d09 $ do
+  id $
+    fast 2 $
+    stack [silence
+      ,ruismk 1 "sb"
+      ,ruismk 1 "~ cp"
+      ,ruismk minim "~ ~ ~ oh"
+      ,degradeBy 0.3 $ ruismk quaver "hh"
+      -- ,ruismk crotchet "hh"
+      ] |* vel p0 #ch 09
+      -- >> silence
+
+hush
